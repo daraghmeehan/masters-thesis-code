@@ -1,11 +1,15 @@
 ### Mine
 ## Media Files
-# Ignore everything in media and temp directories
-/media/**/*
-/temp/**/*
+# Ignore all files within these directories (recursively)
+/media/**
+/temp/**
 
-# But do not ignore .gitkeep files in any directory
-!**/.gitkeep
+# But don't ignore any directory or subdirectory it contains
+!/media/**/
+!/temp/**/
+
+# Don't ignore gitkeeps
+!.gitkeep
 
 # Other
 /app/deep_l/.env
