@@ -2,6 +2,9 @@
 # Media Files
 /media/*
 /temp/*
+# Not gitkeep as need these folders for media
+!/media/.gitkeep
+!/temp/.gitkeep
 
 # Other
 /app/deep_l/.env
