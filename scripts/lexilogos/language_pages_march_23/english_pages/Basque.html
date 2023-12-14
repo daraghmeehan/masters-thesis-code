@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Basque Dictionary Online Translation LEXILOGOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Basque English Dictionary Online Translation, Language, Grammar">
+<meta name="Keywords" content="Basque, english, dictionary, translation, vocabulary, language, grammar">
+<meta property="og:image" content="https://www.lexilogos.com/images/basque_drapeau.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Lexilogos" href="../rss.xml">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script src="../z/transbas.js"></script>
+<script src="../z/traneng.js"></script>
+<script src="../z/cuniocc.js"></script>
+<!-- Google Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-122422-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+</head>
+<body onLoad="f.q.focus()">
+<div class="ca"><a href="new.htm"><img src="../images/lexilogos_papagai.gif" class="imgpap" title="What's new?" alt="new"></a></div>
+<div class="cb"><a href="index.htm"><img src="../images/lexilogos_english.gif" class="imgloge" title="Online Dictionaries &gt; Index" alt="Lexilogos"></a><br>
+<span class="dat"> 
+<script src="../z/dateba.js"></script>
+</span></div>
+<div class="cc">Basque dictionary</div>
+<div class="cd"><a href="communication.htm"><img src="../images/don_e.png" class="imgdone" title="Donate: Thank you!"></a><br>
+<a href="search.htm"><img src="../images/w_bouscateur.gif" width="26" height="27" class="img-0" title="Search on Lexilogos &amp; on the web" alt="search"></a><br>
+<a href="../basque_dictionnaire.htm"><img src="../images/fra.gif" width="17" height="11" class="imgflag" alt="dictionnaire" title="in French / en français"></a>
+</div>
+<div class="esp"></div>
+
+<div class="ce"><a class="frp" href="../basque_pays.htm">Basque country</a>  &nbsp;  <a class="frp" href="../navarre.htm">Navarre</a> 
+<p><a class="frp" href="../basque_pays_nord.htm">French Basque country</a> </p>
+</div>
+<div class="esp"></div>
+<div class="lge">Basque <span class="vo">Euskara</span></div>
+<div class="ligne"></div>
+<div class="sta"><a href="index.htm">Dictionary</a> <span class="su">- Hiztegi</span></div>
+<div class="dico">Type a word &amp; select a dictionary:</div>
+<form name="f" action="JavaScript:alert('Select a dictionary!')">
+<div class="del"><input type="button" class="eff" title="Clear" onClick="reset();f.q.focus()" value=""></div>
+<div class="form">
+<noscript>
+<span class="span-red">Warning! JavaScript is disabled, the functionality of Lexilogos is unavailable.</span><br>
+You must enable JavaScript in your web browser: see the <a class="ext" href="https://www.enable-javascript.com/" target="_blank">instructions</a>.<br><br>
+</noscript>
+<input autocomplete="off" type="text" name="q" class="ipt">
+<input type="hidden" name="p">
+
+<div class="espc"></div>
+<div class="did"><b>English</b> &gt; Basque dictionary
+<p><a class="lb" href="#" onclick='anba()'>Morris</a>
+<a class="lb" href="#" onclick='href="https://en.glosbe.com/en/eu/" + f.q.value' target="_blank">Glosbe</a> </p>
+<div class="espc"></div>
+<b>Basque</b> &gt; English dictionary
+<p><a class="lb" href="#" onclick='baan()'>Morris</a>
+<a class="lb" href="#" onclick='href="https://en.glosbe.com/eu/en/" + f.q.value' target="_blank">Glosbe</a> </p>
+</div>
+<div class="did"><b>English</b> &gt; Basque translation
+<p><a class="lb" href="#" onclick='href="https://translate.google.com/?hl=en#en/eu/" + f.q.value' target="_blank">Google</a> </p>
+<div class="espc"></div>
+<b>Basque</b> &gt; English translation
+<p><a class="lb" href="#" onclick='href="https://translate.google.com/?hl=en#eu/en/" + f.q.value' target="_blank">Google</a>  </p>
+</div>
+<div class="esp"></div>
+<div class="did">Basque dictionary
+<p><a class="lb" href="#" onclick='href="https://eu.wiktionary.org/w/index.php?search=" + f.q.value' target="_blank">Wikiztegia</a>
+<a class="lb" href="#" onclick='href="http://projetbabel.org/basque/dictionnaire.php?q=" + f.q.value' target="_blank">etymology</a> 
+<a class="lb" href="#" onclick='href="https://eu.forvo.com/search/" + f.q.value + "/eu/"' target="_blank">pronunciation</a></p>
+</div>
+<div class="did">encyclopaedia
+<p><a class="lb" href="#" onclick='harluxet()'>Harluxet</a>
+<a class="lb" href="#" onclick='href="https://www.google.com/search?num=50&hl=eu&newwindow=1&q=" + f.q.value + " site:eu.wikipedia.org"' target="_blank">Wikipedia</a> 
+<span class="esps"></span> 
+<a class="lb" href="#" onclick='href="https://www.google.com/search?num=50&hl=eu&newwindow=1&safe=active&q=" + f.q.value' target="_blank">Google search</a>
+<a class="lb" href="#" onclick='href="https://www.google.com/search?tbs=bks:1,bkv:p&tbo=p&q=" + f.q.value + "&num=100&as_qdr=all&hl=eu"' target="_blank">Google books</a> </p>
+</div>
+</div>
+</form>
+<div class="espb"></div>
+<form name="fab">
+<input type="hidden" name="txtingles">
+</form>
+<form name="fba">
+<input type="hidden" name="txteuskera">
+</form>
+<form name="fh">
+<input type="hidden" name="sarrera">
+</form>
+<form name="fes">
+<input type="hidden" name="txtHitza">
+<input type="hidden" name="optHizkuntza">
+</form>
+<p class="pp"><span class="jb">•</span> <a href="http://www1.euskadi.net/morris/indice_e.htm" target="_blank">Morris</a>: Basque-English dictionary </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskadi.eus/elhuyar-hiztegia/" target="_blank">Elhuyar</a>: Basque-Spanish dictionary </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskaltzaindia.eus/index.php?option=com_oehberria&task=bilaketa&Itemid=413&lang=eu" target="_blank">Orotariko euskal hiztegia</a>: Basque-Spanish dictionary </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskadi.eus/euskalterm/" target="_blank">Euskalterm</a>: Basque terminological dictionary &amp; English, Spanish, French, Latin: geology, geography, agriculture, biology, history, philosophy, religion, sports, tourism… </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://www.euskadi.eus/euskararen-corpus-terminologia/web01-a2corpus/eu/" target="_blank">dictionaries</a> <span class="k">[PDF]</span> </p>
+<p class="pp"><span class="jb">•</span> <a href="http://www1.euskadi.net/harluxet/" target="_blank">Harluxet</a>: Basque encyclopaedia </p>
+<p class="pp"><span class="jb">•</span> <a href="http://projetbabel.org/basque/dictionnaire.php" target="_blank">Basque etymological dictionary</a> &amp; translation into French &amp; Spanish, by Michel Morvan </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://projetbabel.org/basque/basque_dictionnaire_etymologique_2022_06.pdf" target="_blank">Dictionnaire étymologique basque</a> (2022) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://web.archive.org/web/20201118200513/https://www.bulgari-istoria-2010.com/Rechnici/baski-rechnik.pdf" target="_blank">Etymological dictionary of the Basque</a> by Larry Trask (2008) </p>
+
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskaltzaindia.eus/index.php?option=com_hiztegianbilatu&view=frontpage&Itemid=410&lang=eu" target="_blank">spelling dictionary</a> of the unified Basque (<span class="x">Euskaltzaindia</span>, Academy Basque language) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/diccionariovasco01azku?view=theater" target="_blank">Diccionario vasco-español-francés</a>: Basque-Spanish-French dictionary by Resurrección María de Azkue  (1905) </p>
+<p class="ppc"> <a href="https://archive.org/details/diccionariovasco01azku?view=theater" target="_blank">A-L</a> &amp; <a href="https://archive.org/details/diccionariovasco02azku?view=theater" target="_blank">M-Z</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/dictionnairefra00fabrgoog?view=theater" target="_blank">Dictionnaire français-basque</a>: French-Basque dictionary by Louis Fabre (1870) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/dictionnairebasq00eyswuoft?view=theater" target="_blank">Dictionnaire basque-français</a> (Guipuscoan, Biscayan, Lapurdian, Lower Navarrese): Basque-French dictionary by Willem van Eys (1873) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=nCkRAAAAIAAJ&printsec=frontcover" target="_blank">Vocabulaire de mots basques bas-navarrais</a>: vocabulary of Basque words (Lower Navarrese) by A. Salaberry d'Ibarrolle (1856) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=CiXXqa1FenIC&printsec=frontcover" target="_blank">Dialogues basques</a> (Guipuscoan, Biscayan, Lapurdian, Souletin) with translations in Spanish &amp; French (1857) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="http://www.ametza.com/bbk/htdocs/hasiera.htm" target="_blank">Gotzon Garate</a>: Basque proverbs, with search in Basque, Spanish, English, Latin </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://web.archive.org/web/20201103132252/http://hedatuz.euskomedia.org/1543/1/24323348.pdf" target="_blank">La influencia latina en la lengua y cultura vascas</a> by Gerhard Rohlfs, in <i>Revista internacional de los estudios vascos</i> (1933) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://dialnet.unirioja.es/servlet/articulo?codigo=26362" target="_blank">Astronomy and Basque language</a>  by Henrike Knörr, in <i>Fontes linguæ vasconum</i> (2001) </p>
+
+
+<div class="st">Basque Onomastics</div>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskaltzaindia.eus/en/onomastics">Euskaltzaindia</a>&#8239;: onomastics (first names, surnames, place-names) </p>
+<p class="pp"><span class="jb">•</span> <a href="http://www.buber.net/Basque/Surname/" target="_blank">Buber</a>: dictionary of family names </p>
+<p class="ppr"><span class="ji">&#8594;</span> <a href="../xavier.htm">Xavier</a>: origin of the name &amp; the castle of Xavier (<span class="x">Javier</span>) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="http://tipirena.net/Tipirena_-_Site_officiel_de_Jean-Baptiste_ORPUSTAN/IV._Onomastique.html" target="_blank">Tipirina</a>&#8239;: onomastics studies, by  Jean-Baptiste Orpustan (2010) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://books.openedition.org/pumi/22382" target="_blank">Note sur le vocabulaire du défrichement en toponymie basque médiévale</a> <span class="x">au nord des Pyrénées</span>, in <i>Toponymie et défrichements</i> (1988) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://www.persee.fr/doc/acsfo_0000-0000_2004_act_12_1_1234" target="_blank">Toponymie médiévale et lexique basque de la vigne</a> <span class="x">dans les provinces basques de France</span>, in <i>Actes des colloques de la Société française d'onomastique</i> (2004) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1551" target="_blank">Les noms de montagnes du Pays basque</a> (the names of the mountains in the Basque country) by Michel Morvan, in <i>Lapurdum</i> (1999) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1853" target="_blank">À propos de <i>Calpe</i>, <i>Ilumberri</i></a>  (1996) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1662" target="_blank">Sur quelques similitudes toponymiques galaïco-basques</a> by Hector Iglesias, in <i>Lapurdum</i> (1998) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.persee.fr/doc/onoma_0755-7752_2011_num_53_1_1724" target="_blank">De toponimia vasco-pirenaica</a>&#8239;: <span class="x">sobre el sufijo <i>-otz, -oz(e)</i></span>, by Patxi Salaberri Zaratiegi, in <i>Nouvelle revue d'onomastique</i> (2011) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.persee.fr/doc/onoma_0755-7752_1997_num_29_1_1286" target="_blank">Estratificaciones toponímicas de tipo vasco en la Vallée d'Ossau</a> by Alfonso Irigoyen, in <i>Nouvelle revue d'onomastique</i> (1997) </p>
+<br>
+
+
+<p class="pp"><span class="jb">•</span> <a href="https://dialnet.unirioja.es/servlet/articulo?codigo=26289" target="_blank">Nombres de persona en el País Vasco</a>: <span class="x">cuestiones históricas y de normalización</span>, by Henrike Knörr, in <i>Fontes linguæ vasconum</i> (1999) <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1308" target="_blank">Anthroponomastique médiévale en Pays basque</a>, <span class="x">prénoms et surnoms en Basse-Navarre et Soule au début du XIV<sup>e</sup> siècle (1305-1350)</span>, by Jean-Baptiste Orpustan, in <i>Lapurdum</i> (2000) </p>
+
+<div class="st">Basque language</div>
+<p class="pp"><span class="jb">•</span> <a href="https://www.ehu.eus/documents/2430735/0/A-brief-grammar-of-euskara.pdf" target="_blank">Brief grammar of Euskara</a>, <span class="x">the Basque language</span> (1996) </p>
+<p class="pp"><span class="jb">•</span> <a href="http://servicios.elcorreo.com/euskera/egunon/Indice.html" target="_blank">El Correo</a>: Basque course <span class="k">(in Spanish)</span> </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskaltzaindia.eus/en/" target="_blank">Academy of the Basque language</a> / <a href="https://www.euskaltzaindia.eus/index.php?lang=eu" target="_blank">Euskaltzaindia</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.mintzaira.fr/fr.html" target="_blank">Office public de la langue basque</a> / <a href="https://www.mintzaira.fr/eu.html" target="_blank">Euskakaren erakunde publikoa</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.hiru.eus/" target="_blank">Hiru</a> <span class="np">(Basque governement)</span> </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://www.hiru.eus/es/lengua-vasca" target="_blank">Lengua vasca</a>: the Basque language </p>
+
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://web.archive.org/web/20220120234147/http://www.ehu.eus/xabierb/ETGZ/GZ%20irakurgaiak/BERRIA.Euskalkiak.pdf" target="_blank">Euskalkiak</a>: map of the Basque dialects, by Koldo Zuazo, in <i>Berria</i> (2004)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://commons.wikimedia.org/wiki/File:Bonaparte_euskalki_mapa.jpg" target="_blank">Carte des septs provinces basques</a> <span class="x">montrant la délimitation actuelle de l'euscara, et sa division en dialectes, sous-dialectes et variétés</span>, by Louis-Lucien Bonaparte (1863)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<br>
+
+<p class="pp"><span class="jb">•</span> <a href="https://www.academia.edu/40203318" target="_blank">Modern Basque history</a>:  <span class="x">Eighteenth century to the present</span>, by Cameron Watson (2003)  </p>
+<p class="pp"><span class="jb">•</span> <a href="http://jauregui.perso.univ-pau.fr/Publicite%20bouquins/Basque_language_pdf.pdf" target="_blank">The Basque language in the French state</a> by Francis Jauréguiberry (2008) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1036" target="_blank">La langue basque au Pays basque</a>&#8239;: <span class="x">diagnostic, évolution et prospective</span>, by Eguzki Urteaga, in <i>Lapurdum</i> (2002) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.persee.fr/doc/casa_0076-230x_1987_num_23_1_2498" target="_blank">Le projet d'État-nation espagnol</a> <span class="x">au XVIII<sup>e</sup> siècle et le différend linguistique castillan-basque</span>, by Pierre Bidart, in <i>Mélanges de la Casa de Velázquez</i> (1987) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lengas/4115" target="_blank">Aspectos de la gramatización antigua de la lengua vasca</a>: <span class="x">humanismo, reformismo e imprenta (1545-1596)</span> by Aurélie Arcocha-Scarcia &amp; Joseba Andoni Lakarra, in <i>Lengas</i> (2019) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/GrammaireBasquedialectesNavarro-labourdins?view=theater" target="_blank">Grammaire basque</a>, <span class="x">dialectes navarro-labourdins</span>, by Sauveur Arotçarena (1951) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.euskalmemoriadigitala.eus/applet/libros/JPG/313000/313000.pdf" target="_blank">Le basque souletin nord-oriental</a> by Jean Larrasquet (1934)   <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/outlinesbasqueg01goog?view=theater" target="_blank">Outlines of Basque grammar</a> by Willem van Eys (1883) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/euzkaliztiyagram00lertuoft?view=theater" target="_blank">Euzkal-iztiya</a>, <span class="x">Gramática baska</span>: Basque grammar (in Basque &amp; Spanish) by Juan Manuel Lertxundi y Baztarrika (1913) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k1167847d" target="_blank">El Euskara</a> <span class="x">ó el baskuenze en 120 lecciones</span>, by Resurrección María de Azkue (1896) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k934882n" target="_blank">Método práctico para aprender le euskera</a> <span class="x">bizkaino y gipuzkoano</span>  &amp; <a href="https://gallica.bnf.fr/ark:/12148/bpt6k886881t" target="_blank">Clave de temas</a> (1896)</p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=4eIFAAAAQAAJ&printsec=frontcover" target="_blank">Grammaire de la langue basque</a>: grammar of the Basque language by Saint Hilaire Blanc (1854) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/gramticadelosc00camp?view=theater" target="_blank">Gramática de los cuatro dialectos literarios de la lengua euskara</a>: grammar of the Basque dialects, by Arturo Campión  (1884) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=4G3Lk2aMgtYC&printsec=frontcover" target="_blank">El imposible vencido</a>, <span class="x">arte de la lengua bascongada</span>, by Manuel de Larramendi (1853) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=OBIWAAAAYAAJ&printsec=frontcover" target="_blank">Discursos de la antigüedad de la lengua cantabra bascongada</a> by Baltasar de Echave (1607) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/linguaeVasconumPrimitiae?view=theater" target="_blank">Linguæ vasconum primitiæ</a> by Bernard Dechepare (1545) </p>
+<br>
+
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/28" target="_blank">Lapurdum</a>, <i>Revue d'études basques</i> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.culturanavarra.es/es/numeros" target="_blank">Fontes linguæ vasconum</a> <span class="k">(+ <a href="https://dialnet.unirioja.es/servlet/revista?codigo=593" target="_blank">Dialnet</a>)</span> </p>
+<p class="pp"><span class="jb">•</span> books about the Basque language: <a href="https://www.google.com/search?tbs=bks:1,bkv:p&tbo=p&q=subject:%22Basque%20language%22&num=50" target="_blank">Google books</a> &amp; <a href="https://archive.org/search?query=mediatype%3A(texts)%20AND%20subject%3A(Basque%20language)" target="_blank">Internet archive</a> </p>
+
+<div class="st">News</div>
+<p class="pp"><span class="jb">•</span> <a href="https://www.berria.eus/" target="_blank">Berria</a>: Basque newspaper </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.eitb.eus/" target="_blank">EiTB</a>: Basque radio &amp; television </p>
+
+<div class="st">Texts &amp; Literature</div>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1714" target="_blank">La littérature de langue basque au XVIII<sup>e</sup> siècle</a>, by Jean-Baptiste Orpustan, in <i>Lapurdum</i> (1998) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1878" target="_blank">La fable dans la littérature basque</a>, in <i>Lapurdum</i> (1996) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lapurdum/1211" target="_blank">Statut et évolution des lettres basques</a> (17 <sup>th</sup>-18<sup>th</sup> centuries) by Bernard Oyharçabal, in <i>Lapurdum</i> (2001) </p>
+
+<br>
+
+<p class="pp"><span class="jb">•</span> <a href="https://www.lyrikline.org/en/authors?nav=1&lang%5B%5D=eu" target="_blank">Lyrikline</a>: poems in Basque, with translation <span class="k">(+ audio)</span> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/krono.htm" target="_blank">Armiarma</a>: Basque texts from 16<sup>th</sup> to 20<sup>th</sup> century</p>
+<p class="pp1"><span class="jb">•</span> <a href="https://zubitegia.armiarma.eus/" target="_blank">Basque authors</a>: texts &amp; profile</p>
+<p class="pp"><span class="jb">•</span> <a href="https://basquepoetry.eus/" target="_blank">Basque Poetry</a>,  with translations in English, French, Spanish, German</p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.ehu.eus/ehg/klasikoak/" target="_blank">Euskara Institutua</a>: classical books translated into Basque language: <i>Historiak</i> (Hérodote), <i>Politeia</i> (Plato), <i>Gauzen izaeraz</i> (Lucretius), <i>Bizitzaren laburtasunaz</i> (Seneca), <i>Eromenaren laudorioa</i> (Erasmus), <i>Entseiuak</i> (Montaigne) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k6327057f" target="_blank">Chants populaires du Pays basque</a> collected by  Jean-Dominique Sallaberry (1870) with translation into French &amp; sheets</p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/unepastoralebasq00lo?view=theater" target="_blank">Une pastorale basque</a>&#8239;: <span class="x">Hélène de Constantinople</span>, by Albert Léon (1908) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=f4UCAAAAQAAJ&printsec=frontcover" target="_blank">Orreaga</a>,  <span class="x">(Roncesvalles) balada escrita en el dialecto guipuzcoano, acompañada de versiones á los dialectos bizcaino, labortano y suletino</span>, by Arturo Campión (1880)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=_yK1Wvhq9r8C&printsec=frontcover" target="_blank">Poésies basques</a> by Bernard Dechepare (1545) with translation into French, by Jean-Baptiste Archu (1847) </p>
+<p class="espc" id="bible">
+<p class="pp"><span class="jb">•</span> <a href="https://www.biblija.net/biblija.cgi?l=eu" target="_blank">Biblija.net</a>: the Bible translated into unified Basque</p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k96656209" target="_blank">Bible saindua</a>, <span class="x">edo Testament Zahar eta Berria</span>, by Jean Duvoisin (1865) in Lapurdian Basquez <span class="k">(scanned version)</span> </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/idazlanak/D/DuvoisinBibleaI.htm" target="_blank">Ancien Testament</a> (I &amp; <a href="https://klasikoak.armiarma.eus/idazlanak/D/DuvoisinBibleaII.htm" target="_blank">II</a>)
+&amp; <a href="https://klasikoak.armiarma.eus/idazlanak/D/DuvoisinBibleaIII.htm" target="_blank">Nouveau Testament</a>: translated by Jean Duvoisin (1865) in Lapurdian Basquez <span class="k">(text version)</span></p>
+<p class="pp"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/idazlanak/U/UriarteBibliaI.htm" target="_blank">Ancien Testament</a> (I &amp; <a href="https://klasikoak.armiarma.eus/idazlanak/U/UriarteBibliaII.htm" target="_blank">II</a>)
+&amp; <a href="https://klasikoak.armiarma.eus/idazlanak/U/UriarteBibliaIII.htm" target="_blank">Nouveau Testament</a>: translated by José Antonio Uriarte (1859) in Gipuzkoan Basque <span class="k">(text version)</span></p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k8710448s" target="_blank">Iesus Christ Gure Iaunaren Testamentu Berria</a>: translation of the New Testament by Jean de Liçarrague (1571) <span class="k">+ <a href="https://web.archive.org/web/20201127014943/http://www.vc.ehu.es/gordailua/testamentu.htm" target="_blank">text</a> version (old orthographe) + <a href="https://klasikoak.armiarma.eus/idazlanak/L/LeizarragaTesta.htm" target="_blank">text</a> version (modern orthographe)</span></p>
+<p class="pp1"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9662504x" target="_blank">L'Évangile selon saint Marc</a> <span class="x">traduit pour la première fois en basque par Jean de Liçarrague</span> (1571, 1874 edition) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k1167850w" target="_blank">El Evangelio segun san Mateo</a>, <span class="x">traducido al vascuence, dialecto vizcaino</span>: the Gospel of Matthew translated into Biscayan, by José Antonio de Uriarte (1857) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k11678519" target="_blank">El Evangelio segun san Mateo</a>, <span class="x">traducido al vascuence, dialecto guipuzcoano</span>: the Gospel of Matthew translated into Gipuzkoan</p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k1167848t" target="_blank">L'Évangile selon saint Matthieu</a> <span class="x">traduit en langue basque, dialecte bas-navarrais</span>, by Jean Salaberry (1856) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9658246t" target="_blank">El Apocalípsis del apóstol san Juan</a>, <span class="x">traducido al vascuence, dialecto vizcaíno</span>: The <i>Revelation</i> tranlated into Biscayan, by José Antonio de Uriarte (1857) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9658079h" target="_blank">El Apocalípsis del apóstol san Juan</a>, <span class="x">traducido al vascuence, dialecto guipuzcoano</span>: The <i>Revelation</i> tranlated into Gipuzkoan</p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9658303d" target="_blank">Le Cantique des cantiques de Salomon</a>, <span class="x">traduit en basque guipuscoan</span>, by Louis-Lucien Bonaparte (1862) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9658252j" target="_blank">Le Cantique des cantiques de Salomon</a>, <span class="x">traduit en basque labourdin</span>, by Jean Duvoisin (1859) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9777290q" target="_blank">Sermon sur la montagne</a>, in Greek and in Basque, by Fleury de Lécluse (1831)</p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/earliesttranslat00urteuoft?view=theater" target="_blank">The earliest translation of the Old Testament</a> <span class="x">into the Basque language (a fragment)</span>: the oldest tranlation of the Old Testament into Basque, by Pierre d'Urte, of Saint-Jean-de-Luz (~1700) by Llewelyn Thomas (1894) </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/idazlanak/L/LeizarragaKateximea.htm" target="_blank">Kateximea</a>: catechism</p>
+<p class="pp1"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/idazlanak/L/LeizarragaAbc.htm" target="_blank">ABC, edo Kristinoen instuktionea</a>: lexicon of Christian instruction</p>
+<p class="pp1"><span class="jb">•</span> <a href="https://klasikoak.armiarma.eus/idazlanak/L/LeizarragaKalen.htm" target="_blank">Kalendrera</a>: calendar of the year 1572 with religious holidays </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k940259j" target="_blank">Ichtorio saindua laburzki</a>, <span class="x">Abrégé de l'histoire sainte par questions et réponses</span>, by Dithurbide (1882) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k9662662q" target="_blank">Le petit catéchisme espagnol</a> <span class="x">du père Astete traduit en trois dialectes basques</span> (aezcoan, salazarais, roncalais) (1869) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://gallica.bnf.fr/ark:/12148/bpt6k886884z" target="_blank">La doctrina cristiana</a> <span class="x">traducida al vascuence, dialecto vizcaino, variedades de Marquina, Bermeo, Arratia, Centro y Ochandiano</span>, by Louis-Lucien Bonaparte (1862) </p>
+
+<br>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../bible/index_corinthiens.htm">Hymn to brotherly love</a> by Paul of Tarsus (1 Corinthians 13) in several Basque translations (Bizkaian, Navarrese-Lapurdian, Souletin, unified) &amp; other languages </p>
+
+<div class="espb"></div>
+<div class="pa"><b>First article of the Universal Declaration of Human Rights</b>
+<p class="cr">Gizon-emakume guztiak aske jaiotzen dira, duintasun eta eskubide berberak dituztela&#8239;;
+<br>eta ezaguera eta kontzientzia dutenez gero, elkarren artean senide legez jokatu beharra dute. </p>
+</div>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://udhr.audio/UDHR_Video.asp?lng=baq" target="_blank">Giza Eskubideen Aldarrikapen Unibertsala</a>: translation into Basque <span class="k">(+ audio)</span> </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../declaration/first_article_compare.htm">First article</a> in different languages </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../declaration/index_english.htm">Universal Declaration of Human Rights</a> in Basque, English &amp; other languages </p>
+<div class="espa"></div>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../basque_pays.htm">Basque country</a> - <a href="../navarre.htm">Navarre</a> </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../basque_pays_nord.htm">French Basque country</a> </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../gascon_dictionnaire.htm">Gascon</a> - <a href="../bearnais_dictionnaire.htm">Béarnais</a>  </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="spanish_dictionary.htm">Spanish</a> - <a href="french_dictionary.htm">French</a> </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../france_carte_dialectes.htm">map of the languages of France</a> </p>
+
+<div class="espb"></div>
+<ul class="nav">
+<li><a href="contact.php" title="send your comments!"><img src="../images/w_enveloppe.gif" class="img-0" alt="contact"></a>
+<a class="pie" href="contact.php">Comments</a></li>
+<li><a href="search.htm" title="Search on Lexilogos &amp; on the web"><img src="../images/w_bouscateur.gif" class="img-0" alt="search"></a> 
+<a class="pie" href="search.htm">Search</a></li>
+<li><a href="new.htm" title="what's new?"><img src="../images/new.gif" class="img-0" alt="new"></a>
+<a class="pie" href="new.htm">What's new?</a> </li>
+<li><a href="index.htm" title="homepage"><img src="../images/w_accueil.gif" class="img-0" alt="homepage"></a>
+<a class="pie" href="index.htm">Homepage</a></li>
+<li><a href="communication.htm" title="Support Lexilogos!"><img src="../images/w_cor.gif" class="img-0" alt="support"></a>
+<a class="pie" href="communication.htm">Donation</a></li>
+</ul>
+<div class="esp"></div>
+<div class="center"><a class="co" href="../contact.php">Xavier Nègre &nbsp;  ©  Lexilogos 2002-2023</a></div>
+<div class="espd"></div>
+</body>
+</html>

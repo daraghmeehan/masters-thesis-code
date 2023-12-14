@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Estonian Dictionary Online Translation LEXILOGOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estonian English Dictionary Online Translation, Language, Grammar">
+<meta name="Keywords" content="estonian, english, dictionary, translation, vocabulary, language, grammar">
+<meta property="og:image" content="https://www.lexilogos.com/images/estonie_drapeau.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Lexilogos" href="../rss.xml">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script src="../z/traneng.js"></script>
+<script src="../z/cuniocc.js"></script>
+<!-- Google Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-122422-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+</head>
+<body onLoad="f.q.focus()">
+<div class="ca"><a href="new.htm"><img src="../images/lexilogos_papagai.gif" class="imgpap" title="What's new?" alt="new"></a></div>
+<div class="cb"><a href="index.htm"><img src="../images/lexilogos_english.gif" class="imgloge" title="Online Dictionaries &gt; Index" alt="Lexilogos"></a><br>
+<span class="dat"> 
+<script src="../z/dateest.js"></script>
+</span></div>
+<div class="cc">Estonian dictionary<br></div>
+<div class="cd"><a href="communication.htm"><img src="../images/don_e.png" class="imgdone" title="Donate: Thank you!"></a><br>
+<a href="search.htm"><img src="../images/w_bouscateur.gif" width="26" height="27" class="img-0" title="Search on Lexilogos &amp; on the web" alt="search"></a><br>
+<a href="../estonien_dictionnaire.htm"><img src="../images/fra.gif" width="17" height="11" class="imgflag" alt="dictionnaire" title="in French / en français"></a>
+</div>
+<div class="esp"></div>
+
+<div class="ce"><a class="frp" href="../estonie.htm">Estonia</a></div>
+<div class="espd"></div>
+<div class="lge">Estonian <span class="vo">Eesti</span></div>
+<div class="ligne"></div>
+<div class="sta"><a href="index.htm">Dictionary</a> <span class="su">- Sõnaraamat</span></div>
+<div class="dico">Type a word &amp; select a dictionary:</div>
+<form name="f" action="JavaScript:alert('Select a dictionary!')">
+<div class="del"><input type="button" class="eff" title="Clear" onClick="reset();f.q.focus()" value=""></div>
+<div class="form">
+<noscript>
+<span class="span-red">Warning! JavaScript is disabled, the functionality of Lexilogos is unavailable.</span><br>
+You must enable JavaScript in your web browser: see the <a class="ext" href="https://www.enable-javascript.com/" target="_blank">instructions</a>.<br><br>
+</noscript>
+<input autocomplete="off" type="text" name="q" class="ipt">
+<input type="hidden" name="p">
+<span class="esps"></span><a class="lien" href="#" OnClick="kb('ä')">ä</a> <a class="lien" href="#" OnClick="kb('ö')">ö</a> <a class="lien" href="#" OnClick="kb('õ')">õ</a>
+<a class="lien" href="#" OnClick="kb('š')">š</a> <a class="lien" href="#" OnClick="kb('ü')">ü</a> <a class="lien" href="#" OnClick="kb('ž')">ž</a>
+<div class="espc"></div>
+<div class="did"><b>English</b> &gt; Estonian dictionary
+<p><a class="lb" href="#" onclick='href="https://www.dict.com/?t=en&set=_eeen&w=" + f.q.value' target="_blank">Lingea</a>
+<a class="lb" href="#" onclick='href="http://www.eki.ee/dict/ies/index.cgi?Q=" + f.q.value + "&F=A&C06=en"' target="_blank">Eki</a>
+<a class="lb" href="#" onclick='href="http://dict.ibs.ee/translate.cgi?word=" + f.q.value + "&language=English"' target="_blank">Ibs</a>
+<a class="lb" href="#" onclick='href="http://aare.pri.ee/dictionary.html?query=" + f.q.value + "&lang=en&meth=part"' target="_blank">Aare</a>
+<a class="lb" href="#" onclick='href="https://en.glosbe.com/en/et/" + f.q.value' target="_blank">Glosbe</a> 
+<a class="lb" href="#" onclick='href="http://iate.europa.eu/search/byUrl?term=" +  f.q.value + "&sl=en&tl=et"' target="_blank">Iate</a> </p>
+<div class="espc"></div>
+<b>Estonian</b> &gt; English dictionary
+<p><a class="lb" href="#" onclick='href="https://www.dict.com/?t=ee&set=_enee&w=" + f.q.value' target="_blank">Lingea</a>
+<a class="lb" href="#" onclick='href="http://www.eki.ee/dict/ies/index.cgi?Q=" + f.q.value + "&F=M&C06=en"' target="_blank">Eki</a>
+<a class="lb" href="#" onclick='trans();href="http://dict.ibs.ee/translate.cgi?word=" + f.p.value + "&language=Estonian"' target="_blank">Ibs</a>
+<a class="lb" href="#" onclick='trans();href="http://aare.pri.ee/dictionary.html?query=" + f.p.value + "&lang=ee&meth=part"' target="_blank">Aare</a>
+<a class="lb" href="#" onclick='href="https://en.glosbe.com/et/en/" + f.q.value' target="_blank">Glosbe</a> 
+<a class="lb" href="#" onclick='href="http://iate.europa.eu/search/byUrl?term=" +  f.q.value + "&sl=et&tl=en"' target="_blank">Iate</a> </p>
+</div>
+<div class="did"><b>English</b> &gt; Estonian translation
+<p><a class="lb" href="#" onclick='href="https://www.deepl.com/translator#en/et/" + f.q.value' target="_blank">Deepl</a> 
+<a class="lb" href="#" onclick='href="https://translate.google.com/?hl=en#en/et/" + f.q.value' target="_blank">Google</a>
+<a class="lb" href="#" onclick='href="https://www.bing.com/translator/?from=en&to=et&text=" + f.q.value' target="_blank">Bing</a> </p>
+<div class="espc"></div>
+<b>Estonian</b> &gt; English translation
+<p><a class="lb" href="#" onclick='href="https://www.deepl.com/translator#et/en/" + f.q.value' target="_blank">Deepl</a> 
+<a class="lb" href="#" onclick='href="https://translate.google.com/?hl=en#et/en/" + f.q.value' target="_blank">Google</a>
+<a class="lb" href="#" onclick='href="https://www.bing.com/translator/?from=et&to=en&text=" + f.q.value' target="_blank">Bing</a> </p>
+</div>
+<div class="esp"></div>
+<div class="did">Estonian dictionary
+<p><a class="lb" href="#" onclick='href="http://www.eki.ee/dict/ekss/index.cgi?Q=" + f.q.value + "&F=M"' target="_blank">EKSS</a> 
+<a class="lb" href="#" onclick='href="http://www.eki.ee/dict/ety/index.cgi?Q=" + f.q.value + "F=M"' target="_blank">etymology</a>
+<a class="lb" href="#" onclick='href="http://www.eki.ee/dict/sys/index.cgi?Q=" + f.q.value + "F=M"' target="_blank">synonyms</a> &nbsp; 
+<a class="lb" href="#" onclick='href="https://cooljugator.com/ee/" + f.q.value' target="_blank">conjugation</a>
+<a class="lb" href="#" onclick='href="https://forvo.com/search/" + f.q.value + "/ee/"' target="_blank">pronunciation</a> </p>
+</div>
+<div class="did">encyclopaedia
+<p><a class="lb" href="#" onclick='href="https://www.google.ee/search?num=50&hl=et&newwindow=1&q=" + f.q.value + " site:et.wikipedia.org"' target="_blank">Wikipedia</a> 
+<span class="esps"></span> 
+<a class="lb" href="#" onclick='href="https://www.google.ee/search?num=50&hl=et&newwindow=1&safe=active&q=" + f.q.value' target="_blank">Google search</a> 
+<a class="lb" href="#" onclick='href="https://www.google.com/search?tbs=bks:1,bkv:p&tbo=p&q=" + f.q.value + "&num=100&as_qdr=all&hl=et"' target="_blank">Google books</a> </p>
+</div>
+</div>
+</form>
+<div class="espb"></div>
+<p class="pp"><span class="jb">•</span> <a href="https://portaal.eki.ee/" target="_blank">Eesti keele instituut</a>: Estonian dictionaries </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/ekss/" target="_blank">Eesti keele seletav sõnaraamat</a>: dictionary of the Estonian language </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/ety/" target="_blank">Eesti etümoloogiasõnaraamat</a>: Estonian etymological dictionary </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/qs2006/" target="_blank">Eesti õigekeelsussõnaraamat</a>: Estonian orthographical dictionary (2006) </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/sys/" target="_blank">Sünonüümisõnastik</a>: dictionary of synonyms </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/slang/" target="_blank">Esimene eesti slängi sõnaraamat</a>: slang dictionary, by Mai Loog (1990) </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/ies/" target="_blank">Estonian-English dictionary</a> </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/evs/" target="_blank">Estonian-Russian dictionary</a> </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.eki.ee/dict/et-lv/" target="_blank">Estonian-Latvian</a> &amp; <a href="http://www.eki.ee/dict/lv-et/" target="_blank">Latvian-Estonian dictionary</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.dict.com/Inglise-eesti" target="_blank">Lingea</a>: Estonian-English dictionary &amp; multilingual </p>
+<p class="pp"><span class="jb">•</span> <a href="http://dict.ibs.ee/" target="_blank">Ibs</a>: Estonian-English dictionary </p>
+<p class="pp"><span class="jb">•</span> <a href="https://aare.pri.ee/dictionary.html" target="_blank">Aare</a>: Estonian-English dictionary </p>
+<p class="pp"><span class="jb">•</span> <a href="https://iate.europa.eu/home" target="_blank">Iate</a>: multilingual terminological dictionary <span class="np">(European Union)</span> </p>
+<p class="pp"><span class="jb">•</span> <a class="km" href="https://www.estfra.ee/" target="_blank">Gdef</a>: Estonian-French dictionary </p>
+
+<br>
+
+<p class="pp"><span class="jg">•</span> <a href="https://archive.org/details/estonianenglishe00ksan?view=theater" target="_blank">Hippocrene concise dictionary</a>:  <span class="x">Estonian-English &amp; English-Estonian dictionary</span>, by Ksana Kyiv &amp; Oleg Benyuch (1992) <img src="../images/reg.gif" class="reg" alt="online" title="free registration required"> </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://www.loecsen.com/en/learn-estonian" target="_blank">Loecsen</a>: Estonian-English common phrases <span class="k">(+ audio)</span> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.goethe-verlag.com/book2/EN/ENET/ENET002.HTM" target="_blank">Goethe-Verlag</a>: Estonian-English common phrases &amp; illustrated <a href="https://www.goethe-verlag.com/book2/_VOCAB/EN/ENET/ENET.HTM" target="_blank">vocabulary</a> <span class="k">(+ audio)</span> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.lingohut.com/en/l115/learn-estonian" target="_blank">LingoHut</a>: Estonian-English vocabulary by topics <span class="k">(+ audio)</span> </p>
+
+<p class="pp"><span class="jb">•</span> <a href="http://www.eki.ee/knab/mmaad.htm" target="_blank">country names</a> in Estonian  </p>
+<br>
+
+<p class="pp"><span class="jb">•</span> <a href="http://www.eki.ee/books/kohanimed/hiiumaa_kohanimed.pdf" target="_blank">Hiiumaa kohanimed</a>: the origins of the place names of the island of Hiiumaa, by Marja Kallasmaa </p>
+<p class="pp"><span class="jb">•</span> <a href="http://www.eki.ee/books/kohanimed/saaremaa_kohanimed.pdf" target="_blank">Saaremaa kohanimed</a>: the origins of the place names of the island of Saaremaa, by Marja Kallasmaa </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.folklore.ee/rl/pubte/ee/vanad/aiale/index2.html" target="_blank">Aus dem inneren und äusseren Leben der Ehsten</a>: Estonian proverbs by Ferdinand Johann Wiedemann (1876) with translation into German (or scanned <a href="https://archive.org/details/ausdeminnerenun00wiedgoog?view=theater" target="_blank">book</a>) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://www.folklore.ee/Synaraamat/" target="_blank">Võro-eesti synaraamat</a>: dictionary of the dialect of <a class="ext" href="https://www.voru.ee/" target="_blank">Võru</a>, (southeast of Estonia) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://www.kirj.ee/public/trames_pdf/2013/issue_3/Trames-2013-3-273-300.pdf" target="_blank">The origins of stems of standard Estonian</a> by Sven-Erik Soosaar, in <i>Trames</i> (2013) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.academia.edu/24411989" target="_blank">Die alten baltischen Lehnwörter im neuen estnischen etymologischen Wörterbuch</a>: the old Baltic loanwords in the new Estonian etymological dictionary, by Santeri Junttila, in <i>Baltu filoloģija</i> (2014) </p>
+
+<div class="st">Estonian language <span class="su">- Eesti keel</span></div>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../keyboard/estonian.htm">Estonian keyboard</a> to type the special characters of the Estonian alphabet </p>
+<p class="pp"><span class="jb">•</span> <a href="https://cooljugator.com/ee" target="_blank">Cooljugator</a>: Estonian verb conjugator </p>
+<p class="pp"><span class="jb">•</span> <a href="http://www.estonica.org/en/Society/The_Estonian_Language/" target="_blank">Estonica</a>: <span class="x">the Estonian language</span> </p>
+<p class="pp1"><span class="jb">•</span> <a href="http://www.estonica.org/en/Society/The_Estonian_Language/Orthography_and_pronunciation/" target="_blank">orthography &amp; pronounciation</a> </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://web.archive.org/web/20171017172913/http://www.utlib.ee/liber2012/tekstid/eestikeel.pdf" target="_blank">Estonian language</a> by Urmas Sutrop (2004) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.persee.fr/doc/rbph_0035-0818_2010_num_88_3_7800" target="_blank">Estonian</a> by Mati Erelt, in <i>Revue belge de philologie et d'histoire</i> (2010) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://eeo.aau.at/wwwg.uni-klu.ac.at/eeo/Estnisch.pdf" target="_blank">Estnisch</a> by Eberhard Winkler, in <i>Wieser Enzyklopädie des europäischen Ostens</i> (2002) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/efo/515" target="_blank">L'état de la langue estonienne</a> (the state of the Estonian language at the beginning of the 21<sup>st</sup> century) by Birute Klaas-Lang, in <i>Études finno-ougriennes</i> (2012) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.persee.fr/doc/bagf_0004-5322_1998_num_75_4_2077" target="_blank">Langues «&#8239;dominantes&#8239;» et identités nationales dans les États baltes</a> par Michel Cabouret, in <i>Bulletin de l'Association de géographes français</i> (1998) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://journals.openedition.org/lbl/4290" target="_blank">Immense Estonie&#8239;: les leçons sociolinguistiques d'un «&#8239;petit pays&#8239;»</a>:  <span class="x">application de la sémiotique narrative à la sociologie du langage</span>, by Jean-Léo Léonard, in <i>La Bretagne linguistique</i> (2022)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="http://www.eki.ee/books/ekk09/" target="_blank">Eesti keele käsiraamat</a>: handbook of the Estonian language </p>
+<p class="pp"><span class="jb">•</span> <a href="https://ut-ee.academia.edu/HelleMetslang" target="_blank">studies</a> about the Estonian language, by Helle Metslang </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://www.academia.edu/698367" target="_blank">General comparison of Estonian and Finnish</a> (2009) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://doi.org/10.1017/S0332586522000221" target="_blank">The use of the indefinite pronoun <i>keegi</i></a> <span class="x">("someone") in Estonian dialects</span>, by Hanna Pook &amp; Liina Lindström, in <i>Nordic Journal of Linguistics</i> (2022)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://shs.hal.science/halshs-00674857" target="_blank">La réalisation zéro du pronom sujet</a> <span class="x">de première et de deuxième personne du singulier en finnois et en estonien parlés</span>, by Outi Duvallon &amp; Antoine Chalvin, in <i>Linguistica Uralica</i> (2004) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/tegelikueestifon00saabuoft?view=theater" target="_blank">Tegeliku Eesti foneetika alged</a>: study of the Estonian phonology, by Andrus Saareste (Albert Saaberk) (1920) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/murdesnadphj00saabuoft?view=theater" target="_blank">Murdesõnad Põhja-Eestist</a>: North Estonian dialects, by Andrus Saareste (1921) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=8EpKAAAAcAAJ&printsec=frontcover" target="_blank">Grammatik der estnischen Sprache</a> <span class="x">Revalschen Dialektes</span>, by Eduard Ahrens (1853): I &amp; <a href="https://books.google.com/books?id=_0pKAAAAcAAJ&printsec=frontcover" target="_blank">II</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="http://hdl.handle.net/10062/9996" target="_blank">Grammatica Esthonica</a>: Estonian grammar, by Johann Hornung (1782) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="http://ojs.utlib.ee/index.php/jeful/issue/archive" target="_blank">Eesti ja soome-ugri keeleteaduse ajakiri</a>,  <span class="x">Journal of Estonian and Finno-Ugric Linguistics</span>   <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> books &amp; papers about the Estonian language: <a href="https://www.google.com/search?tbs=bks:1,bkv:p&tbo=p&q=subject:%22Estonian%20language%22&num=50" target="_blank">Google books</a> | <a href="https://archive.org/search?query=mediatype%3A(texts)%20AND%20subject%3A(Estonian%20language)" target="_blank">Internet archive</a> | <a href="https://www.academia.edu/Documents/in/Estonian_Language" target="_blank">Academia</a>
+| <a href="https://en.wikipedia.org/wiki/Estonian_language" target="_blank">Wikipedia</a> </p>
+
+<div class="st">News</div>
+<p class="pp"><span class="jb">•</span> <a href="https://epl.delfi.ee/" target="_blank">Eesti Päevaleht</a> - <a href="https://www.postimees.ee/" target="_blank">Postimees</a> - <a href="https://www.aripaev.ee/" target="_blank">Aripaev</a>: newspapers </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.err.ee/" target="_blank">Eesti Raadio</a>: online radio </p>
+
+<div class="espb"></div>
+<div class="center"><a href="https://commons.wikimedia.org/wiki/File:Kalevipoja_laul,_Oskar_Kallis,_TKM_TR_12214_A_820.jpg" target="_blank"><img src="../images/kalevipoja_kallis.jpg" width="279" height="250" class="img-0" alt="Kalevipoeg" title="Kalevipoeg"></a>
+<p class="k"><span class="x">Kalevipoja laul</span><br>
+Kalevipoeg by Oskar Kallis (1914)</p></div>
+
+<div class="st">Texts &amp; Literature</div>
+<p class="pp"><span class="jb">•</span> <a class="km" href="https://www.digar.ee/arhiiv" target="_blank">Digar</a> (National Library of Estonia): online books </p>
+<p class="pp"><span class="jb">•</span> <a class="km" href="https://utlib.ut.ee/eeva/" target="_blank">Eeva</a>:  digital text repository for older Estonian literature   <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.kirmus.ee/" target="_blank">Eesti Kirjandusmuuseum</a>  (Estonian Literary Museum): Estonian literature &amp; folklore <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp1"><span class="jb">•</span> <a href="https://kreutzwald.kirmus.ee/" target="_blank">Kreutzwaldi sajand</a>: Kreutzwald's century &amp; the <i>Kalevipoeg</i> (online texts)</p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.lyrikline.org/en/authors?nav=1&lang%5B%5D=et" target="_blank">Lyrikline</a>: poems in Estonian, with translation <span class="k">(+ audio)</span> </p>
+<p class="pp"><span class="jb">•</span> <a href="http://www.litterature-estonienne.com/" target="_blank">Estonian literature</a>: texts in Estonian &amp; translation into French </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.odaha.com/antoine-de-saint-exupery/maly-princ/vaike-prints" target="_blank">Väike Prints</a>: translation of <i>The Little Prince</i> of Antoine de Saint-Exupéry </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=evIIAAAAQAAJ&printsec=frontcover" target="_blank">Kalewi poeg</a>, <span class="x">üks ennemuistene Eesti jut</span>, by Friedrich  Kreutzwald (1862) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://dspace.ut.ee/handle/10062/3344" target="_blank">Kalewipoeg</a>, <span class="x">eine estnische Sage</span>: bilingual text,  Estonian &amp; translation into German by  Carl Reinthal &amp; Georg Bertram (1857): I-III &amp; IV: <a href="https://dspace.ut.ee/handle/10062/3349" target="_blank">1</a> - <a href="https://dspace.ut.ee/handle/10062/3340" target="_blank">2</a> - <a href="https://dspace.ut.ee/handle/10062/3341" target="_blank">3</a> - <a href="https://dspace.ut.ee/handle/10062/3342" target="_blank">4</a> 
+
+  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=LmNbAAAAcAAJ&printsec=frontcover" target="_blank">Kalewipoeg</a> <span class="x">oder die Abenteuer des Kalewiden</span>:  translation into German, by    Conrad Christian Israël  (1873)   <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=yKwWAAAAYAAJ&printsec=frontcover" target="_blank">Die Abenteuer des Kalewiden</a>,  <span class="x">esthnischnes Volksmärchen</span>:  translation into German, by     Julius Grosse (1875)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jg">•</span> <a href="https://archive.org/details/kalevide00gobl?view=theater" target="_blank">The Kalevide</a>:  translation into English, by   Lou Goble (1982)  <img src="../images/reg.gif" class="reg" alt="online" title="free registration required"></p>
+<p class="pp"><span class="jb">•</span> <a href="https://doi.org/10.21435/sff.21" target="_blank"><i>Kalevipoeg</i> studies</a>:  <span class="x">the creation and reception of an epic</span>, by Cornelius Hasselblatt (2016)  <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="pp"><span class="jb">•</span> <a href="https://www.academia.edu/8449644" target="_blank"><i>Kalevipoeg</i>, the Estonian national epic</a>: <span class="x">its sources and inception</span>, by Madis Arukask, in <i>The voice of the people, writing the European folk revival, 1760-1914</i> (2012)   <a title="What's new about Lexilogos?" class="new" href="new.htm">NEW</a> </p>
+<p class="ppc"> <span class="x">Kalevipoeg</span>: The Kalev's son (<span class="x">poeg</span>: son). </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/valitudeestirahv00saaruoft?view=theater" target="_blank">Valitud eesti rahvalaulud</a>: Estonian folk songs, by Andrus Saareste (1922) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://archive.org/details/eestiwanemadlaul00kunduoft?view=theater" target="_blank">Eesti wanemad laulikud</a>: Estonian folk songs, by Joh Kunder (1890) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=YMgDAAAAQAAJ&printsec=frontcover" target="_blank">Eesti laulik</a>: Estonian folk songs (1860) </p>
+<p class="pp"><span class="jb">•</span> <a href="https://books.google.com/books?id=nLEOAAAAQAAJ&printsec=frontcover" target="_blank">Die augsburgische Confession</a>: the Augsburg Confession (Lutherian Church) in German, Latin, Estonian, Latvian  (1830) </p>
+<br>
+<p class="pp"><span class="jb">•</span> <a href="https://piibel.net/" target="_blank">Piibel.net</a>: Estonian translation of the Bible </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../bible_multilingue.htm">bilingual Bible</a> Estonian, English &amp; other languages </p>
+
+<div class="espb"></div>
+<div class="pa"><b>First article of the Universal Declaration of Human Rights</b>
+<p class="cr">Kõik inimesed sünnivad vabadena ja võrdsetena oma väärikuselt ja õigustelt.<br>
+Neile on antud mõistus ja südametunnistus ja nende suhtumist üksteisesse peab kandma vendluse vaim. </p>
+</div>
+<br>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../declaration/index_english.htm">Universal Declaration of Human Rights</a> in Estonian, Finnish, English &amp; other languages </p>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../declaration/first_article_compare.htm">First article</a> in different languages </p>
+
+<div class="st">Estonia <span class="su">- Eesti</span></div>
+<p class="pp"><span class="ji">&#8594;</span> <a href="../estonie.htm">Estonia</a>: maps, symbols, heritage &amp; documents </p>
+<div class="espa"></div>
+<p class="pp"><span class="ji">&#8594;</span> <a href="finnish_dictionary.htm">Finnish language</a> </p>
+
+<div class="espb"></div>
+<ul class="nav">
+<li><a href="contact.php" title="send your comments!"><img src="../images/w_enveloppe.gif" class="img-0" alt="contact"></a>
+<a class="pie" href="contact.php">Comments</a></li>
+<li><a href="search.htm" title="Search on Lexilogos &amp; on the web"><img src="../images/w_bouscateur.gif" class="img-0" alt="search"></a> 
+<a class="pie" href="search.htm">Search</a></li>
+<li><a href="new.htm" title="what's new?"><img src="../images/new.gif" class="img-0" alt="new"></a>
+<a class="pie" href="new.htm">What's new?</a> </li>
+<li><a href="index.htm" title="homepage"><img src="../images/w_accueil.gif" class="img-0" alt="homepage"></a>
+<a class="pie" href="index.htm">Homepage</a></li>
+<li><a href="communication.htm" title="Support Lexilogos!"><img src="../images/w_cor.gif" class="img-0" alt="support"></a>
+<a class="pie" href="communication.htm">Donation</a></li>
+</ul>
+<div class="esp"></div>
+<div class="center"><a class="co" href="../contact.php">Xavier Nègre &nbsp;  ©  Lexilogos 2002-2023</a></div>
+<div class="espd"></div>
+</body>
+</html>
