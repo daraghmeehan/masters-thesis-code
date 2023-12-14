@@ -1,7 +1,7 @@
 ## Mine
 # Media Files
-/media/
-/temp/
+/media/*
+/temp/*
 
 # Other
 /app/deep_l/.env
