@@ -8,10 +8,10 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 
-from study_materials import StudyMaterials
-from translation_workspace import TranslationWorkspace
-from flashcard_workspace import FlashcardWorkspace
-from dictionary_lookup import DictionaryLookup
+from app.ui.study_materials import StudyMaterials
+from app.ui.translation_workspace import TranslationWorkspace
+from app.ui.flashcard_workspace import FlashcardWorkspace
+from app.ui.dictionary_lookup import DictionaryLookup
 
 
 class MainWindow(QMainWindow):

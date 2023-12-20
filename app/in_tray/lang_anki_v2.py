@@ -1,4 +1,4 @@
-from controller import Controller
+from app.controller import Controller
 
 
 def run_lang_anki_v2():
