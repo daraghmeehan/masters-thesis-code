@@ -1,34 +1,37 @@
 ## Standard library imports
 import os
 import json
+from typing import Dict
+
 
 ## Third-party imports
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QDialog, QShortcut
 from PyQt5.QtGui import QKeySequence
 
-import webbrowser # !!
-from bs4 import BeautifulSoup # !!
-import pyperclip # copying??
+import webbrowser  # For opening links (dictionary searches) in web browser
+from bs4 import BeautifulSoup  # For parsing HTML
+import pyperclip  # For clipboard operations
+
 
 ## Local imports
+from model.model import SubtitleModel
+
 # Translator/Dictionaries
 from DeepL.translator import load_translator
 from Lexilogos.dictionaries import load_dictionaries
 
-from startup_dialog import StartupDialog
+# UI imports
+from ui.startup_dialog import StartupDialog
+from ui.view import MainWindow
+from ui.sentence_bin import SentenceBin
 
-from screenshot_extractor import ScreenshotExtractor
-from audio_extractor import AudioExtractor
-
+# Flashcard creation functionality
 from Flashcards.flashcard_creator import FlashcardCreator
+from avi_utils.screenshot_extractor import ScreenshotExtractor
+from audio.audio_extractor import AudioExtractor
 
-from model import SubtitleModel
-from view import MainWindow
-from sentence_bin import SentenceBin
-
-
-# below two to make scaling bigger on my laptop
+# Two below to make scaling bigger on small high-res screens
 if hasattr(QtCore.Qt, "AA_EnableHighDpiScaling"):
     QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 if hasattr(QtCore.Qt, "AA_UseHighDpiPixmaps"):
@@ -40,21 +43,35 @@ class Controller:
         pass
 
     def run(self):
+        """
+        Runs the main application process.
+
+        This method orchestrates the setup of language reference tools, initializes
+        the user interface, and handles the application's main loop. It also manages
+        the setup of media extractors for audiovisual input when working with
+        audio-visual Input and performs cleanup operations after execution.
+
+        The process includes:
+        - Loading the translator and dictionaries (the language reference tools).
+        - Setting up the flashcard creators.
+        - Running the startup dialog and parsing the selected options.
+        - Initializing the model and UI based on the chosen mode.
+        - Executing the application's event loop.
+        - Exporting flashcards created and cleaning temporary files.
+        """
         # Initialise language reference tools
         self.translator = load_translator()
         self.languages_and_their_dictionaries = load_dictionaries()
 
-        self.temporary_audio_folder = "./Temporary Audio Files"
-        self.flashcard_media_folder = "./Flashcards/Flashcard Media"
+        self.temporary_audio_folder = "../temp/audio"
+        self.flashcard_media_folder = "../media/flashcards/new"
 
-        # Get ready to make flashcards
-        self.flashcard_fields = self.flashcard_fields()
-        ### refactor these I think!!
-        self.flashcard_creators = self.set_up_flashcard_creators()
-
-        # Run and parse the startup dialog
+        # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
         startup_options = self.run_startup_dialog()
         self.parse_startup_options(startup_options)
+
+        # Get ready to make flashcards
+        self.flashcard_creators = self.set_up_flashcard_creators(mode=self.mode)
 
         if self.mode == "AVI":
             # Set up the media extractors
@@ -62,70 +79,18 @@ class Controller:
             self.set_up_audio_extractor()
 
         # Set up the model and the view
-        self.set_up_model() ##!! add startup options to model here??
+        self.set_up_model()
         self.set_up_ui()
 
-        # Showing the UI and running the event loop
+        # Show the UI and run the event loop
         self.ui.show()
         try:
             self.app.exec_()
         finally:
-            # Cleaning up our work
+            # Clean up our work
             self.export_flashcards()
             self.clean_temporary_files()
             pass
-
-    def flashcard_fields(self):
-        return [
-            "Picture",
-            "Audio",
-            "Question Text",
-            "Answer Text",
-            "Hint",
-            "Example Sentence(s)",
-            "Other Forms",
-            "Extra Info",
-            "Pronunciation",
-            "Question Language",
-            "Answer Language",
-            "Show Picture Before?",
-            "Show Audio Before?",
-            "Show Text Before?",
-            "Source",
-            "Tags",
-        ]
-
-        field_types_actualdatatype = {
-            "Question Text": "PlainT",  # "txt"
-            "Answer Text": "PlainT",  # "txt"
-            "Hint": "Line",  # "txt"
-            "Picture": "Special Pic one",  # "jpg"
-            "Is picture on front": "Checkbox",  # "1/0?? or text/nothing"
-            "Audio": "Special audio one",  # "audio :)"
-            "Is audio on front": "Checkbox",  # "1/0 from above"
-            "Example Sentence(s)": "PlainT but smaller",  # "txt"
-            "Other Forms": "same (or delete)",  # "txt"
-            "Extra Info": "same",  # "txt"
-            "Pronunciation": "Line edit",  # "txt"
-            "Source": "PlainT but smaller",  # "txt"
-            "Question Language": "LineEdit",  # "txt"
-            "Answer Language": "LineEdit",  # "txt"
-            "Tags": "Hidden",  # "??"
-        }
-
-    def set_up_flashcard_creators(self):
-        easy_flashcard_creator = FlashcardCreator(
-            deck_name="Languages Easy", fields=self.flashcard_fields
-        )
-        normal_flashcard_creator = FlashcardCreator(
-            deck_name="Languages Normal", fields=self.flashcard_fields
-        )
-
-        flashcard_creators = {
-            "Easy": easy_flashcard_creator,
-            "Normal": normal_flashcard_creator,
-        }
-        return flashcard_creators
 
     def run_startup_dialog(self):
         startup_app = QApplication([])
@@ -133,7 +98,7 @@ class Controller:
         if startup_dialog.exec_() == QDialog.Accepted:
             startup_options = startup_dialog.get_options()
             return startup_options
-        exit()  # if dialog is rejected
+        exit()  # If dialog is rejected
 
     def parse_startup_options(self, startup_options):
         self.mode = startup_options["Mode"]
@@ -145,6 +110,36 @@ class Controller:
             self.video_file = startup_options["Video File"]
             self.audio_tracks = startup_options["Audio Tracks"]
             self.subtitle_files = startup_options["Subtitle Files"]
+
+    def set_up_flashcard_creators(self) -> Dict[str, FlashcardCreator]:
+        """
+        Sets up flashcard creators for different difficulty levels.
+
+        This method initializes flashcard creators for 'Easy', 'Normal', and 'Hard'
+        difficulty levels. Each creator is configured with a specific deck name and
+        a set of fields defined elsewhere in the Controller.
+
+        Returns:
+            Dict[str, FlashcardCreator]: A dictionary mapping difficulty levels to
+            their respective FlashcardCreator instances.
+        """
+        easy_flashcard_creator = FlashcardCreator(
+            deck_name="Languages Easy", fields=self.flashcard_fields
+        )
+        normal_flashcard_creator = FlashcardCreator(
+            deck_name="Languages Normal", fields=self.flashcard_fields
+        )
+        hard_flashcard_creator = FlashcardCreator(
+            deck_name="Languages Hard", fields=self.flashcard_fields
+        )
+
+        flashcard_creators = {
+            "Easy": easy_flashcard_creator,
+            "Normal": normal_flashcard_creator,
+            "Hard": hard_flashcard_creator,
+        }
+
+        return flashcard_creators
 
     def set_up_screenshot_extractor(self):
         self.screenshot_extractor = ScreenshotExtractor(self.video_file)
@@ -158,6 +153,8 @@ class Controller:
     def set_up_model(self):
         if self.mode == "AVI":
             self.model = SubtitleModel(self.subtitle_files, self.source_language)
+        elif self.mode == "Text":
+            pass
 
     def set_up_ui(self):
         self.app = QApplication([])
@@ -165,17 +162,18 @@ class Controller:
         if self.mode == "AVI":
             main_window_title = self.video_file
         else:
-            main_window_title = self.target_languages[0] # the only one??
+            main_window_title = self.target_languages[0]
 
-        # Setting up our view
+        # Set up the view
         self.ui = MainWindow(window_title=main_window_title, mode=self.mode)
 
-        # Key widgets of the UI
+        # Set up key widgets of the UI
         self.set_up_study_materials()
         self.set_up_translation_workspace()
         self.set_up_dictionary_lookup()
         self.set_up_flashcard_workspace()
 
+        # Set up UI workflow
         self.set_up_shortcuts()
         self.set_up_all_enter_key_signals()
 
@@ -298,7 +296,7 @@ class Controller:
         self.ui.translation_workspace.clear_workspace()
 
     def set_up_flashcard_workspace(self):
-        self.ui.flashcard_workspace.deck_dropdown.addItems(["Easy", "Normal"])
+        self.ui.flashcard_workspace.deck_dropdown.addItems(["Easy", "Normal", "Hard"])
         ##!!add fields dynamically along with data type
         self.ui.flashcard_workspace.add_button.clicked.connect(self.add_flashcard)
         # self.ui.flashcard_workspace.edit_button.clicked.connect(self.edit_previous_flashcards)
@@ -360,8 +358,8 @@ class Controller:
         }
 
     def export_flashcards(self):
-        self.flashcard_creators["Easy"].export_deck()
-        self.flashcard_creators["Normal"].export_deck()
+        for flashcard_creator in self.self.flashcard_creators.values():
+            flashcard_creator.export_deck()
 
     def set_up_dictionary_lookup(self):
         self.ui.dictionary_lookup.set_up_dictionaries(self.dictionaries)
@@ -501,12 +499,10 @@ class Controller:
         )
 
     def clean_temporary_files(self):
-        temporary_files_folder_path = "./Temporary Audio Files"
-
         # Loop through every file in the folder
-        for file_name in os.listdir(temporary_files_folder_path):
+        for file_name in os.listdir(self.temporary_audio_folder):
             # Construct the full path of the file
-            file_path = os.path.join(temporary_files_folder_path, file_name)
+            file_path = os.path.join(self.temporary_audio_folder, file_name)
             # Check if the file is a file (not a folder)
             if os.path.isfile(file_path):
                 # Delete the file
