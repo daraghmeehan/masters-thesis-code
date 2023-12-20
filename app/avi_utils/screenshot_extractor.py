@@ -100,7 +100,7 @@ class ScreenshotExtractor:
 
 if __name__ == "__main__":
     app = QApplication([])
-    from flashcard_workspace import ScreenshotViewer
+    from app.ui.flashcard_workspace import ScreenshotViewer
     from datetime import datetime
 
     start_time = datetime.strptime("00:00:10,000", "%H:%M:%S,%f")

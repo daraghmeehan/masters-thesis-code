@@ -1,4 +1,4 @@
 call conda activate universalearn
-python lang_anki_v2.py
+python main_module.py
 call conda deactivate
 pause
