@@ -1,6 +1,5 @@
 ## Standard library imports
 import os
-import json
 from typing import Dict
 
 
@@ -18,8 +17,8 @@ import pyperclip  # For clipboard operations
 from model.model import SubtitleModel
 
 # Translator/Dictionaries
-from DeepL.translator import load_translator
-from Lexilogos.dictionaries import load_dictionaries
+from deep_l.translator import load_translator
+from Lexilogos.dictionaries import load_all_tl_to_english_dictionaries
 
 # UI imports
 from ui.startup_dialog import StartupDialog
@@ -61,7 +60,7 @@ class Controller:
         """
         # Initialise language reference tools
         self.translator = load_translator()
-        self.languages_and_their_dictionaries = load_dictionaries()
+        self.languages_and_their_dictionaries = load_all_tl_to_english_dictionaries()
 
         self.temporary_audio_folder = "../temp/audio"
         self.flashcard_media_folder = "../media/flashcards/new"

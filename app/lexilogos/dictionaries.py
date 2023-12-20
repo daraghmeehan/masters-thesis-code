@@ -1,22 +1,22 @@
 import os, json
 
 
-def load_dictionaries():
-    languages_and_their_dictionaries = {}
+def load_all_tl_to_english_dictionaries():
+    dictionaries = {}
 
-    lexilogos_data = "./LangAnki/UI/Lexilogos/json_ready_march_23/english_data"
-    lexilogos_files = os.listdir(lexilogos_data)
+    lexilogos_folder = "resources/lexilogos"
+    lexilogos_files = os.listdir(lexilogos_folder)
 
     for file in lexilogos_files:
         language = os.path.splitext(file)[0]
 
-        filepath = os.path.join(lexilogos_data, file)
+        filepath = os.path.join(lexilogos_folder, file)
 
         with open(filepath, "r") as f:
             data = json.load(f)
 
         language_to_eng_dictionaries = data["language_to_eng"]
 
-        languages_and_their_dictionaries[language] = language_to_eng_dictionaries
+        dictionaries[language] = language_to_eng_dictionaries
 
-    return languages_and_their_dictionaries
+    return dictionaries
