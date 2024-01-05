@@ -1,0 +1,126 @@
+{
+    "text_template": {
+      "fields": [
+        {
+          "name": "Question Text",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Answer Text",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Hint",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Example Sentence(s)",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Other Forms",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Extra Info",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Pronunciation",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Question Language",
+          "type": "Dropdown"
+
+},
+        {
+          "name": "Answer Language",
+          "type": "Dropdown"
+
+},
+        {
+          "name": "Source",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Tags",
+          "type": "Hidden"
+}
+      ]
+    },
+    "avi_template": {
+      "fields": [
+        {
+          "name": "Picture",
+          "type": "ScreenshotViewer"
+},
+        {
+          "name": "Audio",
+          "type": "AudioViewer"
+},
+        {
+          "name": "Question Text",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Answer Text",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Hint",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Example Sentence(s)",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Other Forms",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Extra Info",
+          "type": "QTextEdit"
+},
+        {
+          "name": "Pronunciation",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Question Language",
+          "type": "Dropdown"
+
+},
+        {
+          "name": "Answer Language",
+          "type": "Dropdown"
+
+},
+        {
+          "name": "Show Picture Before?",
+          "type": "Checkbox"
+
+},
+        {
+          "name": "Show Audio Before?",
+          "type": "Checkbox"
+
+},
+        {
+          "name": "Show Text Before?",
+          "type": "Checkbox"
+
+},
+        {
+          "name": "Source",
+          "type": "QLineEdit"
+},
+        {
+          "name": "Tags",
+          "type": "Hidden"
+}
+      ]
+    }
+  }
+  
