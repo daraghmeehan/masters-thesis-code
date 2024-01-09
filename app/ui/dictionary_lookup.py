@@ -11,13 +11,6 @@ from PyQt5.QtWidgets import (
 )
 import sys
 
-# from PyQt5 import QtCore
-
-# if hasattr(QtCore.Qt, "AA_EnableHighDpiScaling"):
-#     QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-# if hasattr(QtCore.Qt, "AA_UseHighDpiPixmaps"):
-#     QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
 
 class DictionaryLookup(QWidget):
     def __init__(self):

@@ -12,6 +12,10 @@ def load_all_tl_to_english_dictionaries():
 
         filepath = os.path.join(lexilogos_folder, file)
 
+        if not os.path.isfile(filepath):
+            # Making sure it is actually a file
+            continue
+
         with open(filepath, "r") as f:
             data = json.load(f)
 

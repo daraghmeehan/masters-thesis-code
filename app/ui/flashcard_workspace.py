@@ -1,31 +1,47 @@
+import shutil  # For copying audio
+
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QScrollArea,
+    QToolBar,
     QPushButton,
-    QPlainTextEdit,
     QTextEdit,
     QLineEdit,
     QLabel,
     QComboBox,
+    QCheckBox,
     QAction,
-    QToolBar,
     QSpinBox,
 )
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QTextCharFormat, QFont
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
+from bs4 import BeautifulSoup  # For parsing HTML
+
 
 class FlashcardWorkspace(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.fields = {}  # To track the widgets for each field of the flashcards
         self.initUI()
 
     def initUI(self):
+        self.set_up_toolbar()
+        self.set_up_fields()
+        self.set_up_buttons()
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.toolbar)
+        main_layout.addLayout(self.fields_layout)
+        main_layout.addLayout(self.button_layout)
+
+        self.setLayout(main_layout)
+
+    def set_up_toolbar(self):
         self.toolbar = QToolBar()
 
         # Create the bold action and shortcut
@@ -43,89 +59,110 @@ class FlashcardWorkspace(QWidget):
             "QToolButton:pressed { background-color: #d5d5d5; }"
         )
 
+    def set_up_fields(self):
+        self.fields_layout = QVBoxLayout()
+
         # Creating choice of deck
         self.deck_label = QLabel("Deck: ")
         self.deck_dropdown = QComboBox()
 
-        ## Creating fields !!make dynamic
-        # Screenshots of the video
-        self.screenshot_viewer = ScreenshotViewer()
+        deck_box = QHBoxLayout()
+        deck_box.addWidget(self.deck_label)
+        deck_box.addWidget(self.deck_dropdown)
+        self.fields_layout.addLayout(deck_box)
 
-        # ??
-        self.audio_viewer = AudioViewer()
-
-        self.target_label = QLabel("Target Language")
-        self.target_textedit = QTextEdit()
-        self.source_label = QLabel("Source Language")
-        self.source_textedit = QTextEdit()
-
-        self.answer_hint_label = QLabel("Answer Hint")
-        self.answer_hint_lineedit = QLineEdit()
-        self.example_sentence_label = QLabel("Example Sentence")
-        self.example_sentence_textedit = QTextEdit()
-        self.other_forms_label = QLabel("Other Forms")
-        self.other_forms_textedit = QTextEdit()
-        self.extra_info_label = QLabel("Extra Info")
-        self.extra_info_textedit = QTextEdit()
-        self.pronunciation_label = QLabel("Pronunciation")
-        self.pronunciation_lineedit = QLineEdit()
-
-        # Creating buttons
+    def set_up_buttons(self):
+        self.button_layout = QHBoxLayout()
         self.add_button = QPushButton("Add\nCtrl+Enter")
         self.edit_previous_button = QPushButton("Edit Previous")
+        self.button_layout.addWidget(self.add_button)
+        self.button_layout.addWidget(self.edit_previous_button)
 
-        ##!! should be form layout for flashcard bits!!
-        # Creating layouts
-        hbox1 = QHBoxLayout()
-        hbox1.addWidget(self.deck_label)
-        hbox1.addWidget(self.deck_dropdown)
-        hbox2 = QHBoxLayout()
-        hbox2.addWidget(self.target_label)
-        hbox2.addWidget(self.target_textedit)
-        hbox3 = QHBoxLayout()
-        hbox3.addWidget(self.source_label)
-        hbox3.addWidget(self.source_textedit)
-        hbox4 = QHBoxLayout()
-        hbox4.addWidget(self.answer_hint_label)
-        hbox4.addWidget(self.answer_hint_lineedit)
-        hbox5 = QHBoxLayout()
-        hbox5.addWidget(self.example_sentence_label)
-        hbox5.addWidget(self.example_sentence_textedit)
-        hbox6 = QHBoxLayout()
-        hbox6.addWidget(self.other_forms_label)
-        hbox6.addWidget(self.other_forms_textedit)
-        hbox7 = QHBoxLayout()
-        hbox7.addWidget(self.extra_info_label)
-        hbox7.addWidget(self.extra_info_textedit)
-        hbox8 = QHBoxLayout()
-        hbox8.addWidget(self.pronunciation_label)
-        hbox8.addWidget(self.pronunciation_lineedit)
-        hbox9 = QHBoxLayout()
-        hbox9.addWidget(self.add_button)
-        hbox9.addWidget(self.edit_previous_button)
+    def add_field(self, field_name, field_info):
+        field_type = field_info["type"]
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.toolbar)
-        vbox.addLayout(hbox1)
-        vbox.addLayout(hbox2)
-        vbox.addLayout(hbox3)
-        vbox.addLayout(hbox4)
-        vbox.addLayout(hbox5)
-        vbox.addLayout(hbox6)
-        vbox.addLayout(hbox7)
-        vbox.addLayout(hbox8)
-        vbox.addLayout(hbox9)
+        if field_type == "Hidden":
+            widget = None
+        elif field_type == "Media":
+            widget_type = field_info["widget"]
+            widget = self.create_media_widget(widget_type)
+            self.fields_layout.addWidget(widget)
+        else:
+            field_box = QHBoxLayout()
 
-        self.setLayout(vbox)
+            field_label = QLabel(field_name)
+            widget = self.create_normal_widget(field_type)
+
+            field_box.addWidget(field_label)
+            field_box.addWidget(widget)
+            self.fields_layout.addLayout(field_box)
+
+        self.fields[field_name] = widget  # Keep track of the created widget
+
+    def create_media_widget(self, widget_type):
+        if widget_type == "ScreenshotViewer":
+            return ScreenshotViewer()
+        elif widget_type == "AudioViewer":
+            return AudioViewer()
+
+    def create_normal_widget(self, field_type):
+        if field_type == "TextEdit":
+            return QTextEdit()
+        elif field_type == "LineEdit":
+            return QLineEdit()
+        elif field_type == "Dropdown":
+            return QComboBox()
+        elif field_type == "Checkbox":
+            return QCheckBox()
+        elif field_type == "Hidden":
+            return None
+
+    def extract_field_data(self, field_name):
+        widget = self.fields[field_name]
+
+        if widget is None:
+            return ""
+        elif isinstance(widget, QTextEdit):
+            data = extract_textedit_data(widget)
+            return data
+        elif isinstance(widget, QLineEdit):
+            return widget.text()
+        elif isinstance(widget, QComboBox):
+            return widget.currentText()
+        elif isinstance(widget, QCheckBox):
+            return (
+                "y" if widget.isChecked() else ""
+            )  # Binary in Anki cards possible with a field being empty or having text
 
     def reset_flashcard_fields(self):
-        self.target_textedit.setText("")
-        self.source_textedit.setText("")
-        self.answer_hint_lineedit.setText("")
-        self.example_sentence_textedit.setText("")
-        self.other_forms_textedit.setText("")
-        self.extra_info_textedit.setText("")
-        self.pronunciation_lineedit.setText("")
+        for field_name, widget in self.fields.items():
+            if widget is None:
+                pass
+            elif isinstance(widget, QTextEdit):
+                widget.clear()  # Clear text for QTextEdit
+            elif isinstance(widget, QLineEdit):
+                widget.clear()  # Clear text for QLineEdit
+            elif isinstance(widget, QComboBox):
+                widget.setCurrentIndex(0)  # Reset to the first item for QComboBox
+            elif isinstance(widget, QCheckBox):
+                widget.setChecked(False)  # Uncheck the QCheckBox
+            elif isinstance(widget, ScreenshotViewer):
+                widget.reset_viewer()
+            elif isinstance(widget, AudioViewer):
+                widget.reset_viewer()
+
+    def swap_deck(self):
+        # Get the current index of the selected option
+        current_index = self.deck_dropdown.currentIndex()
+
+        # Get the total number of options in the dropdown
+        total_decks = self.deck_dropdown.count()
+
+        # Increment the index and take the modulus to cycle through options
+        next_index = (current_index + 1) % total_decks
+
+        # Set the current index to the next index
+        self.deck_dropdown.setCurrentIndex(next_index)
 
     def toggle_bold(self):
         # Get the currently focused widget
@@ -154,21 +191,33 @@ class FlashcardWorkspace(QWidget):
         # Apply the new formatting to the selected text
         cursor.mergeCharFormat(new_format)
 
-    def swap_options(self):
-        # Get the current index of the selected option
-        current_index = self.deck_dropdown.currentIndex()
 
-        # Swap to the other option
-        if current_index == 0:
-            self.deck_dropdown.setCurrentIndex(1)
-        else:
-            self.deck_dropdown.setCurrentIndex(0)
+def extract_textedit_data(textedit):
+    # Check if the TextEdit widget is empty
+    if textedit.toPlainText().strip() == "":
+        return ""
 
-    def get_current_image(self):
-        if self.screenshot_viewer.screenshot_label.pixmap().isNull():
-            return ""
-        else:
-            return self.screenshot_viewer.screenshot_label.pixmap().toImage()
+    textedit_html = textedit.toHtml()
+    textedit_html = textedit_html.replace("\n", "<br>")
+    textedit_data = extract_bold_formatting(textedit_html)
+    return textedit_data
+
+
+def extract_bold_formatting(textedit_html):
+    if textedit_html == "":
+        return ""
+
+    soup = BeautifulSoup(textedit_html, "html.parser", from_encoding="utf-8")
+    p = soup.find("p")
+
+    # replacing span with strong
+    for span_tag in p.find_all("span"):
+        strong_tag = soup.new_tag("strong")
+        strong_tag.string = span_tag.string
+        span_tag.replace_with(strong_tag)
+
+    field = "".join(str(c) for c in p.contents)
+    return field
 
 
 class ScreenshotViewer(QWidget):
@@ -209,6 +258,12 @@ class ScreenshotViewer(QWidget):
     def hide_viewer(self):
         self.setVisible(False)
 
+    def reset_viewer(self):
+        self.screenshots = []
+        self.update_screenshot_label()
+        self.current_index = None
+        self.hide_viewer
+
     def update_screenshots(self, screenshots):
         if screenshots == []:
             self.current_index = None
@@ -238,6 +293,20 @@ class ScreenshotViewer(QWidget):
         self.current_index = (self.current_index + 1) % len(self.screenshots)
         self.update_screenshot_label()
 
+    def get_screenshot(self):
+        if self.screenshot_label.pixmap().isNull():
+            return ""
+        else:
+            return self.screenshot_label.pixmap().toImage()
+
+    def save_screenshot(self, path):
+        screenshot = self.get_screenshot()
+
+        if screenshot == "":
+            return
+
+        screenshot.save(path)
+
 
 class AudioViewer(QWidget):
     def __init__(self):
@@ -257,13 +326,13 @@ class AudioViewer(QWidget):
         self.start_time_subtract_button = QPushButton("-1s")
         self.start_time_subtract_button.clicked.connect(
             lambda: self.start_time_spinbox.setValue(
-                self.start_time_spinbox.value() - 1.0
+                self.start_time_spinbox.value() - 1
             )
         )
         self.start_time_add_button = QPushButton("+1s")
         self.start_time_add_button.clicked.connect(
             lambda: self.start_time_spinbox.setValue(
-                self.start_time_spinbox.value() + 1.0
+                self.start_time_spinbox.value() + 1
             )
         )
 
@@ -300,11 +369,11 @@ class AudioViewer(QWidget):
 
         self.end_time_subtract_button = QPushButton("-1s")
         self.end_time_subtract_button.clicked.connect(
-            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() - 1.0)
+            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() - 1)
         )
         self.end_time_add_button = QPushButton("+1s")
         self.end_time_add_button.clicked.connect(
-            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() + 1.0)
+            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() + 1)
         )
 
         end_time_button_layout = QHBoxLayout()
@@ -332,6 +401,9 @@ class AudioViewer(QWidget):
     def hide_viewer(self):
         self.setVisible(False)
 
+    def reset_viewer(self):
+        self.update_audio("")
+
     def update_audio(self, audio_path):
         if audio_path == "":
             self.media_player.setMedia(None)
@@ -348,6 +420,23 @@ class AudioViewer(QWidget):
 
     def stop_audio(self):
         self.media_player.stop()
+
+    def get_audio_path(self):
+        if self.media_player.media():
+            return QUrl(self.media_player.media().canonicalUrl()).toLocalFile()
+        else:
+            return ""
+
+    def save_audio(self, path):
+        current_audio_path = self.get_audio_path()
+
+        if current_audio_path == "":
+            return  # No audio loaded, or an error occurred
+
+        try:
+            shutil.copy(current_audio_path, path)
+        except IOError as e:
+            print(f"Unable to copy file. {e}")
 
 
 if __name__ == "__main__":

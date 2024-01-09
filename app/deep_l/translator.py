@@ -1,11 +1,9 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 import deepl
 
-import os
-
-from dotenv import load_dotenv
-from pathlib import Path
-
-dotenv_path = Path("deepl/.env")
+dotenv_path = Path("deep_l/.env")
 load_dotenv(dotenv_path=dotenv_path)
 
 DEEPL_AUTH_KEY = os.getenv("DEEPL_AUTH_KEY")

@@ -1,5 +1,5 @@
 ## Standard library imports
-import os
+import os, time
 from typing import Dict
 
 
@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import QApplication, QDialog, QShortcut
 from PyQt5.QtGui import QKeySequence
 
 import webbrowser  # For opening links (dictionary searches) in web browser
-from bs4 import BeautifulSoup  # For parsing HTML
 import pyperclip  # For clipboard operations
 
 
@@ -18,15 +17,18 @@ from model.model import SubtitleModel
 
 # Translator/Dictionaries
 from deep_l.translator import load_translator
-from Lexilogos.dictionaries import load_all_tl_to_english_dictionaries
+from lexilogos.dictionaries import load_all_tl_to_english_dictionaries
 
 # UI imports
 from ui.startup_dialog import StartupDialog
 from ui.view import MainWindow
+from ui.flashcard_workspace import ScreenshotViewer, AudioViewer
 from ui.sentence_bin import SentenceBin
 
 # Flashcard creation functionality
-from Flashcards.flashcard_creator import FlashcardCreator
+from flashcards.flashcard_templates import read_flashcard_templates
+from flashcards.flashcard_creator import FlashcardCreator
+
 from avi_utils.screenshot_extractor import ScreenshotExtractor
 from audio.audio_extractor import AudioExtractor
 
@@ -60,17 +62,25 @@ class Controller:
         """
         # Initialise language reference tools
         self.translator = load_translator()
-        self.languages_and_their_dictionaries = load_all_tl_to_english_dictionaries()
+        self.tl_to_english_dictionaries = load_all_tl_to_english_dictionaries()
 
+        # !!
         self.temporary_audio_folder = "../temp/audio"
-        self.flashcard_media_folder = "../media/flashcards/new"
+        self.flashcard_output_folder = "../media/flashcards/new"
+        self.flashcard_audio_folder = "../media/audio"
+        self.flashcard_image_folder = "../media/images"
 
         # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
         startup_options = self.run_startup_dialog()
         self.parse_startup_options(startup_options)
 
         # Get ready to make flashcards
-        self.flashcard_creators = self.set_up_flashcard_creators(mode=self.mode)
+        flashcard_templates_path = "resources/flashcards/flashcard_templates.json"
+        flashcard_template = self.load_flashcard_template(flashcard_templates_path)
+        self.flashcard_fields = flashcard_template["fields"]
+        self.required_fields = flashcard_template["required_fields"]
+        self.decks = flashcard_template["decks"]
+        self.flashcard_creators = self.set_up_flashcard_creators()
 
         if self.mode == "AVI":
             # Set up the media extractors
@@ -87,13 +97,13 @@ class Controller:
             self.app.exec_()
         finally:
             # Clean up our work
-            self.export_flashcards()
+            self.delete_empty_decks()
             self.clean_temporary_files()
             pass
 
     def run_startup_dialog(self):
         startup_app = QApplication([])
-        startup_dialog = StartupDialog(self.languages_and_their_dictionaries)
+        startup_dialog = StartupDialog(self.tl_to_english_dictionaries)
         if startup_dialog.exec_() == QDialog.Accepted:
             startup_options = startup_dialog.get_options()
             return startup_options
@@ -110,33 +120,32 @@ class Controller:
             self.audio_tracks = startup_options["Audio Tracks"]
             self.subtitle_files = startup_options["Subtitle Files"]
 
-    def set_up_flashcard_creators(self) -> Dict[str, FlashcardCreator]:
+    def load_flashcard_template(self, flashcard_templates_path):
         """
-        Sets up flashcard creators for different difficulty levels.
+        Loads the JSON flashcard templates and extracts the selected mode's template.
 
-        This method initializes flashcard creators for 'Easy', 'Normal', and 'Hard'
-        difficulty levels. Each creator is configured with a specific deck name and
-        a set of fields defined elsewhere in the Controller.
-
-        Returns:
-            Dict[str, FlashcardCreator]: A dictionary mapping difficulty levels to
-            their respective FlashcardCreator instances.
+        :return: The loaded template as a Python dictionary.
         """
-        easy_flashcard_creator = FlashcardCreator(
-            deck_name="Languages Easy", fields=self.flashcard_fields
-        )
-        normal_flashcard_creator = FlashcardCreator(
-            deck_name="Languages Normal", fields=self.flashcard_fields
-        )
-        hard_flashcard_creator = FlashcardCreator(
-            deck_name="Languages Hard", fields=self.flashcard_fields
-        )
 
-        flashcard_creators = {
-            "Easy": easy_flashcard_creator,
-            "Normal": normal_flashcard_creator,
-            "Hard": hard_flashcard_creator,
-        }
+        flashcard_templates = read_flashcard_templates(flashcard_templates_path)
+
+        if self.mode == "Text":
+            flashcard_template = flashcard_templates["text_template"]
+        elif self.mode == "AVI":
+            flashcard_template = flashcard_templates["avi_template"]
+
+        return flashcard_template
+
+    def set_up_flashcard_creators(self):
+        flashcard_creators = {}
+
+        flashcard_field_names = list(self.flashcard_fields.keys())
+        for deck in self.decks:
+            flashcard_creator = FlashcardCreator(
+                deck_name=f"({self.mode}) Languages {deck}",
+                fields=flashcard_field_names,
+            )
+            flashcard_creators[deck] = flashcard_creator
 
         return flashcard_creators
 
@@ -159,7 +168,9 @@ class Controller:
         self.app = QApplication([])
 
         if self.mode == "AVI":
-            main_window_title = self.video_file
+            main_window_title = (
+                f"{self.video_file} - {', '.join(tl for tl in self.target_languages)}"
+            )
         else:
             main_window_title = self.target_languages[0]
 
@@ -295,70 +306,65 @@ class Controller:
         self.ui.translation_workspace.clear_workspace()
 
     def set_up_flashcard_workspace(self):
-        self.ui.flashcard_workspace.deck_dropdown.addItems(["Easy", "Normal", "Hard"])
-        ##!!add fields dynamically along with data type
+        self.ui.flashcard_workspace.deck_dropdown.addItems(
+            ["Easy", "Normal", "Hard"]
+        )  ##!! this was for different deck names
+
+        for field_name, field_info in self.flashcard_fields.items():
+            self.ui.flashcard_workspace.add_field(field_name, field_info)
         self.ui.flashcard_workspace.add_button.clicked.connect(self.add_flashcard)
-        # self.ui.flashcard_workspace.edit_button.clicked.connect(self.edit_previous_flashcards)
+        self.ui.flashcard_workspace.edit_previous_button.clicked.connect(
+            self.edit_previous_flashcards
+        )
 
     def add_flashcard(self):
-        # Saving the image/audio of the card
-        self.save_card_media()
+        timestamp = time.strftime("%Y%m%d_%H%M%S")  # For uniquely naming files
 
-        # Extracting the card information from the UI
-        card_as_dict = self.extract_card_from_workspace()
-        if card_as_dict == {}:
-            return
+        flashcard = {}
+        for field_name, field_info in self.flashcard_fields.items():
+            if field_info["type"] == "Media":
+                media_path = self.save_card_media(field_name, timestamp)
+                field_data = media_path
+            else:
+                field_data = self.ui.flashcard_workspace.extract_field_data(field_name)
+            flashcard[field_name] = field_data
+
+        # Ensuring all our required fields have some data
+        for required_field in self.required_fields:
+            if flashcard[required_field] == "":
+                print(
+                    f"{required_field} is a required field but is blank! Rejecting card..."
+                )
+                return
 
         # Retrieving the chosen deck
         deck = self.ui.flashcard_workspace.deck_dropdown.currentText()
 
         # Adding our card to the appropriate deck
-        self.flashcard_creators[deck].add_flashcard(card_as_dict)
+        self.flashcard_creators[deck].add_flashcard(flashcard)
 
         self.ui.flashcard_workspace.reset_flashcard_fields()
 
-    def save_card_media(self):
+    def save_card_media(self, field_name, timestamp):
+        filename = ""  # Media flashcard fields must point to the filename
+        media_widget = self.ui.flashcard_workspace.fields[field_name]
+
+        if isinstance(media_widget, ScreenshotViewer):
+            file_extension = ".jpg"
+            filename = timestamp + file_extension
+            path = os.path.join(self.flashcard_image_folder, filename)
+            media_widget.save_screenshot(path)
+
+        elif isinstance(media_widget, AudioViewer):
+            file_extension = ".mp3"
+            filename = timestamp + file_extension
+            path = os.path.join(self.flashcard_audio_folder, filename)
+            media_widget.save_audio(path)
+
+        return filename
+
+    def edit_previous_flashcards(self):
         pass
-
-    def extract_card_from_workspace(self):
-        # reject if target and source languages are missing
-        target_language_field_html = (
-            self.ui.flashcard_workspace.target_textedit.toHtml()
-        )
-        target_language_field_html = target_language_field_html.replace("\n", "<br>")
-        target_language_field = extract_bold_formatting(target_language_field_html)
-
-        source_language_field = (
-            self.ui.flashcard_workspace.source_textedit.toPlainText()
-        )
-        source_language_field = source_language_field.replace("\n", "<br>")
-
-        if target_language_field == "" or source_language_field == "":
-            print("Need both target language and source language! Rejecting card.")
-            return
-
-        # creating card from fields in UI
-        card_as_dict = {
-            "Target Language": target_language_field,
-            "Source Language": source_language_field,
-            "Answer Hint": self.ui.flashcard_workspace.answer_hint_lineedit.text(),
-            "Example Sentence(s)": self.ui.flashcard_workspace.example_sentence_textedit.toPlainText().replace(
-                "\n", "<br>"
-            ),
-            "Other Forms": self.ui.flashcard_workspace.other_forms_textedit.toPlainText().replace(
-                "\n", "<br>"
-            ),
-            "Extra Info": self.ui.flashcard_workspace.extra_info_textedit.toPlainText().replace(
-                "\n", "<br>"
-            ),
-            "Pronunciation": self.ui.flashcard_workspace.pronunciation_lineedit.text(),
-            "TL Name": self.target_languages[0],
-            "SL Name": self.source_language,
-        }
-
-    def export_flashcards(self):
-        for flashcard_creator in self.self.flashcard_creators.values():
-            flashcard_creator.export_deck()
 
     def set_up_dictionary_lookup(self):
         self.ui.dictionary_lookup.set_up_dictionaries(self.dictionaries)
@@ -366,7 +372,7 @@ class Controller:
 
     def look_up_word(self):
         word = self.ui.dictionary_lookup.dictionary_lookup_lineedit.text()
-        word = word.replace("­", "")  # removing soft hyphens!
+        word = word.replace("­", "")  # Removing soft hyphens
 
         if word == "":
             return
@@ -381,7 +387,7 @@ class Controller:
                 dictionaries_to_search.append(checkbox.text())
 
         for dictionary in dictionaries_to_search:
-            formatting = self.languages_and_their_dictionaries[self.target_language][
+            formatting = self.tl_to_english_dictionaries[self.target_language][
                 dictionary
             ]
             search_address = formatting[0] + word + formatting[1]
@@ -457,9 +463,7 @@ class Controller:
         self.swap_deck_shortcut = QShortcut(
             QKeySequence("Ctrl+D"), self.ui.flashcard_workspace
         )
-        self.swap_deck_shortcut.activated.connect(
-            self.ui.flashcard_workspace.swap_options
-        )
+        self.swap_deck_shortcut.activated.connect(self.ui.flashcard_workspace.swap_deck)
 
         self.add_flashcard_shortcut = QShortcut(
             QKeySequence("Ctrl+Return"), self.ui.flashcard_workspace
@@ -497,6 +501,12 @@ class Controller:
             self.ui.dictionary_lookup.search_button.click
         )
 
+    def delete_empty_decks(self):
+        for deck in self.decks:
+            flashcard_creator = self.flashcard_creators[deck]
+            if flashcard_creator.number_of_flashcards_created() == 0:
+                flashcard_creator.delete_deck()
+
     def clean_temporary_files(self):
         # Loop through every file in the folder
         for file_name in os.listdir(self.temporary_audio_folder):
@@ -506,20 +516,3 @@ class Controller:
             if os.path.isfile(file_path):
                 # Delete the file
                 os.remove(file_path)
-
-
-def extract_bold_formatting(html_field):
-    if html_field == "":
-        return ""
-
-    soup = BeautifulSoup(html_field, "html.parser", from_encoding="utf-8")
-    p = soup.find("p")
-
-    # replacing span with strong
-    for span_tag in p.find_all("span"):
-        strong_tag = soup.new_tag("strong")
-        strong_tag.string = span_tag.string
-        span_tag.replace_with(strong_tag)
-
-    field = "".join(str(c) for c in p.contents)
-    return field

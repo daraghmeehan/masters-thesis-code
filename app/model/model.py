@@ -1,4 +1,4 @@
-from subtitle_handler import SubtitleHandler
+from model.subtitle_handler import SubtitleHandler
 
 
 DEFAULT_TOLERANCE = 1.5
@@ -36,7 +36,7 @@ class SubtitleModel:
     #             continue
 
     def create_subtitle_mapping(self):
-        """Creates a mapping from the source languages subtitles, and the other langauges' files"""
+        """Creates a mapping from the source languages subtitles, and the other languages' files"""
         subtitle_mapping = {}
 
         source_subtitles = self.subtitles[self.source_language].subtitles
