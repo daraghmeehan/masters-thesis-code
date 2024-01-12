@@ -20,6 +20,11 @@ import os
 import json
 import ffmpeg
 
+LANGUAGE_LEARNING_MATERIAL_PATH = (
+    r"C:\Stuff\UniversaLearn\LanguageRepo\Language Learning Material"
+)
+
+
 all_languages = [
     "Dutch",
     "German",
@@ -158,9 +163,10 @@ class StartupDialog(QDialog):
         self.startup_options["Dictionaries"] = {}
 
         for language in self.startup_options["Target Languages"]:
-            self.startup_options["Dictionaries"][language] = dictionary_options[
-                language
-            ]
+            if language in dictionary_options:
+                self.startup_options["Dictionaries"][language] = dictionary_options[
+                    language
+                ]
 
         # print(f"\nAll options:\n{self.startup_options}")
 
@@ -392,7 +398,10 @@ class AVIWidget(QWidget):
         self.setLayout(main_layout)
 
     def choose_folder(self):
-        folder_name = QFileDialog.getExistingDirectory(self, "Choose AVI Folder")
+        # folder_name = QFileDialog.getExistingDirectory(self, "Choose AVI Folder")
+        folder_name = QFileDialog.getExistingDirectory(
+            self, "Choose AVI Folder", LANGUAGE_LEARNING_MATERIAL_PATH
+        )
         if folder_name == "":
             return
         folder_name = folder_name.replace("/", "\\")

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QScrollArea,
     QShortcut,
+    QCheckBox,
 )
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence
@@ -23,6 +24,7 @@ class StudyMaterials(QWidget):
         main_layout = QVBoxLayout()
         main_layout.addWidget(self.tab_widget)
 
+        #    def add_tab(self, mode): ##!! future allow making new tabs
         if mode == "AVI":
             self.subtitle_workspace_tab = QWidget()
             subtitle_workspace_layout = QVBoxLayout()
@@ -41,23 +43,133 @@ class StudyMaterials(QWidget):
         self.setLayout(main_layout)
 
 
+# class SubtitleWorkspace(QWidget):
+#     def __init__(self):
+#         super().__init__()
+
+#         # Create 3 text edits
+#         self.textedit_1 = QPlainTextEdit(self)
+#         self.textedit_2 = QPlainTextEdit(self)
+#         self.textedit_3 = QPlainTextEdit(self)
+
+#         # Create a vertical layout and add the line edits to it
+#         layout = QHBoxLayout(self)
+#         layout.addWidget(self.textedit_1)
+#         layout.addWidget(self.textedit_2)
+#         layout.addWidget(self.textedit_3)
+
+#     def update_subtitle_view(self, subtitle_text):
+#         self.textedit_1.setPlainText(subtitle_text)
+
+
+class SubtitleView(QWidget):
+    listen_requested_signal = pyqtSignal()
+    flashcard_requested_signal = pyqtSignal()
+
+    def __init__(self, text):
+        super().__init__()
+        self.initUI(text)
+
+    def initUI(self, text):
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(1)
+
+        # Add a checkbox to the left of the subtitle
+        checkbox = QCheckBox()
+        layout.addWidget(checkbox)
+
+        subtitle_view = QPlainTextEdit(text)
+        subtitle_view.setReadOnly(True)
+        layout.addWidget(subtitle_view)
+
+        # Vertical layout for buttons
+        buttons_layout = QVBoxLayout()
+
+        listen_button = QPushButton("Listen")
+        listen_button.clicked.connect(self.listen_requested_signal.emit)
+        buttons_layout.addWidget(listen_button)
+
+        flashcard_button = QPushButton("F")
+        flashcard_button.clicked.connect(self.flashcard_requested_signal.emit)
+        buttons_layout.addWidget(flashcard_button)
+
+        # Add buttons_layout to the main horizontal layout
+        layout.addLayout(buttons_layout)
+
+
 class SubtitleWorkspace(QWidget):
+    flashcard_requested_signal = pyqtSignal(str, int)  # Language, subtitle index
+    listen_requested_signal = pyqtSignal(str, int)  # Language, subtitle index
+
     def __init__(self):
         super().__init__()
+        self.language_scroll_areas = (
+            {}
+        )  # Dictionary to store QScrollArea for each language
+        self.subtitle_views = {}  # Dictionary to store subtitle views for each language
+        self.main_layout = QHBoxLayout(self)  # Main layout to hold language layouts
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.setSpacing(0)
 
-        # Create 3 text edits
-        self.textedit_1 = QPlainTextEdit(self)
-        self.textedit_2 = QPlainTextEdit(self)
-        self.textedit_3 = QPlainTextEdit(self)
+    def add_language(self, language, subtitles):
+        if language in self.language_scroll_areas:
+            return
 
-        # Create a vertical layout and add the line edits to it
-        layout = QHBoxLayout(self)
-        layout.addWidget(self.textedit_1)
-        layout.addWidget(self.textedit_2)
-        layout.addWidget(self.textedit_3)
+        # Create a QVBoxLayout for subtitles
+        language_layout = QVBoxLayout()
+        language_layout.setContentsMargins(0, 0, 0, 0)
+        language_layout.setSpacing(0)
 
-    def update_subtitle_view(self, subtitle_text):
-        self.textedit_1.setPlainText(subtitle_text)
+        # Create a scroll area for this language
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        self.language_scroll_areas[
+            language
+        ] = scroll_area  # Store the scroll area reference
+
+        # Create a container widget for the layout and set it to the scroll area
+        container_widget = QWidget()
+        container_widget.setLayout(language_layout)
+        scroll_area.setWidget(container_widget)
+
+        # Add the scroll area to the main layout
+        self.main_layout.addWidget(scroll_area)
+
+        # Initialize the list to store subtitle views
+        self.subtitle_views[language] = []
+
+        # Create and add subtitle views
+        for index, subtitle in enumerate(subtitles):
+            subtitle_view = self.create_subtitle_view(subtitle.text, language, index)
+            language_layout.addWidget(subtitle_view)
+            self.subtitle_views[language].append(subtitle_view)
+
+    def create_subtitle_view(self, text, language, index):
+        subtitle_view = SubtitleView(text)
+
+        # Connect signals from the subtitle view to the workspace signals
+        subtitle_view.listen_requested_signal.connect(
+            lambda: self.listen_requested_signal.emit(language, index)
+        )
+        subtitle_view.flashcard_requested_signal.connect(
+            lambda: self.flashcard_requested_signal.emit(language, index)
+        )
+
+        return subtitle_view
+
+    def delete_language(self, language):
+        if language in self.language_scroll_areas:
+            scroll_area = self.language_scroll_areas.pop(language)
+            scroll_area.widget().deleteLater()  # Delete the container widget
+            scroll_area.deleteLater()  # Delete the scroll area itself
+            self.subtitle_views.pop(
+                language, None
+            )  # Remove the subtitle views reference
+
+    def on_flashcard_button_clicked(self, subtitle):
+        # Handle flashcard creation for the subtitle
+        pass  # Implement the logic as needed
 
 
 class SavedSentences(QWidget):

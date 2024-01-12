@@ -207,7 +207,7 @@ def extract_bold_formatting(textedit_html):
     if textedit_html == "":
         return ""
 
-    soup = BeautifulSoup(textedit_html, "html.parser", from_encoding="utf-8")
+    soup = BeautifulSoup(textedit_html, "html.parser")
     p = soup.find("p")
 
     # replacing span with strong

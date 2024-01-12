@@ -13,7 +13,7 @@ import pyperclip  # For clipboard operations
 
 
 ## Local imports
-from model.model import SubtitleModel
+from model.subtitle_model import SubtitleModel
 
 # Translator/Dictionaries
 from deep_l.translator import load_translator
@@ -160,7 +160,10 @@ class Controller:
 
     def set_up_model(self):
         if self.mode == "AVI":
-            self.model = SubtitleModel(self.subtitle_files, self.source_language)
+            # self.model = SubtitleModel(self.subtitle_files, self.source_language) !!!!
+            self.model = SubtitleModel(
+                self.source_language, self.subtitle_files["English"]
+            )
         elif self.mode == "Text":
             pass
 
@@ -193,7 +196,9 @@ class Controller:
         self.set_up_saved_sentences()
 
     def set_up_subtitle_workspace(self):
-        pass
+        self.ui.study_materials.subtitle_workspace.add_language(
+            "English", self.model.subtitles
+        )
 
     def set_up_saved_sentences(self):
         self.set_up_sentence_bin()

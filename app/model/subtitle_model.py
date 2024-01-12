@@ -2,6 +2,9 @@ import os, re
 from datetime import datetime, timedelta
 
 NON_SPEAKING_SYMBOLS = ["♪", "<i>", "[", "]"]
+SPECIAL_ENCODINGS = {"Friends": "utf-8-sig"}
+DEFAULT_TOLERANCE = 1.5
+
 
 class Subtitle:
     def __init__(self, start_time, end_time, text):
@@ -10,16 +13,28 @@ class Subtitle:
         self.text = text
 
     def __str__(self):
-        start_str = self.start_time.strftime("%H:%M:%S,%f")[:-3]  # Truncate microseconds to milliseconds
-        end_str = self.end_time.strftime("%H:%M:%S,%f")[:-3]  # Truncate microseconds to milliseconds
+        start_str = self.start_time.strftime("%H:%M:%S,%f")[
+            :-3
+        ]  # Truncate microseconds to milliseconds
+        end_str = self.end_time.strftime("%H:%M:%S,%f")[
+            :-3
+        ]  # Truncate microseconds to milliseconds
         return f"{start_str} --> {end_str}\n{self.text}"
 
-class SubtitleHandler:
+
+class SubtitleModel:
     def __init__(
-        self, language, filename, encoding="utf-8", non_speaking_symbols=NON_SPEAKING_SYMBOLS
+        self,
+        language,
+        filename,
+        encoding="utf-8",
+        non_speaking_symbols=NON_SPEAKING_SYMBOLS,
     ):
         self.language = language
         self.filename = filename
+        self.encoding = encoding
+        self.non_speaking_symbols = non_speaking_symbols
+
         self.subtitles = self.parse_subtitle_file(
             self.filename, encoding, non_speaking_symbols
         )
@@ -28,25 +43,25 @@ class SubtitleHandler:
         """
         Parses a subtitle file and creates a list of Subtitle objects.
 
-        This function reads a subtitle file line by line and processes it, extracting 
-        the timing information and text for each subtitle. It handles overlapping 
-        subtitles by merging them, and ignores non-speaking parts based on the 
+        This function reads a subtitle file line by line and processes it, extracting
+        the timing information and text for each subtitle. It handles overlapping
+        subtitles by merging them, and ignores non-speaking parts based on the
         provided symbols.
 
         Args:
             filename (str): The path to the subtitle file.
             encoding (str): The encoding used for reading the file.
-            non_speaking_symbols (list of str): Symbols that indicate non-speaking text 
+            non_speaking_symbols (list of str): Symbols that indicate non-speaking text
                                                 in the subtitles.
 
         Returns:
-            list of Subtitle: A list of Subtitle objects with start time, end time, 
+            list of Subtitle: A list of Subtitle objects with start time, end time,
                               and text for each subtitle entry in the file.
 
         Note:
             The function assumes the subtitle file is in SRT format.
         """
-        
+
         with open(filename, "r", encoding=encoding) as f:
             lines = f.readlines()
 
@@ -56,13 +71,13 @@ class SubtitleHandler:
         end_time = datetime.min
         text = ""
 
-        for i in len(lines):
+        for i in range(len(lines)):
             line = lines[i].strip()
 
             # Subtitle number not needed
             if re.fullmatch("[0-9]+", line):
                 # Making sure this is a subtitle index, not a number printed by itself as the text of a subtitle!
-                if i == 0 or lines[i-1].strip() == "":
+                if i == 0 or lines[i - 1].strip() == "":
                     continue
 
             # Timestamp for subtitle
@@ -71,29 +86,31 @@ class SubtitleHandler:
 
             # Empty line means we have seen the full subtitle
             elif line == "":
-                
                 # If no text has been saved we skip this subtitle
                 if text == "":
                     continue
-                    
+
                 # If the current start time is the same as the previous's or is before the previous's end time, then simply append the current subtitle
-                if subtitles != [] and (start_time == subtitles[-1]["start_time"] or start_time < subtitles[-1]["end_time"]):
+                if subtitles != [] and (
+                    start_time == subtitles[-1].start_time
+                    or start_time < subtitles[-1].end_time
+                ):
                     subtitles[-1]["text"] += text + " "
 
                     # Having appended the current subtitle to the last one, we must lengthen the end time if it is later
-                    if end_time > subtitles[-1]["end_time"]:
-                        subtitles[-1]["end_time"] = end_time
+                    if end_time > subtitles[-1].end_time:
+                        subtitles[-1].end_time = end_time
 
                     continue
 
                 subtitles.append(Subtitle(start_time, end_time, text))
 
-                text = "" # Flush the text
-                
+                text = ""  # Flush the text
+
             elif any([symbol in line for symbol in non_speaking_symbols]):
                 # If line is non-speaking caption we skip it
                 continue
-            
+
             else:
                 text += line + " "
 
@@ -117,16 +134,13 @@ class SubtitleHandler:
         if buffer_len > 0:
             all_sub_times = [
                 (
-                    start_time - timedelta(seconds=buffer_len),
+                    max(0, start_time - timedelta(seconds=buffer_len)),
                     end_time + timedelta(seconds=buffer_len),
                 )
                 for start_time, end_time in all_sub_times
             ]
 
         return all_sub_times
-
-        # max (0, start_time - 1 second)
-        # min (0, len_of_audio_track)
 
     ##!! refactor in future
     def segment_episode(self, minimum_silence_between_segments):
@@ -205,7 +219,7 @@ class SubtitleHandler:
         return len(self.subtitles)
 
 
-# class MultiSubtitleHandler!!
+# class MultiSubtitleModel!!
 
 
 #################
@@ -216,30 +230,22 @@ def read_subs_file(path):
     with open(file=path, encoding="utf-8-sig") as f:
         file = [line.strip() for line in f.readlines()]
 
+
 def parse_subtitle_timing(line):
     start_time, end_time = line.split(" --> ")
-    
+
     # Handling having milliseconds or not, e.g. 01:30:12 vs 01:30:12,00s7
-    if ',' in start_time:
+    if "," in start_time:
         start_time = datetime.strptime(start_time, "%H:%M:%S,%f")
     else:
         start_time = datetime.strptime(start_time, "%H:%M:%S")
-    
-    if ',' in end_time:
+
+    if "," in end_time:
         end_time = datetime.strptime(end_time, "%H:%M:%S,%f")
     else:
         end_time = datetime.strptime(end_time, "%H:%M:%S")
-        
+
     return start_time, end_time
-
-def parse_subs_file(subs_file_raw):
-    parsed_subs = []
-
-    for line in subs_file_raw:
-        if not re.match(r"(^\d+$)|(\n)|(\d.*--> \d.*)", line):
-            parsed_subs.append(line)
-
-    return parsed_subs
 
 
 def output_text_file(subtitle_lines, output_path):
