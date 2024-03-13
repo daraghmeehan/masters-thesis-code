@@ -1,7 +1,7 @@
 import os, json
 
 
-def load_all_tl_to_english_dictionaries():
+def load_all_target_to_english_dictionaries():
     dictionaries = {}
 
     lexilogos_folder = "resources/lexilogos"
@@ -19,8 +19,14 @@ def load_all_tl_to_english_dictionaries():
         with open(filepath, "r") as f:
             data = json.load(f)
 
-        language_to_eng_dictionaries = data["language_to_eng"]
+        custom_target_to_english_dictionaries = data["dictionaries"][
+            "custom_target_to_english"
+        ]
 
-        dictionaries[language] = language_to_eng_dictionaries
+        target_to_english_dictionaries = data["dictionaries"]["target_to_english"]
+
+        # Simply merge all the dictionaries
+        dictionaries[language] = custom_target_to_english_dictionaries
+        dictionaries[language].update(target_to_english_dictionaries)
 
     return dictionaries

@@ -1,5 +1,29 @@
 {
-  "languages_template": {
+  "text_template": {
+    "fields": {
+      "Question Text": { "type": "TextEdit" },
+      "Answer Text": { "type": "TextEdit" },
+      "Hint": { "type": "LineEdit" },
+      "Example Sentence(s)": { "type": "TextEdit" },
+      "Other Forms": { "type": "TextEdit" },
+      "Extra Info": { "type": "TextEdit" },
+      "Pronunciation": { "type": "LineEdit" },
+      "Question Language": { "type": "Dropdown" },
+      "Answer Language": { "type": "Dropdown" },
+      "Source": { "type": "LineEdit" },
+      "Tags": { "type": "Hidden" }
+    },    
+    "required_fields": [
+      "Question Text",
+      "Answer Text"
+    ],
+    "decks": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "avi_template": {
     "fields": {
       "Question Text": { "type": "TextEdit" },
       "Answer Text": { "type": "TextEdit" },

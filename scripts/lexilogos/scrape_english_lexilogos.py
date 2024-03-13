@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from time import sleep
 
-TIME_STAMP = "march_23"
+TIME_STAMP = "feb_24"
 
 english_homepage = "https://www.lexilogos.com/english/"
 
@@ -27,7 +27,8 @@ for language, page in all_english_compatible_languages.items():
     html_content = r.content
 
     with open(
-        f"./language_pages/english_pages_{TIME_STAMP}/{language}.html", "wb+"
+        f"./data/lexilogos/language_pages_{TIME_STAMP}/english_pages/{language}.html",
+        "wb+",
     ) as f:
         f.write(html_content)
 

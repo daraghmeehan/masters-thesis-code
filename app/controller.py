@@ -13,11 +13,11 @@ import pyperclip  # For clipboard operations
 
 
 ## Local imports
-from model.subtitle_model import SubtitleModel
+from model.model import AVIModel
 
 # Translator/Dictionaries
 from deep_l.translator import load_translator
-from lexilogos.dictionaries import load_all_tl_to_english_dictionaries
+from lexilogos.dictionaries import load_all_target_to_english_dictionaries
 
 # UI imports
 from ui.startup_dialog import StartupDialog
@@ -37,6 +37,76 @@ if hasattr(QtCore.Qt, "AA_EnableHighDpiScaling"):
     QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 if hasattr(QtCore.Qt, "AA_UseHighDpiPixmaps"):
     QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
+
+sample_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.mp4",
+    "Source Language": "English",
+    "Target Languages": [
+        "Spanish",
+        "Dutch",
+        "French",
+        "Japanese",
+        # "Czech",
+        # "Polish",
+        # "Indonesian",
+        # "Portuguese",
+        # "Swedish",
+        # "Italian",
+        # "Turkish",
+        # "Chinese",
+        # "Chinese (Traditional)",
+    ],
+    "Audio Tracks": {
+        "English": "None",
+        "Spanish": "None",
+        "Dutch": "None",
+        # "French": "None",
+        # "Japanese": "None",
+        # "Czech": "None",
+        # "Polish": "None",
+        # "Indonesian": "None",
+        # "Portuguese": "None",
+        # "Swedish": "None",
+        # "Italian": "None",
+        # "Turkish": "None",
+        # "Chinese": "None",
+        # "Chinese (Traditional)": "None",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.en.srt",
+        "English": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.en.srt",
+        "Spanish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.es.srt",
+        "Dutch": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.nl.srt",
+        "French": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.fr.srt",
+        "Japanese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.ja.srt",
+        # "Czech": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.cs.srt",
+        # "Polish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.pl.srt",
+        # "Indonesian": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.id.srt",
+        # "Portuguese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.pt.srt",
+        # "Swedish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.sv.srt",
+        # "Italian": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.it.srt",
+        # "Turkish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.tr.srt",
+        # "Chinese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.zh-Hans.srt",
+        # "Chinese (Traditional)": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.zh-Hant.srt",
+    },
+    "Dictionaries": {
+        "Spanish": ["SpanishDict", "Collins"],
+        "Dutch": ["Van Dale"],
+        "French": ["Larousse"],
+        # "Japanese": [],
+        # "Czech": [],
+        # "Polish": [],
+        # "Indonesian": [],
+        # "Portuguese": [],
+        # "Swedish": [],
+        # "Italian": [],
+        # "Turkish": [],
+        # "Chinese": [],
+        # "Chinese (Traditional)": [],
+    },
+}
 
 
 class Controller:
@@ -60,29 +130,35 @@ class Controller:
         - Executing the application's event loop.
         - Exporting flashcards created and cleaning temporary files.
         """
-        # Initialise language reference tools
-        self.translator = load_translator()
-        self.tl_to_english_dictionaries = load_all_tl_to_english_dictionaries()
-
-        # !!
-        self.temporary_audio_folder = "../temp/audio"
-        self.flashcard_output_folder = "../media/flashcards/new"
-        self.flashcard_audio_folder = "../media/audio"
-        self.flashcard_image_folder = "../media/images"
+        self.target_to_english_dictionaries = load_all_target_to_english_dictionaries()
 
         # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
-        startup_options = self.run_startup_dialog()
+        # startup_options = self.run_startup_dialog()
+
+        # # For quicker testing
+        startup_options = sample_startup_options
+
         self.parse_startup_options(startup_options)
+        if self.mode == "Export Media":
+            # self.export_media (all_exports : List)??
+            return
+
+        self.translator = load_translator()
+        # !!
+        self.flashcard_output_folder = "../media/flashcards/new_cards"
 
         # Get ready to make flashcards
         flashcard_templates_path = "resources/flashcards/flashcard_templates.json"
         flashcard_template = self.load_flashcard_template(flashcard_templates_path)
-        self.flashcard_fields = flashcard_template["fields"]
-        self.required_fields = flashcard_template["required_fields"]
-        self.decks = flashcard_template["decks"]
+        self.parse_flashcard_template(flashcard_template)
         self.flashcard_creators = self.set_up_flashcard_creators()
 
         if self.mode == "AVI":
+            self.temporary_audio_folder = "../temp/audio"
+            self.flashcard_audio_folder = "../media/flashcards/flashcard_audio"
+            self.flashcard_image_folder = "../media/flashcards/flashcard_images"
+            self.avi_practice_audio_folder = "../media/audio"
+
             # Set up the media extractors
             self.set_up_screenshot_extractor()
             self.set_up_audio_extractor()
@@ -103,7 +179,7 @@ class Controller:
 
     def run_startup_dialog(self):
         startup_app = QApplication([])
-        startup_dialog = StartupDialog(self.tl_to_english_dictionaries)
+        startup_dialog = StartupDialog(self.target_to_english_dictionaries)
         if startup_dialog.exec_() == QDialog.Accepted:
             startup_options = startup_dialog.get_options()
             return startup_options
@@ -111,6 +187,8 @@ class Controller:
 
     def parse_startup_options(self, startup_options):
         self.mode = startup_options["Mode"]
+        if self.mode == "Export Media":
+            return
         self.source_language = startup_options["Source Language"]
         self.target_languages = startup_options["Target Languages"]
         self.languages = [self.source_language] + self.target_languages
@@ -129,12 +207,14 @@ class Controller:
 
         flashcard_templates = read_flashcard_templates(flashcard_templates_path)
 
-        if self.mode == "Text":
-            flashcard_template = flashcard_templates["text_template"]
-        elif self.mode == "AVI":
-            flashcard_template = flashcard_templates["avi_template"]
+        flashcard_template = flashcard_templates["languages_template"]
 
         return flashcard_template
+
+    def parse_flashcard_template(self, flashcard_template):
+        self.flashcard_fields = flashcard_template["fields"]
+        self.required_fields = flashcard_template["required_fields"]
+        self.decks = flashcard_template["decks"]
 
     def set_up_flashcard_creators(self):
         flashcard_creators = {}
@@ -159,13 +239,10 @@ class Controller:
         )  # Extract the audio tracks of the video file
 
     def set_up_model(self):
-        if self.mode == "AVI":
-            # self.model = SubtitleModel(self.subtitle_files, self.source_language) !!!!
-            self.model = SubtitleModel(
-                self.source_language, self.subtitle_files["English"]
-            )
-        elif self.mode == "Text":
+        if self.mode == "Text":
             pass
+        elif self.mode == "AVI":
+            self.model = AVIModel(self.subtitle_files)
 
     def set_up_ui(self):
         self.app = QApplication([])
@@ -178,137 +255,19 @@ class Controller:
             main_window_title = self.target_languages[0]
 
         # Set up the view
-        self.ui = MainWindow(window_title=main_window_title, mode=self.mode)
+        self.ui = MainWindow(
+            window_title=main_window_title, mode=self.mode, languages=self.languages
+        )
 
         # Set up key widgets of the UI
-        self.set_up_study_materials()
+        self.set_up_flashcard_workspace()
         self.set_up_translation_workspace()
         self.set_up_dictionary_lookup()
-        self.set_up_flashcard_workspace()
+        self.set_up_study_materials()
 
         # Set up UI workflow
         self.set_up_shortcuts()
         self.set_up_all_enter_key_signals()
-
-    def set_up_study_materials(self):
-        if self.mode == "AVI":
-            self.set_up_subtitle_workspace()
-        self.set_up_saved_sentences()
-
-    def set_up_subtitle_workspace(self):
-        self.ui.study_materials.subtitle_workspace.add_language(
-            "English", self.model.subtitles
-        )
-
-    def set_up_saved_sentences(self):
-        self.set_up_sentence_bin()
-
-        self.ui.study_materials.saved_sentences.translate_entry_signal.connect(
-            self.translate_entry
-        )
-        self.ui.study_materials.saved_sentences.make_flashcard_from_entry_signal.connect(
-            self.make_flashcard_from_entry
-        )
-
-        self.ui.study_materials.saved_sentences.translate_all_button.clicked.connect(
-            self.translate_all_entries
-        )
-
-        self.ui.study_materials.saved_sentences.add_new_from_clipboard_button.clicked.connect(
-            self.add_entry_from_clipboard
-        )
-
-    def translate_entry(self, entry_widget):
-        """Entry from saved_sentences_1"""
-        sentence = entry_widget.get_target_language_text()
-        print(f"Got sentence: {sentence}")
-        ##!! set language dynamically
-        translation = self.translator.translate_text(
-            text=sentence,
-            source_lang=self.source_language,
-            target_lang=self.target_languages[0],  ##!! change?
-        ).text
-        entry_widget.set_source_language_text(translation)
-
-    def make_flashcard_from_entry(self, entry_widget):
-        target_language = entry_widget.get_target_language_text()
-        source_language = entry_widget.get_source_language_text()
-
-        self.ui.flashcard_workspace.reset_flashcard_fields()
-
-        self.ui.flashcard_workspace.target_textedit.setText(target_language)
-        self.ui.flashcard_workspace.source_textedit.setText(source_language)
-
-        entry_widget.remove_button.click()
-
-    def translate_all_entries(self):
-        (
-            entry_indices,
-            sentences,
-        ) = self.ui.study_materials.saved_sentences.get_all_saved_sentences()
-
-        if entry_indices == [] or sentences == []:
-            return
-
-        ##!! set language dynamically
-        translations = self.translator.translate_text(
-            text=sentences,
-            source_lang=self.source_language,
-            target_lang=self.target_languages[0],  ##!! how to know which?
-        )
-        translations = [translation.text for translation in translations]
-
-        self.ui.study_materials.saved_sentences.set_all_translations(
-            entry_indices, translations
-        )
-
-    def set_up_translation_workspace(self):
-        self.ui.translation_workspace.set_languages(
-            languages=self.languages,
-            target_language=self.target_languages[0],
-            source_language=self.source_language,
-        )
-
-        self.ui.translation_workspace.translate_button.clicked.connect(
-            self.translate_from_workspace
-        )
-
-        self.ui.translation_workspace.flashcard_button.clicked.connect(
-            self.make_flashcard_from_workspace
-        )
-
-    def translate_from_workspace(self):
-        target_language_text = self.ui.translation_workspace.get_target_language_text()
-        if target_language_text == "":
-            return
-
-        target_language = self.ui.translation_workspace.get_target_language()
-        source_language = self.ui.translation_workspace.get_source_language()
-
-        if target_language == source_language:
-            return  # don't do anything if translating between same language
-
-        try:
-            translation = self.translator.translate_text(
-                text=target_language_text,
-                source_lang=source_language,
-                target_lang=target_language,
-            ).text
-        except:
-            translation = ""
-
-        self.ui.translation_workspace.set_source_language_text(translation)
-
-    def make_flashcard_from_workspace(self):
-        target_language = self.ui.translation_workspace.get_target_language_text()
-        source_language = self.ui.translation_workspace.get_source_language_text()
-
-        self.ui.flashcard_workspace.reset_flashcard_fields()
-
-        self.ui.flashcard_workspace.target_textedit.setText(target_language)
-        self.ui.flashcard_workspace.source_textedit.setText(source_language)
-
-        self.ui.translation_workspace.clear_workspace()
 
     def set_up_flashcard_workspace(self):
         self.ui.flashcard_workspace.deck_dropdown.addItems(
@@ -371,6 +330,55 @@ class Controller:
     def edit_previous_flashcards(self):
         pass
 
+    def set_up_translation_workspace(self):
+        self.ui.translation_workspace.set_languages(
+            languages=self.languages,
+            target_language=self.target_languages[0],
+            source_language=self.source_language,
+        )
+
+        self.ui.translation_workspace.translate_button.clicked.connect(
+            self.translate_from_workspace
+        )
+
+        self.ui.translation_workspace.flashcard_button.clicked.connect(
+            self.make_flashcard_from_workspace
+        )
+
+    def translate_from_workspace(self):
+        target_language_text = self.ui.translation_workspace.get_target_language_text()
+        if target_language_text == "":
+            return
+
+        target_language = self.ui.translation_workspace.get_target_language()
+        source_language = self.ui.translation_workspace.get_source_language()
+
+        if target_language == source_language:
+            return  # don't do anything if translating between same language
+
+        try:
+            # In translation the source language (the user's L2) is the one to be translated to the target language (the user's L1)
+            translation = self.translator.translate_text(
+                text=target_language_text,
+                source_lang=target_language,
+                target_lang=source_language,
+            ).text
+        except:
+            translation = ""
+
+        self.ui.translation_workspace.set_source_language_text(translation)
+
+    def make_flashcard_from_workspace(self):
+        target_language = self.ui.translation_workspace.get_target_language_text()
+        source_language = self.ui.translation_workspace.get_source_language_text()
+
+        self.ui.flashcard_workspace.reset_flashcard_fields()
+
+        self.ui.flashcard_workspace.target_textedit.setText(target_language)
+        self.ui.flashcard_workspace.source_textedit.setText(source_language)
+
+        self.ui.translation_workspace.clear_workspace()
+
     def set_up_dictionary_lookup(self):
         self.ui.dictionary_lookup.set_up_dictionaries(self.dictionaries)
         self.ui.dictionary_lookup.search_button.clicked.connect(self.look_up_word)
@@ -392,7 +400,7 @@ class Controller:
                 dictionaries_to_search.append(checkbox.text())
 
         for dictionary in dictionaries_to_search:
-            formatting = self.tl_to_english_dictionaries[self.target_language][
+            formatting = self.target_to_english_dictionaries[self.target_language][
                 dictionary
             ]
             search_address = formatting[0] + word + formatting[1]
@@ -400,6 +408,108 @@ class Controller:
                 search_address,  # autoraise=False
             )
             ##?? any way of setting focus on this window??
+
+    def set_up_study_materials(self):
+        if self.mode == "AVI":
+            initial_alignment = self.model.get_alignment()
+
+            # import sys
+            # sys.argv.append(self.model) ## For testing
+
+            self.set_up_subtitle_workspace(initial_alignment)
+        elif self.mode == "Text":
+            self.set_up_saved_sentences()
+
+    def set_up_subtitle_workspace(self, alignment):
+        for entry in alignment:
+            subtitles = {
+                language: {"indices": [], "texts": []} for language in self.languages
+            }
+            for language in self.languages:
+                all_subtitle_indices = entry["subtitle_indices"][language]
+                if all_subtitle_indices == []:
+                    continue
+
+                all_subtitle_texts = []
+                for subtitle_index in all_subtitle_indices:
+                    subtitle_text = self.model.get_subtitle(
+                        language, subtitle_index
+                    ).text
+                    all_subtitle_texts.append(subtitle_text)
+
+                subtitles[language]["indices"] = all_subtitle_indices
+                subtitles[language]["texts"] = all_subtitle_texts
+
+            self.ui.study_materials.subtitle_workspace.add_entry(subtitles)
+
+    def set_up_saved_sentences(self):
+        self.set_up_sentence_bin()
+
+        self.ui.study_materials.saved_sentences.translate_entry_signal.connect(
+            self.translate_entry
+        )
+        self.ui.study_materials.saved_sentences.make_flashcard_from_entry_signal.connect(
+            self.make_flashcard_from_entry
+        )
+
+        self.ui.study_materials.saved_sentences.translate_all_button.clicked.connect(
+            self.translate_all_entries
+        )
+
+        self.ui.study_materials.saved_sentences.add_new_from_clipboard_button.clicked.connect(
+            self.add_entry_from_clipboard
+        )
+
+    def translate_entry(self, entry_widget):
+        """Entry from saved_sentences_1"""
+        sentence = entry_widget.get_target_language_text()
+        print(f"Got sentence: {sentence}")
+        ##!! set language dynamically
+        translation = self.translator.translate_text(
+            text=sentence,
+            source_lang=self.target_languages[0],
+            target_lang=self.source_language,  ##!! change?
+        ).text
+        entry_widget.set_source_language_text(translation)
+
+    def make_flashcard_from_entry(self, entry_widget):
+        target_language = entry_widget.get_target_language_text()
+        source_language = entry_widget.get_source_language_text()
+
+        self.ui.flashcard_workspace.reset_flashcard_fields()
+
+        self.ui.flashcard_workspace.fields["Question Text"].setText(target_language)
+        self.ui.flashcard_workspace.fields["Answer Text"].setText(source_language)
+
+        entry_widget.remove_button.click()
+
+    def translate_all_entries(self):
+        (
+            entry_indices,
+            sentences,
+        ) = self.ui.study_materials.saved_sentences.get_all_saved_sentences()
+
+        if entry_indices == [] or sentences == []:
+            return
+
+        ##!! set language dynamically
+        translations = self.translator.translate_text(
+            text=sentences,
+            source_lang=self.target_languages[0],
+            target_lang=self.sourcetarget_language,  ##!! how to know which?
+        )
+        translations = [translation.text for translation in translations]
+
+        self.ui.study_materials.saved_sentences.set_all_translations(
+            entry_indices, translations
+        )
+
+    def add_entry_from_clipboard(self):
+        sentence = pyperclip.paste()
+        sentence = sentence.replace("\n", " ")
+        sentence = " ".join(sentence.split())  # quick way of replacing multiple spaces
+        sentence = sentence.replace("­", "")  # removing soft hyphens!
+        self.ui.study_materials.saved_sentences.add_entry(sentence)
 
     def set_up_sentence_bin(self):
         self.current_sentence_bin = None
@@ -437,17 +547,18 @@ class Controller:
         ## instead putting shortcut in each one (rather keep shortcuts together)
         ##!! also want going down/up entries with say ctrl+up arrow and down arrow
 
-        self.add_new_sentences_shortcut = QShortcut(QKeySequence("Alt+B"), self.ui)
-        self.add_new_sentences_shortcut.activated.connect(
-            self.ui.study_materials.saved_sentences.add_new_cards_button.click
-        )
+        if self.mode == "Text":
+            self.add_new_sentences_shortcut = QShortcut(QKeySequence("Alt+B"), self.ui)
+            self.add_new_sentences_shortcut.activated.connect(
+                self.ui.study_materials.saved_sentences.add_new_cards_button.click
+            )
 
-        self.add_sentence_from_clipboard_shortcut = QShortcut(
-            QKeySequence("Alt+C"), self.ui
-        )
-        self.add_sentence_from_clipboard_shortcut.activated.connect(
-            self.add_entry_from_clipboard
-        )
+            self.add_sentence_from_clipboard_shortcut = QShortcut(
+                QKeySequence("Alt+C"), self.ui
+            )
+            self.add_sentence_from_clipboard_shortcut.activated.connect(
+                self.add_entry_from_clipboard
+            )
 
         # translation workspace widget
         self.tw_translate_shortcut = QShortcut(
@@ -489,13 +600,6 @@ class Controller:
 
         ##!! shortcuts to move focus
 
-    def add_entry_from_clipboard(self):
-        sentence = pyperclip.paste()
-        sentence = sentence.replace("\n", " ")
-        sentence = " ".join(sentence.split())  # quick way of replacing multiple spaces
-        sentence = sentence.replace("­", "")  # removing soft hyphens!
-        self.ui.study_materials.saved_sentences.add_entry(sentence)
-
     ##?? how to teach user
     def copy_to_dictionary_lookup(self):
         self.ui.dictionary_lookup.dictionary_lookup_lineedit.setText(pyperclip.paste())
@@ -505,6 +609,15 @@ class Controller:
         self.ui.dictionary_lookup.dictionary_lookup_lineedit.returnPressed.connect(
             self.ui.dictionary_lookup.search_button.click
         )
+
+    def export_episode(self):
+        language_order = ["English", "Spanish", "French"]
+        speaking_times = self.model.get_all_speaking_times()
+        for language in language_order:
+            audio_track = self.audio_tracks[language]
+            if audio_track == "None":
+                continue
+            self.audio_something.extract_audio(speaking_times)
 
     def delete_empty_decks(self):
         for deck in self.decks:

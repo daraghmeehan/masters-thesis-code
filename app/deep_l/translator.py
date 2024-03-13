@@ -93,11 +93,6 @@ class Translator:
         elif isinstance(text, list):
             text = [t.replace("­", "") for t in text]
 
-        source_lang, target_lang = (
-            target_lang,
-            source_lang,
-        )  # need to be swapped as terms are swapped in translation vs language learning
-
         source_lang_code = self.source_language_codes[source_lang]
         target_lang_code = self.target_language_codes[target_lang]
 

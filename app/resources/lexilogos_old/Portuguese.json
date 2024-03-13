@@ -1,0 +1,56 @@
+{
+    "language_specific_characters": [
+        "\u00c3\u00a0",
+        "\u00c3\u00a1",
+        "\u00c3\u00a3",
+        "\u00c3\u00a7",
+        "\u00c3\u00aa",
+        "\u00c3\u00a9",
+        "\u00c3\u00ad",
+        "\u00c3\u00b3",
+        "\u00c3\u00b5",
+        "\u00c3\u00ba"
+    ],
+    "language_to_eng": {
+        "Michaelis": [
+            "https://michaelis.uol.com.br/moderno-ingles/busca/portugues-ingles-moderno/",
+            "/"
+        ],
+        "Porto Editora": [
+            "https://www.infopedia.pt/dicionarios/portugues-ingles/",
+            ""
+        ],
+        "Reverso": [
+            "https://dictionary.reverso.net/portuguese-english/",
+            "/forced"
+        ],
+        "+ context": [
+            "https://context.reverso.net/translation/portuguese-english/",
+            ""
+        ],
+        "Collins": [
+            "https://www.collinsdictionary.com/dictionary/portuguese-english/",
+            ""
+        ],
+        "Pons": [
+            "https://en.pons.com/translate/portuguese-english/",
+            ""
+        ],
+        "WordReference": [
+            "https://www.wordreference.com/pten/",
+            ""
+        ],
+        "Linguee": [
+            "https://www.linguee.com/english-portuguese/search?source=portuguese&query=",
+            ""
+        ],
+        "Bab.la": [
+            "https://en.bab.la/dictionary/portuguese-english/",
+            ""
+        ],
+        "Iate": [
+            "http://iate.europa.eu/search/byUrl?term=",
+            "&sl=pt&tl=en"
+        ]
+    }
+}

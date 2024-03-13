@@ -1,1 +1,82 @@
-{"language_specific_characters": [], "language_to_eng": {"Van Dale": ["https://www.vandale.nl/opzoeken?pattern=", "&lang=ne"], "Reverso": ["https://dictionnaire.reverso.net/dutch-english/", "/forced"], "+ context": ["https://context.reverso.net/translation/dutch-english/", ""], "Pons": ["https://en.pons.com/translate/dutch-english/", ""], "Glosbe": ["https://en.glosbe.com/nl/en/", ""], "Sensagent": ["http://dictionary.sensagent.com/", "/nl-en/"], "Interglot": ["https://www.interglot.com/dictionary/nl/en/search?q=", ""], "Bab.la": ["https://en.bab.la/dictionary/dutch-english/", ""], "MijnWoordenboek": ["http://www.mijnwoordenboek.nl/vertalen.php?woord=", "&src=NL&des=FR"], "Iate": ["http://iate.europa.eu/search/byUrl?term=", "&sl=nl&tl=en"]}}
+{
+    "language_specific_characters": [],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Van Dale": {
+                "url": [
+                    "https://www.vandale.nl/opzoeken?pattern=",
+                    "&lang=ne"
+                ],
+                "is_favourite": false
+            },
+            "Reverso": {
+                "url": [
+                    "https://dictionnaire.reverso.net/dutch-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/dutch-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/dutch-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/nl/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Sensagent": {
+                "url": [
+                    "http://dictionary.sensagent.com/",
+                    "/nl-en/"
+                ],
+                "is_favourite": false
+            },
+            "Interglot": {
+                "url": [
+                    "https://www.interglot.com/dictionary/nl/en/search?q=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/dutch-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "MijnWoordenboek": {
+                "url": [
+                    "http://www.mijnwoordenboek.nl/vertalen.php?woord=",
+                    "&src=NL&des=FR"
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=nl&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}
