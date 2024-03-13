@@ -9,3 +9,7 @@ It's possible to create multimedia flashcards with vocabulary/phrases, that can 
 It's also possible to create condensed review audio files, which extract all dialogue audio from the episode (using the subtitle timings), with the option of cycling through languages for each dialogue or playing the whole episode back-to-back in different languages.
 
 <img width="2531" alt="Main poster 1" src="https://github.com/daraghmeehan/masters-thesis/assets/47535504/4866f587-ded8-4227-bfcb-fe5161bf3c21">
+
+## User Interface - Aligning subtitles across multiple languages
+
+<img width="1279" alt="First look at UI with alignment!" src="https://github.com/daraghmeehan/masters-thesis/assets/47535504/e8f1313e-892d-4f62-9260-77fcfb978bd9">
