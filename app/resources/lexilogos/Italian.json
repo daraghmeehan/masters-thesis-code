@@ -1,1 +1,90 @@
-{"language_specific_characters": ["\u00c3\u00a0", "\u00c3\u00a9", "\u00c3\u00a8", "\u00c3\u00ac", "\u00c3\u00b3", "\u00c3\u00b2", "\u00c3\u00b9"], "language_to_eng": {"Reverso": ["https://dictionnaire.reverso.net/italian-english/", "/forced"], "+ context": ["https://context.reverso.net/translation/italian-english/", ""], "Collins": ["https://www.collinsdictionary.com/dictionary/italian-english/", ""], "Pons": ["https://en.pons.com/translate/italian-english/", ""], "Larousse": ["https://www.larousse.fr/dictionnaires/italien-anglais/", ""], "Lingea": ["https://www.dict.com/Inglese-italiano/", ""], "WordReference": ["https://www.wordreference.com/iten/", ""], "Bab.la": ["https://en.bab.la/dictionary/italian-english/", ""], "Glosbe": ["https://en.glosbe.com/it/en/", ""], "Iate": ["http://iate.europa.eu/search/byUrl?term=", "&sl=it&tl=en"]}}
+{
+    "language_specific_characters": [
+        "\u00c3\u00a0",
+        "\u00c3\u00a9",
+        "\u00c3\u00a8",
+        "\u00c3\u00ac",
+        "\u00c3\u00b3",
+        "\u00c3\u00b2",
+        "\u00c3\u00b9"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Reverso": {
+                "url": [
+                    "https://dictionnaire.reverso.net/italian-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/italian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Collins": {
+                "url": [
+                    "https://www.collinsdictionary.com/dictionary/italian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/italian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Larousse": {
+                "url": [
+                    "https://www.larousse.fr/dictionnaires/italien-anglais/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/Inglese-italiano/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "WordReference": {
+                "url": [
+                    "https://www.wordreference.com/iten/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/italian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/it/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=it&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

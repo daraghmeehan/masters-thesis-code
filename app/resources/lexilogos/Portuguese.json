@@ -1,1 +1,94 @@
-{"language_specific_characters": ["\u00c3\u00a0", "\u00c3\u00a1", "\u00c3\u00a3", "\u00c3\u00a7", "\u00c3\u00aa", "\u00c3\u00a9", "\u00c3\u00ad", "\u00c3\u00b3", "\u00c3\u00b5", "\u00c3\u00ba"], "language_to_eng": {"Michaelis": ["https://michaelis.uol.com.br/moderno-ingles/busca/portugues-ingles-moderno/", "/"], "Porto Editora": ["https://www.infopedia.pt/dicionarios/portugues-ingles/", ""], "Reverso": ["https://dictionary.reverso.net/portuguese-english/", "/forced"], "+ context": ["https://context.reverso.net/translation/portuguese-english/", ""], "Collins": ["https://www.collinsdictionary.com/dictionary/portuguese-english/", ""], "Pons": ["https://en.pons.com/translate/portuguese-english/", ""], "WordReference": ["https://www.wordreference.com/pten/", ""], "Linguee": ["https://www.linguee.com/english-portuguese/search?source=portuguese&query=", ""], "Bab.la": ["https://en.bab.la/dictionary/portuguese-english/", ""], "Iate": ["http://iate.europa.eu/search/byUrl?term=", "&sl=pt&tl=en"]}}
+{
+    "language_specific_characters": [
+        "\u00c3\u00a0",
+        "\u00c3\u00a1",
+        "\u00c3\u00a3",
+        "\u00c3\u00a7",
+        "\u00c3\u00aa",
+        "\u00c3\u00a9",
+        "\u00c3\u00ad",
+        "\u00c3\u00b3",
+        "\u00c3\u00b5",
+        "\u00c3\u00ba"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {
+            "Collins": {
+                "url": [
+                    "https://www.collinsdictionary.com/dictionary/portuguese-english/",
+                    "/"
+                ],
+                "is_favourite": false
+            }
+        },
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Michaelis": {
+                "url": [
+                    "https://michaelis.uol.com.br/moderno-ingles/busca/portugues-ingles-moderno/",
+                    "/"
+                ],
+                "is_favourite": false
+            },
+            "Porto Editora": {
+                "url": [
+                    "https://www.infopedia.pt/dicionarios/portugues-ingles/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Reverso": {
+                "url": [
+                    "https://dictionary.reverso.net/portuguese-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/portuguese-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/portuguese-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "WordReference": {
+                "url": [
+                    "https://www.wordreference.com/pten/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Linguee": {
+                "url": [
+                    "https://www.linguee.com/english-portuguese/search?source=portuguese&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/portuguese-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=pt&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

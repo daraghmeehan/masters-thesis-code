@@ -15,9 +15,10 @@ from ui.dictionary_lookup import DictionaryLookup
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, window_title, mode):
+    def __init__(self, window_title, mode, languages):
         super().__init__()
         self.mode = mode
+        self.languages = languages
         self.initUI(window_title)
 
     def initUI(self, window_title):
@@ -35,7 +36,7 @@ class MainWindow(QMainWindow):
         self.set_up_tab_order()
 
     def set_up_layout(self):
-        self.study_materials = StudyMaterials(mode=self.mode)
+        self.study_materials = StudyMaterials(mode=self.mode, languages=self.languages)
         self.flashcard_workspace = FlashcardWorkspace()
         self.translation_workspace = TranslationWorkspace()
         self.dictionary_lookup = DictionaryLookup()

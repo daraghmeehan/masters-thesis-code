@@ -1,7 +1,7 @@
 import json
 from bs4 import BeautifulSoup
 
-TIME_STAMP = "march_23"
+TIME_STAMP = "feb_24"
 
 first_languages_to_scrape = [
     "Dutch",
@@ -13,7 +13,7 @@ first_languages_to_scrape = [
 ]
 
 
-def extract_dictionary_links(links_paragraph):
+def extract_dictionary_links(links_paragraph, language):
 
     dictionary_links = {}
 
@@ -22,7 +22,7 @@ def extract_dictionary_links(links_paragraph):
         onclick_address = link["onclick"]
 
         if "http" not in onclick_address:
-            print(f"Didn't scrape {dictionary_name}")
+            print(f"Didn't scrape {dictionary_name} for {language}")
             continue
 
         assert "f.q.value" or "f.p.value" in onclick_address
@@ -39,14 +39,20 @@ def extract_dictionary_links(links_paragraph):
         else:
             address_postfix = ""
 
-        dictionary_links[dictionary_name] = (address_prefix, address_postfix)
+        dictionary_links[dictionary_name] = {
+            "url": (address_prefix, address_postfix),
+            "is_favourite": False,
+        }
 
     return dictionary_links
 
 
 for language in first_languages_to_scrape:
 
-    with open(f"language_pages_{TIME_STAMP}/english_pages/{language}.html", "r") as f:
+    with open(
+        f"./data/lexilogos/language_pages_{TIME_STAMP}/english_pages/{language}.html",
+        "r",
+    ) as f:
         html_content = f.read()
 
     soup = BeautifulSoup(html_content, "html.parser")  # , from_encoding="utf-8")
@@ -56,18 +62,29 @@ for language in first_languages_to_scrape:
     dictionary_div = soup.find("div", class_="did")
     assert "dictionary" in dictionary_div.text
 
-    eng_to_language_paragraph, language_to_eng_paragraph = dictionary_div.find_all("p")
+    eng_to_target_paragraph, target_to_eng_paragraph = dictionary_div.find_all("p")
 
     try:
-        eng_to_language_links = extract_dictionary_links(language_to_eng_paragraph)
-        # print(f"{language}:\n{eng_to_language_links}\n\n-----\n")
+        eng_to_target_links = extract_dictionary_links(
+            target_to_eng_paragraph, language
+        )
+        # print(f"{language}:\n{eng_to_target_links}\n\n-----\n")
     except:
         print(f"Problem with {language}")
         exit()
 
     data = {
         "language_specific_characters": language_specific_characters,
-        "language_to_eng": eng_to_language_links,
+        "dictionaries": {
+            "custom_target_to_english": {},
+            "custom_english_to_target": {},
+            "custom_target_monolingual": {},
+            "target_to_english": eng_to_target_links,
+            "english_to_target": {},
+            "target_monolingual": {},
+        },
     }
-    with open(f"json_ready_{TIME_STAMP}/english_data/{language}.json", "w") as f:
+    with open(
+        f"./data/lexilogos/language_pages_cleaned_{TIME_STAMP}/{language}.json", "w"
+    ) as f:
         json.dump(data, f)

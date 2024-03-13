@@ -1,3 +1,7 @@
+import os
+import json
+
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QApplication,
     QDialog,
@@ -15,20 +19,21 @@ from PyQt5.QtWidgets import (
     QFrame,
 )
 
-import os
-
-import json
 import ffmpeg
 
 LANGUAGE_LEARNING_MATERIAL_PATH = (
     r"C:\Stuff\UniversaLearn\LanguageRepo\Language Learning Material"
 )
 
+MODE_PAGE_INDEX = 0
+TEXT_PAGE_INDEX = 1
+AVI_PAGE_INDEX = 2
+DICTIONARY_PAGE_INDEX = 3
 
-all_languages = [
+
+all_target_languages = [
     "Dutch",
     "German",
-    "English",
     "French",
     "Italian",
     "Portuguese",
@@ -46,9 +51,9 @@ def get_audio_streams(filename):
 
 
 class StartupDialog(QDialog):
-    def __init__(self, tl_to_english_dictionaries):
+    def __init__(self, target_to_english_dictionaries):
         super().__init__()
-        self.tl_to_english_dictionaries = tl_to_english_dictionaries
+        self.target_to_english_dictionaries = target_to_english_dictionaries
         self.startup_options = {"Mode": None}
         self.initUI()
 
@@ -61,8 +66,9 @@ class StartupDialog(QDialog):
         self.text_options_page = TextWidget()
         self.avi_options_page = AVIWidget()
         self.dictionary_options_page = DictionaryChoicesWidget(
-            self.tl_to_english_dictionaries
+            self.target_to_english_dictionaries
         )
+
         self.stacked_widget.addWidget(self.choose_mode_page)
         self.stacked_widget.addWidget(self.text_options_page)
         self.stacked_widget.addWidget(self.avi_options_page)
@@ -72,10 +78,12 @@ class StartupDialog(QDialog):
         self.mode_label = QLabel("Choose a study mode:")
         self.text_button = QPushButton("Text (Basic Mode)")
         self.avi_button = QPushButton("Audiovisual Input")
+        self.export_media_button = QPushButton("Export Media")
         self.mode_layout = QVBoxLayout()
         self.mode_layout.addWidget(self.mode_label)
         self.mode_layout.addWidget(self.text_button)
         self.mode_layout.addWidget(self.avi_button)
+        self.mode_layout.addWidget(self.export_media_button)
         self.choose_mode_page.setLayout(self.mode_layout)
 
         ## Connecting signals and slots
@@ -83,6 +91,7 @@ class StartupDialog(QDialog):
         # Connecting buttons on choose mode page
         self.text_button.clicked.connect(self.text_mode_selected)
         self.avi_button.clicked.connect(self.avi_mode_selected)
+        self.export_media_button.clicked.connect(self.export_media_mode_selected)
 
         # Connecting back buttons
         self.text_options_page.back_button.clicked.connect(self.reset_to_mode_page)
@@ -106,7 +115,7 @@ class StartupDialog(QDialog):
         self.setLayout(main_layout)
 
     def reset_to_mode_page(self):
-        self.startup_options = {"Mode": None}  # remove all saved options
+        self.startup_options = {"Mode": None}  # Remove all saved options
         self.show_mode_page()
 
     def reset_to_text_page(self):
@@ -118,16 +127,16 @@ class StartupDialog(QDialog):
         self.show_avi_page()
 
     def show_mode_page(self):
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(MODE_PAGE_INDEX)
 
     def show_text_page(self):
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(TEXT_PAGE_INDEX)
 
     def show_avi_page(self):
-        self.stacked_widget.setCurrentIndex(2)
+        self.stacked_widget.setCurrentIndex(AVI_PAGE_INDEX)
 
     def show_dictionary_page(self):
-        self.stacked_widget.setCurrentIndex(3)
+        self.stacked_widget.setCurrentIndex(DICTIONARY_PAGE_INDEX)
 
     def text_mode_selected(self):
         self.startup_options["Mode"] = "Text"
@@ -137,24 +146,46 @@ class StartupDialog(QDialog):
         self.startup_options["Mode"] = "AVI"
         self.show_avi_page()
 
+    def export_media_mode_selected(self):
+        self.startup_options["Mode"] = "Export Media"
+        self.accept()  # Accept dialog
+
     def text_options_confirmed(self):
         source_language, target_language = self.text_options_page.get_languages()
-        self.startup_options["Source Language"] = source_language
+        self.startup_options["L1"] = source_language
         self.startup_options["Target Languages"] = [target_language]
         self.dictionary_options_page.set_languages([target_language])
         self.show_dictionary_page()
 
     def avi_options_confirmed(self):
         avi_options = self.avi_options_page.get_all_options()
-        if avi_options["Video File"] == "" or avi_options["Video File"] == "None":
-            # Don't allow confirming if no video has been chosen
+
+        if avi_options["Video File"] == "":  ##!! or reference file is none??
+            # Don't allow confirming is no folder has been chosen
+            return
+
+        source_language = avi_options["Source Language"]
+        target_language_1 = avi_options["Target Languages"][0]
+
+        if (
+            avi_options["Audio Tracks"][target_language_1] == "None"
+            and avi_options["Subtitle Files"][target_language_1] == "None"
+        ):
+            # Don't allow confirming if don't have at least an audio track or subtitle file for first chosen target language
+            return
+
+        if (
+            avi_options["Subtitle Files"][source_language] == "None"
+            and avi_options["Subtitle Files"][target_language_1] == "None"
+        ):
+            # Don't allow confirming if we are missing source and target language subtitles
             return
 
         self.startup_options.update(avi_options)
 
-        languages = self.startup_options["Target Languages"]
+        target_languages = self.startup_options["Target Languages"]
 
-        self.dictionary_options_page.set_languages(languages)
+        self.dictionary_options_page.set_languages(target_languages)
         self.show_dictionary_page()
 
     def dictionary_options_confirmed(self):
@@ -170,7 +201,7 @@ class StartupDialog(QDialog):
 
         # print(f"\nAll options:\n{self.startup_options}")
 
-        # accept dialog
+        # Accept dialog
         self.accept()
 
     def go_back_from_dictionary_options(self):
@@ -215,14 +246,16 @@ def choose_file(mode):
 class TextWidget(QWidget):
     def __init__(self):
         super().__init__()
+        self.initUI()
 
+    def initUI(self):
         # Back button to exit
         self.back_button = QPushButton("Go back")
         back_button_layout = QHBoxLayout()
         back_button_layout.addWidget(self.back_button)
 
         # Source language selection
-        self.source_language_label = QLabel("Select source language:")
+        self.source_language_label = QLabel("Choose source language (L1):")
         self.source_language_dropdown = QComboBox()
         self.source_language_dropdown.addItem("English")
         self.source_language_dropdown.setCurrentText("English")
@@ -232,9 +265,9 @@ class TextWidget(QWidget):
         source_language_layout.addWidget(self.source_language_dropdown)
 
         # Target language selection
-        self.target_language_label = QLabel("Select target language:")
+        self.target_language_label = QLabel("Choose target language (L2):")
         self.target_language_dropdown = QComboBox()
-        self.target_language_dropdown.addItems(all_languages)
+        self.target_language_dropdown.addItems(all_target_languages)
         self.target_language_dropdown.setCurrentText("Spanish")
 
         target_language_layout = QHBoxLayout()
@@ -263,16 +296,17 @@ class TextWidget(QWidget):
 class AVIWidget(QWidget):
     def __init__(self):
         super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        main_layout = QVBoxLayout()
 
         # Back button to exit
         self.back_button = QPushButton("Go back")
-        back_button_layout = QHBoxLayout()
-        back_button_layout.addWidget(self.back_button)
+        main_layout.addWidget(self.back_button)
 
         # Horizontal line to separate
-        line1 = QFrame()
-        line1.setFrameShape(QFrame.HLine)
-        line1.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(create_separator_line())
 
         # Folder selection
         self.folder_label = QLabel("Choose folder:")
@@ -285,6 +319,7 @@ class AVIWidget(QWidget):
         folder_layout.addWidget(self.folder_label)
         folder_layout.addWidget(self.folder_line_edit)
         folder_layout.addWidget(self.folder_button)
+        main_layout.addLayout(folder_layout)
 
         # Video file selection
         self.file_label = QLabel("Choose video file:")
@@ -297,18 +332,27 @@ class AVIWidget(QWidget):
         file_layout = QHBoxLayout()
         file_layout.addWidget(self.file_label)
         file_layout.addWidget(self.video_file_dropdown)
+        main_layout.addLayout(file_layout)
 
-        # Horizontal line to separate
-        line2 = QFrame()
-        line2.setFrameShape(QFrame.HLine)
-        line2.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(create_separator_line())
+
+        # Reference language selection
+        self.reference_language_subtitle_label = QLabel("Reference subtitle file:")
+        self.reference_language_subtitle_dropdown = QComboBox()
+
+        reference_language_layout = QVBoxLayout()
+
+        reference_language_layout.addWidget(self.reference_language_subtitle_label)
+        reference_language_layout.addWidget(self.reference_language_subtitle_dropdown)
+        main_layout.addLayout(reference_language_layout)
+
+        main_layout.addWidget(create_separator_line())
 
         # Source language selection
-        self.source_language_label = QLabel("Source Language:")
+        self.source_language_label = QLabel("Source language (L1):")
         self.source_language_dropdown = QComboBox()
-        # self.source_language_dropdown.addItems(all_languages)
         self.source_language_dropdown.addItem("English")
-        self.source_language_dropdown.setCurrentText("English")
+        # self.source_language_dropdown.addItems(all_target_languages)
         self.source_language_audio_label = QLabel("Audio:")
         self.source_language_audio_dropdown = QComboBox()
         self.source_language_subtitle_label = QLabel("Subtitle file:")
@@ -322,16 +366,14 @@ class AVIWidget(QWidget):
         source_language_layout.addWidget(self.source_language_audio_dropdown)
         source_language_layout.addWidget(self.source_language_subtitle_label)
         source_language_layout.addWidget(self.source_language_subtitle_dropdown)
+        main_layout.addLayout(source_language_layout)
 
-        # Horizontal line to separate
-        line3 = QFrame()
-        line3.setFrameShape(QFrame.HLine)
-        line3.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(create_separator_line())
 
         # Target language 1 selection
-        self.target_language_1_label = QLabel("Target Language 1:")
+        self.target_language_1_label = QLabel("Target language 1:")
         self.target_language_1_dropdown = QComboBox()
-        self.target_language_1_dropdown.addItems(all_languages)
+        self.target_language_1_dropdown.addItems(all_target_languages)
         self.target_language_1_dropdown.setCurrentText("Spanish")
         self.target_language_1_audio_label = QLabel("Audio:")
         self.target_language_1_audio_dropdown = QComboBox()
@@ -346,17 +388,15 @@ class AVIWidget(QWidget):
         target_language_1_layout.addWidget(self.target_language_1_audio_dropdown)
         target_language_1_layout.addWidget(self.target_language_1_subtitle_label)
         target_language_1_layout.addWidget(self.target_language_1_subtitle_dropdown)
+        main_layout.addLayout(target_language_1_layout)
 
-        # Horizontal line to separate
-        line4 = QFrame()
-        line4.setFrameShape(QFrame.HLine)
-        line4.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(create_separator_line())
 
         # Target language 2 selection
-        self.target_language_2_label = QLabel("Target Language 2:")
+        self.target_language_2_label = QLabel("Target language 2:")
         self.target_language_2_dropdown = QComboBox()
         self.target_language_2_dropdown.addItem("None")
-        self.target_language_2_dropdown.addItems(all_languages)
+        self.target_language_2_dropdown.addItems(all_target_languages)
         self.target_language_2_audio_label = QLabel("Audio:")
         self.target_language_2_audio_dropdown = QComboBox()
         self.target_language_2_subtitle_label = QLabel("Subtitle file:")
@@ -370,31 +410,16 @@ class AVIWidget(QWidget):
         target_language_2_layout.addWidget(self.target_language_2_audio_dropdown)
         target_language_2_layout.addWidget(self.target_language_2_subtitle_label)
         target_language_2_layout.addWidget(self.target_language_2_subtitle_dropdown)
+        main_layout.addLayout(target_language_2_layout)
 
-        # Horizontal line to separate
-        line5 = QFrame()
-        line5.setFrameShape(QFrame.HLine)
-        line5.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(create_separator_line())
 
         # Confirm button
         self.confirm_button = QPushButton("Confirm")
         confirm_button_layout = QHBoxLayout()
         confirm_button_layout.addWidget(self.confirm_button)
-
-        # Main layout
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(back_button_layout)
-        main_layout.addWidget(line1)
-        main_layout.addLayout(folder_layout)
-        main_layout.addLayout(file_layout)
-        main_layout.addWidget(line2)
-        main_layout.addLayout(source_language_layout)
-        main_layout.addWidget(line3)
-        main_layout.addLayout(target_language_1_layout)
-        main_layout.addWidget(line4)
-        main_layout.addLayout(target_language_2_layout)
-        main_layout.addWidget(line5)
         main_layout.addLayout(confirm_button_layout)
+
         self.setLayout(main_layout)
 
     def choose_folder(self):
@@ -439,10 +464,12 @@ class AVIWidget(QWidget):
         self.target_language_2_audio_dropdown.addItems(audio_streams)
 
     def update_subtitle_dropdowns(self, folder_name):
+        self.reference_language_subtitle_dropdown.clear()
         self.source_language_subtitle_dropdown.clear()
         self.target_language_1_subtitle_dropdown.clear()
         self.target_language_2_subtitle_dropdown.clear()
 
+        self.reference_language_subtitle_dropdown.addItem("None")
         self.source_language_subtitle_dropdown.addItem("None")
         self.target_language_1_subtitle_dropdown.addItem("None")
         self.target_language_2_subtitle_dropdown.addItem("None")
@@ -452,6 +479,7 @@ class AVIWidget(QWidget):
             if file_name.endswith(".srt"):
                 subtitle_files.append(file_name)
 
+        self.reference_language_subtitle_dropdown.addItems(subtitle_files)
         self.source_language_subtitle_dropdown.addItems(subtitle_files)
         self.target_language_1_subtitle_dropdown.addItems(subtitle_files)
         self.target_language_2_subtitle_dropdown.addItems(subtitle_files)
@@ -491,6 +519,14 @@ class AVIWidget(QWidget):
         audio_tracks[target_languages[0]] = target_language_1_audio_track
         audio_tracks[target_languages[1]] = target_language_2_audio_track
 
+        reference_language_subtitles_file = (
+            self.reference_language_subtitle_dropdown.currentText()
+        )
+        if reference_language_subtitles_file != "None":
+            reference_language_subtitles_file = os.path.join(
+                folder_name, reference_language_subtitles_file
+            )
+
         source_language_subtitles_file = (
             self.source_language_subtitle_dropdown.currentText()
         )
@@ -498,6 +534,7 @@ class AVIWidget(QWidget):
             source_language_subtitles_file = os.path.join(
                 folder_name, source_language_subtitles_file
             )
+
         target_language_1_subtitles_file = (
             self.target_language_1_subtitle_dropdown.currentText()
         )
@@ -505,6 +542,7 @@ class AVIWidget(QWidget):
             target_language_1_subtitles_file = os.path.join(
                 folder_name, target_language_1_subtitles_file
             )
+
         target_language_2_subtitles_file = (
             self.target_language_2_subtitle_dropdown.currentText()
         )
@@ -513,9 +551,18 @@ class AVIWidget(QWidget):
                 folder_name, target_language_2_subtitles_file
             )
 
+        subtitle_files["Reference"] = reference_language_subtitles_file
         subtitle_files[source_language] = source_language_subtitles_file
         subtitle_files[target_languages[0]] = target_language_1_subtitles_file
         subtitle_files[target_languages[1]] = target_language_2_subtitles_file
+
+        # Removing values where no language was chosen
+        try:
+            target_languages.remove("None")
+        except:
+            pass
+        audio_tracks.pop("None")
+        subtitle_files.pop("None")
 
         options = {
             "Video File": video_file,
@@ -529,10 +576,9 @@ class AVIWidget(QWidget):
 
 
 class DictionaryChoicesWidget(QWidget):
-    def __init__(self, tl_to_english_dictionaries):
+    def __init__(self, target_to_english_dictionaries):
         super().__init__()
-
-        self.tl_to_english_dictionaries = tl_to_english_dictionaries
+        self.target_to_english_dictionaries = target_to_english_dictionaries
         self.init_ui()
 
     def init_ui(self):
@@ -564,7 +610,7 @@ class DictionaryChoicesWidget(QWidget):
             tab = QWidget()
 
             # Create checkboxes with the available dictionaries for this language
-            dictionaries = self.tl_to_english_dictionaries[language]
+            dictionaries = self.target_to_english_dictionaries[language]
 
             checkbox_layout = QVBoxLayout()
             for dictionary in dictionaries:
@@ -600,23 +646,37 @@ class DictionaryChoicesWidget(QWidget):
         return dictionaries
 
 
+def create_separator_line():
+    line = QFrame()
+    line.setFrameShape(QFrame.HLine)
+    line.setFrameShadow(QFrame.Sunken)
+    return line
+
+
 if __name__ == "__main__":
+
+    # # Two below to make scaling bigger on small high-res screens
+    # if hasattr(QtCore.Qt, "AA_EnableHighDpiScaling"):
+    #     QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    # if hasattr(QtCore.Qt, "AA_UseHighDpiPixmaps"):
+    #     QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
     with open(
-        "C:/Stuff/UniversaLearn/LanguageRepo/LangAnki/Lexilogos/json_ready_march_23/english_data/French.json",
+        "C:/Stuff/UniversaLearn/LangAnki/app/resources/lexilogos_old/French.json",
         "r",
     ) as f:
         french_data = json.load(f)
     with open(
-        "C:/Stuff/UniversaLearn/LanguageRepo/LangAnki/Lexilogos/json_ready_march_23/english_data/Spanish.json",
+        "C:/Stuff/UniversaLearn/LangAnki/app/resources/lexilogos_old/Spanish.json",
         "r",
     ) as f:
         spanish_data = json.load(f)
-    tl_to_english_dictionaries = {
+    target_to_english_dictionaries = {
         "French": french_data["language_to_eng"],
         "Spanish": spanish_data["language_to_eng"],
     }
 
     app = QApplication([])
-    dialog = StartupDialog(tl_to_english_dictionaries)
+    dialog = StartupDialog(target_to_english_dictionaries)
     if dialog.exec_() == QDialog.Accepted:
-        print(dialog.mode_dict)
+        print(dialog.startup_options)
