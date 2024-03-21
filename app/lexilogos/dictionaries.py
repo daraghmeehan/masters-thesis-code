@@ -1,22 +1,21 @@
-import os, json
+import json
+from pathlib import Path
 
 
 def load_all_target_to_english_dictionaries():
     dictionaries = {}
 
-    lexilogos_folder = "resources/lexilogos"
-    lexilogos_files = os.listdir(lexilogos_folder)
+    lexilogos_folder = Path("resources/lexilogos")
+    lexilogos_files = lexilogos_folder.glob("*")
 
     for file in lexilogos_files:
-        language = os.path.splitext(file)[0]
+        language = file.stem
 
-        filepath = os.path.join(lexilogos_folder, file)
-
-        if not os.path.isfile(filepath):
+        if not file.is_file():
             # Making sure it is actually a file
             continue
 
-        with open(filepath, "r") as f:
+        with open(file, "r") as f:
             data = json.load(f)
 
         custom_target_to_english_dictionaries = data["dictionaries"][
