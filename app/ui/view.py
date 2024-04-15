@@ -36,8 +36,11 @@ class MainWindow(QMainWindow):
         self.set_up_tab_order()
 
     def set_up_layout(self):
-        self.study_materials = StudyMaterials(mode=self.mode, languages=self.languages)
-        self.flashcard_workspace = FlashcardWorkspace()
+        self.study_materials = StudyMaterials(
+            mode=self.mode,
+            languages=self.languages,
+        )
+        self.flashcard_workspace = FlashcardWorkspace(mode=self.mode)
         self.translation_workspace = TranslationWorkspace()
         self.dictionary_lookup = DictionaryLookup()
 

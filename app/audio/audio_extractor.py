@@ -56,11 +56,16 @@ class AudioExtractor:
 
         return audio_file
 
-    def extract_segment(self, language, start_time, end_time):
+    def extract_segment(self, language, start_time, end_time, is_for_flashcard):
         audio_file = self.audio_files[language]
 
         start_time = convert_datetime_to_ffmpeg_time(start_time)
         end_time = convert_datetime_to_ffmpeg_time(end_time)
+
+        if is_for_flashcard:
+            audio_segment_path = f"{self.output_folder}/flashcard_segment.wav"
+        else:
+            audio_segment_path = f"{self.output_folder}/segment.wav"
 
         # Define the ffmpeg command as a list of strings
         command = [
@@ -74,11 +79,13 @@ class AudioExtractor:
             f"{end_time}",
             "-c",  # was "-acodec"
             "copy",
-            f"{self.output_folder}/segment.wav",
+            audio_segment_path,
         ]
 
         # Run the command using subprocess
         subprocess.run(command)
+
+        return audio_segment_path
 
 
 def convert_datetime_to_ffmpeg_time(time):

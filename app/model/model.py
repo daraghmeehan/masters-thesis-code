@@ -97,7 +97,7 @@ class SubtitleModel:
                     start_time == subtitles[-1].start_time
                     or start_time < subtitles[-1].end_time
                 ):
-                    subtitles[-1].text += text
+                    subtitles[-1].text += " " + text.strip()
 
                     # Having appended the current subtitle to the last one, we must lengthen the end time if it is later
                     if end_time > subtitles[-1].end_time:
@@ -107,7 +107,7 @@ class SubtitleModel:
 
                     continue
 
-                subtitles.append(Subtitle(start_time, end_time, text))
+                subtitles.append(Subtitle(start_time, end_time, text.strip()))
 
                 text = ""  # Flush the text
 
@@ -116,7 +116,7 @@ class SubtitleModel:
                 continue
 
             else:
-                text += line + " "
+                text += " " + line
 
         return subtitles
 

@@ -14,7 +14,7 @@ class FlashcardCreator:
     def create_flashcard_deck(self, fields):
         timestamp = time.strftime("%Y-%m-%d_%H%M%S", time.localtime())
         file_name = f"{self.deck_name} - {timestamp}"
-        file_path = Path(f"../media/flashcards/new/{file_name}.csv")
+        file_path = Path(f"../media/flashcards/new_cards/{file_name}.csv")
         file_path.parent.mkdir(
             exist_ok=True
         )  # Making the "Flashcard" directory if we don't already have it
@@ -44,6 +44,7 @@ class FlashcardCreator:
         # # Convert the dictionary to a DataFrame
         # new_card = pd.DataFrame([new_card_dict])
 
+        # print(f"keys: {list(card_as_dict.keys())}\nfields: {self.flashcard_fields}")
         assert list(card_as_dict.keys()) == self.flashcard_fields
         assert not all([field == "" for field in card_as_dict.values()])
 

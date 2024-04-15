@@ -1,3 +1,4 @@
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
@@ -13,6 +14,8 @@ import sys
 
 
 class DictionaryLookup(QWidget):
+    search_requested = pyqtSignal(str, str)
+
     def __init__(self):
         super().__init__()
 
@@ -86,9 +89,17 @@ class DictionaryLookup(QWidget):
                 container_layout.addWidget(checkbox)
 
                 button = QPushButton(dictionary)
+
                 button.setStyleSheet(button_style)
                 # button.setProperty("class", "flat")  # Set the 'flat' style
                 # button.setStyleSheet("background-color: red;")
+
+                button.clicked.connect(
+                    lambda _, lang=language, dict_name=dictionary: self.search_requested.emit(
+                        lang, dict_name
+                    )
+                )
+
                 container_layout.addWidget(button)
 
                 # Add the QHBoxLayout to the QVBoxLayout
@@ -97,16 +108,31 @@ class DictionaryLookup(QWidget):
             # Add the tab to the tab widget
             self.tab_widget.addTab(tab, language)
 
-    def get_dictionaries(self, language):
+    def get_text(self):
+        word = self.dictionary_lookup_lineedit.text()
+        word = word.replace("­", "")  # Removing soft hyphens
+        return word
+
+    def get_language(self):
+        # Get the index of the currently selected tab
+        current_tab_index = self.tab_widget.currentIndex()
+
+        # Get the name of the tab corresponding to the currently selected tab index
+        language = self.tab_widget.tabText(current_tab_index)
+        return language
+
+    def get_dictionaries(self):  # , language):
         dictionaries = []
 
-        # Find the tab with the given language
-        for i in range(self.tab_widget.count()):
-            if self.tab_widget.tabText(i) == language:
-                tab = self.tab_widget.widget(i)
-                break
-        else:
-            return dictionaries
+        # # Find the tab with the given language
+        # for i in range(self.tab_widget.count()):
+        #     if self.tab_widget.tabText(i) == language:
+        #         tab = self.tab_widget.widget(i)
+        #         break
+        # else:
+        #     return dictionaries
+
+        tab = self.tab_widget.currentWidget()
 
         # Get the names of the dictionaries with checked checkboxes
         for widget in tab.findChildren(QWidget):

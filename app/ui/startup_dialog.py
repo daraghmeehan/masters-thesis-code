@@ -41,13 +41,11 @@ all_target_languages = [
 ]
 
 
-def get_audio_streams(filename):
+def get_audio_tracks(filename):
     """Get a list of audio stream names from a video file"""
-    streams = ffmpeg.probe(filename)["streams"]
-    audio_streams = [
-        s["tags"]["language"] for s in streams if s["codec_type"] == "audio"
-    ]
-    return audio_streams
+    tracks = ffmpeg.probe(filename)["streams"]
+    audio_tracks = [s["tags"]["language"] for s in tracks if s["codec_type"] == "audio"]
+    return audio_tracks
 
 
 class StartupDialog(QDialog):
@@ -447,21 +445,21 @@ class AVIWidget(QWidget):
         video_file_path = self.get_video_file_path()
 
         try:
-            audio_streams = get_audio_streams(video_file_path)
+            audio_tracks = get_audio_tracks(video_file_path)
         except:
-            audio_streams = []
+            audio_tracks = []
 
         self.source_language_audio_dropdown.clear()
         self.source_language_audio_dropdown.addItem("None")
-        self.source_language_audio_dropdown.addItems(audio_streams)
+        self.source_language_audio_dropdown.addItems(audio_tracks)
 
         self.target_language_1_audio_dropdown.clear()
         self.target_language_1_audio_dropdown.addItem("None")
-        self.target_language_1_audio_dropdown.addItems(audio_streams)
+        self.target_language_1_audio_dropdown.addItems(audio_tracks)
 
         self.target_language_2_audio_dropdown.clear()
         self.target_language_2_audio_dropdown.addItem("None")
-        self.target_language_2_audio_dropdown.addItems(audio_streams)
+        self.target_language_2_audio_dropdown.addItems(audio_tracks)
 
     def update_subtitle_dropdowns(self, folder_name):
         self.reference_language_subtitle_dropdown.clear()
@@ -561,8 +559,11 @@ class AVIWidget(QWidget):
             target_languages.remove("None")
         except:
             pass
-        audio_tracks.pop("None")
-        subtitle_files.pop("None")
+
+        if "None" in audio_tracks:
+            audio_tracks.pop("None")
+        if "None" in subtitle_files:
+            subtitle_files.pop("None")
 
         options = {
             "Video File": video_file,

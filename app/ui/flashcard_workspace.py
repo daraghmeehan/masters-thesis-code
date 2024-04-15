@@ -3,6 +3,7 @@ import shutil  # For copying audio
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
+    QGridLayout,
     QVBoxLayout,
     QHBoxLayout,
     QToolBar,
@@ -14,8 +15,10 @@ from PyQt5.QtWidgets import (
     QCheckBox,
     QAction,
     QSpinBox,
+    QAbstractSpinBox,
+    QSizePolicy,
 )
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal
 from PyQt5.QtGui import QTextCharFormat, QFont
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
@@ -23,8 +26,10 @@ from bs4 import BeautifulSoup  # For parsing HTML
 
 
 class FlashcardWorkspace(QWidget):
-    def __init__(self):
+    def __init__(self, mode):
         super().__init__()
+
+        self.mode = mode
 
         self.fields = {}  # To track the widgets for each field of the flashcards
         self.initUI()
@@ -53,9 +58,9 @@ class FlashcardWorkspace(QWidget):
 
         # some styling ##??here??
         self.toolbar.setStyleSheet(
-            "QToolBar { border: none; padding: 5px; background-color: #f5f5f5; }"
-            "QToolButton { border: none; padding: 5px; }"
-            "QToolButton:hover { background-color: #e5e5e5; }"
+            "QToolBar { border: none; padding: 0px; background-color: #f5f5f5; }"
+            "QToolButton { border: none; padding: 5px; background-color: #e5e5e5; }"
+            "QToolButton:hover { background-color: #dddddd; }"
             "QToolButton:pressed { background-color: #d5d5d5; }"
         )
 
@@ -71,31 +76,150 @@ class FlashcardWorkspace(QWidget):
         deck_box.addWidget(self.deck_dropdown)
         self.fields_layout.addLayout(deck_box)
 
+        self.question_text_layout = QHBoxLayout()
+        self.translate_question_text_layout = QHBoxLayout()
+        self.answer_text_layout = QHBoxLayout()
+        self.checkbox_layout = QHBoxLayout()
+        if self.mode == "AVI":
+            self.fields_layout.addLayout(self.question_text_layout, 3)
+            self.fields_layout.addLayout(self.translate_question_text_layout, 1)
+            self.fields_layout.addLayout(self.answer_text_layout, 3)
+            self.fields_layout.addLayout(self.checkbox_layout, 1)
+        else:
+            self.fields_layout.addLayout(self.question_text_layout, 2)
+            self.fields_layout.addLayout(self.translate_question_text_layout, 1)
+            self.fields_layout.addLayout(self.answer_text_layout, 2)
+
+        # Custom question/answer layout
+        question_language_label = QLabel("Question Language:")
+        question_language_label.setFixedWidth(100)
+        question_language_dropdown = QComboBox()
+        question_text_edit = QTextEdit()
+
+        question_language_layout = QVBoxLayout()
+        question_language_layout.addWidget(
+            question_language_label, 1, alignment=Qt.AlignTop
+        )
+        question_language_layout.addWidget(
+            question_language_dropdown, 9, alignment=Qt.AlignTop
+        )
+
+        self.question_text_layout.addLayout(question_language_layout)
+        self.question_text_layout.addWidget(question_text_edit)
+
+        # hide_question_text_label = QLabel("Hide Text Before?")
+        # hide_question_text_checkbox = QCheckBox()
+
+        # hide_question_text_layout = QHBoxLayout()
+        # hide_question_text_layout.setAlignment(Qt.AlignTop)
+        # hide_question_text_layout.addWidget(hide_question_text_label)
+        # hide_question_text_layout.addWidget(hide_question_text_checkbox)
+        # question_language_layout.addLayout(hide_question_text_layout, 7)
+
+        # For translating the question text into the answer text
+        translate_question_text_label = QLabel()
+        translate_question_text_label.setFixedWidth(100)
+        self.translate_question_text_button = QPushButton("Translate ↓")
+
+        self.translate_question_text_layout.addWidget(translate_question_text_label)
+        self.translate_question_text_layout.addWidget(
+            self.translate_question_text_button
+        )
+
+        answer_language_label = QLabel("Answer Language:")
+        answer_language_label.setFixedWidth(100)
+        answer_language_dropdown = QComboBox()
+        answer_text_edit = QTextEdit()
+
+        answer_language_layout = QVBoxLayout()
+        answer_language_layout.addWidget(
+            answer_language_label, 1, alignment=Qt.AlignTop
+        )
+        answer_language_layout.addWidget(
+            answer_language_dropdown, 9, alignment=Qt.AlignTop
+        )
+
+        self.answer_text_layout.addLayout(answer_language_layout)
+        self.answer_text_layout.addWidget(answer_text_edit)
+
+        if self.mode == "AVI":
+            # Media widgets (fix later!!)
+            self.picture_layout = QVBoxLayout()
+            self.audio_layout = QVBoxLayout()
+            self.fields_layout.addLayout(self.picture_layout, 5)
+            self.fields_layout.addLayout(self.audio_layout, 1)
+
+            screenshot_viewer = ScreenshotViewer()
+            audio_viewer = AudioViewer()
+
+            self.picture_layout.addWidget(screenshot_viewer)
+
+            self.audio_layout.addWidget(audio_viewer)
+
+        if self.mode == "AVI":
+            custom_fields = {
+                "Question Language": question_language_dropdown,
+                "Question Text": question_text_edit,
+                "Answer Language": answer_language_dropdown,
+                "Answer Text": answer_text_edit,
+                "Picture": screenshot_viewer,
+                "Audio": audio_viewer,
+            }
+        else:
+            custom_fields = {
+                "Question Language": question_language_dropdown,
+                "Question Text": question_text_edit,
+                "Answer Language": answer_language_dropdown,
+                "Answer Text": answer_text_edit,
+            }
+
+        self.fields.update(custom_fields)
+
     def set_up_buttons(self):
         self.button_layout = QHBoxLayout()
-        self.add_button = QPushButton("Add\nCtrl+Enter")
         self.edit_previous_button = QPushButton("Edit Previous")
-        self.button_layout.addWidget(self.add_button)
+        self.add_button = QPushButton("Add")  # \n(Ctrl+Enter)")
         self.button_layout.addWidget(self.edit_previous_button)
+        self.button_layout.addWidget(self.add_button)
 
     def add_field(self, field_name, field_info):
         field_type = field_info["type"]
 
-        if field_type == "Hidden":
+        if field_name in [
+            "Question Text",
+            "Question Language",
+            "Answer Language",
+            "Answer Text",
+            "Picture",
+            "Audio",
+        ]:
+            return
+        elif self.mode == "Text" and field_name in [
+            "Show Picture Before?",
+            "Show Audio Before?",
+            "Hide Text Before?",
+        ]:
+            return
+        elif field_type == "Hidden":
             widget = None
-        elif field_type == "Media":
-            widget_type = field_info["widget"]
-            widget = self.create_media_widget(widget_type)
-            self.fields_layout.addWidget(widget)
+        # elif field_type == "Media":
+        #     widget_type = field_info["widget"]
+        #     widget = self.create_media_widget(widget_type)
+        #     self.fields_layout.addWidget(widget, 2)
         else:
-            field_box = QHBoxLayout()
-
             field_label = QLabel(field_name)
             widget = self.create_normal_widget(field_type)
 
+            field_box = QHBoxLayout()
             field_box.addWidget(field_label)
             field_box.addWidget(widget)
-            self.fields_layout.addLayout(field_box)
+
+            if field_type == "Checkbox":
+                # field_label.setFixedWidth(150)
+                self.checkbox_layout.addLayout(field_box, 1)
+            else:
+                field_label.setFixedWidth(80)
+                self.fields_layout.addLayout(field_box, 1)
 
         self.fields[field_name] = widget  # Keep track of the created widget
 
@@ -118,6 +242,13 @@ class FlashcardWorkspace(QWidget):
             return None
 
     def extract_field_data(self, field_name):
+        if self.mode == "Text" and field_name in [
+            "Show Picture Before?",
+            "Show Audio Before?",
+            "Hide Text Before?",
+        ]:
+            return ""
+
         widget = self.fields[field_name]
 
         if widget is None:
@@ -232,6 +363,9 @@ class ScreenshotViewer(QWidget):
         # Where the screenshot is held
         self.screenshot_label = QLabel(self)
         self.screenshot_label.setAlignment(Qt.AlignCenter)
+        # self.screenshot_label.setSizePolicy(
+        #     QSizePolicy.Expanding, QSizePolicy.Expanding
+        # )
         # self.update_screenshot_label()
 
         prev_button = QPushButton("Prev", self)
@@ -245,7 +379,7 @@ class ScreenshotViewer(QWidget):
         button_layout.addWidget(next_button)
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(self.screenshot_label)
+        main_layout.addWidget(self.screenshot_label, alignment=Qt.AlignCenter)
         main_layout.addLayout(button_layout)
 
         self.setLayout(main_layout)
@@ -262,12 +396,12 @@ class ScreenshotViewer(QWidget):
         self.screenshots = []
         self.update_screenshot_label()
         self.current_index = None
-        self.hide_viewer
+        self.hide_viewer()
 
     def update_screenshots(self, screenshots):
         if screenshots == []:
             self.current_index = None
-            self.hide_viewer
+            self.hide_viewer()
             return
         else:
             self.current_index = 0
@@ -278,7 +412,7 @@ class ScreenshotViewer(QWidget):
 
     def update_screenshot_label(self):
         if self.screenshots == []:
-            self.screenshot_label.setPixmap(None)
+            self.screenshot_label.clear()
             return
 
         pixmap = self.screenshots[self.current_index]
@@ -294,10 +428,11 @@ class ScreenshotViewer(QWidget):
         self.update_screenshot_label()
 
     def get_screenshot(self):
-        if self.screenshot_label.pixmap().isNull():
-            return ""
+        pixmap = self.screenshot_label.pixmap()  # Get the current pixmap
+        if pixmap and not pixmap.isNull():
+            return pixmap.toImage()
         else:
-            return self.screenshot_label.pixmap().toImage()
+            return ""
 
     def save_screenshot(self, path):
         screenshot = self.get_screenshot()
@@ -307,93 +442,113 @@ class ScreenshotViewer(QWidget):
 
         screenshot.save(path)
 
+    def has_screenshots(self):
+        return bool(self.screenshots)
+
 
 class AudioViewer(QWidget):
+    play_requested = pyqtSignal(str)
+    stop_requested = pyqtSignal()
+    change_audio_time = pyqtSignal(str, int)
+
     def __init__(self):
         super().__init__()
 
-        self.start_time_label = QLabel("Added start time")
-
-        self.start_time_spinbox = QSpinBox()
-        self.start_time_spinbox.setRange(0, 4)
-        self.start_time_spinbox.setValue(0)
-        self.start_time_spinbox.setButtonSymbols(2)
-
-        start_time_value_layout = QHBoxLayout()
-        start_time_value_layout.addWidget(self.start_time_label, 1)
-        start_time_value_layout.addWidget(self.start_time_spinbox, 2)
-
-        self.start_time_subtract_button = QPushButton("-1s")
-        self.start_time_subtract_button.clicked.connect(
-            lambda: self.start_time_spinbox.setValue(
-                self.start_time_spinbox.value() - 1
-            )
-        )
-        self.start_time_add_button = QPushButton("+1s")
-        self.start_time_add_button.clicked.connect(
-            lambda: self.start_time_spinbox.setValue(
-                self.start_time_spinbox.value() + 1
-            )
-        )
-
-        start_time_button_layout = QHBoxLayout()
-        start_time_button_layout.addWidget(self.start_time_subtract_button)
-        start_time_button_layout.addWidget(self.start_time_add_button)
-
-        start_time_layout = QVBoxLayout()
-        start_time_layout.addLayout(start_time_value_layout)
-        start_time_layout.addLayout(start_time_button_layout)
-
-        # create QPushButton to stop audio
-        self.stop_button = QPushButton("Stop", self)
-        self.stop_button.clicked.connect(self.stop_audio)
-
-        # create QPushButton to play audio
-        self.play_button = QPushButton("Play", self)
-        self.play_button.clicked.connect(self.play_audio)
-
-        button_layout = QVBoxLayout()
-        button_layout.addWidget(self.stop_button)
-        button_layout.addWidget(self.play_button)
-
-        self.end_time_label = QLabel("Added end time")
-
-        self.end_time_spinbox = QSpinBox()
-        self.end_time_spinbox.setRange(0, 4)
-        self.end_time_spinbox.setValue(0)
-        self.end_time_spinbox.setButtonSymbols(2)
-
-        end_time_value_layout = QHBoxLayout()
-        end_time_value_layout.addWidget(self.end_time_label, 1)
-        end_time_value_layout.addWidget(self.end_time_spinbox, 2)
-
-        self.end_time_subtract_button = QPushButton("-1s")
-        self.end_time_subtract_button.clicked.connect(
-            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() - 1)
-        )
-        self.end_time_add_button = QPushButton("+1s")
-        self.end_time_add_button.clicked.connect(
-            lambda: self.end_time_spinbox.setValue(self.end_time_spinbox.value() + 1)
-        )
-
-        end_time_button_layout = QHBoxLayout()
-        end_time_button_layout.addWidget(self.end_time_subtract_button)
-        end_time_button_layout.addWidget(self.end_time_add_button)
-
-        end_time_layout = QVBoxLayout()
-        end_time_layout.addLayout(end_time_value_layout)
-        end_time_layout.addLayout(end_time_button_layout)
-
-        main_layout = QHBoxLayout()
-        main_layout.addLayout(start_time_layout, 1)
-        main_layout.addLayout(button_layout, 2)
-        main_layout.addLayout(end_time_layout, 1)
-        self.setLayout(main_layout)
+        self.init_ui()
 
         self.hide_viewer()  # Hide the audio viewer by default
 
         # create the QMediaPlayer object
         self.media_player = QMediaPlayer(self)
+
+    def init_ui(self):
+        self.create_start_time_ui()
+        self.create_buttons_ui()
+        self.create_end_time_ui()
+
+        main_layout = QGridLayout()
+        main_layout.addLayout(self.start_time_value_layout, 0, 0)
+        main_layout.addLayout(self.start_time_edit_layout, 1, 0)
+        main_layout.addWidget(self.play_button, 0, 1)
+        main_layout.addWidget(self.stop_button, 1, 1)
+        main_layout.addLayout(self.end_time_value_layout, 0, 2)
+        main_layout.addLayout(self.end_time_edit_layout, 1, 2)
+        main_layout.setColumnStretch(0, 1)
+        main_layout.setColumnStretch(1, 2)
+        main_layout.setColumnStretch(2, 1)
+        self.setLayout(main_layout)
+
+        # Connect the valueChanged signal of the end_time_spinbox to directly emit the change_audio_time signal
+        self.end_time_spinbox.valueChanged.connect(
+            lambda value: self.change_audio_time.emit("End Time", value)
+        )
+        self.start_time_spinbox.valueChanged.connect(
+            lambda value: self.change_audio_time.emit("Start Time", value)
+        )
+
+    def create_start_time_ui(self):
+        start_time_label = QLabel("Added start time")
+
+        self.start_time_spinbox = QSpinBox()
+        self.start_time_spinbox.setRange(0, 4)
+        self.start_time_spinbox.setValue(0)
+        self.start_time_spinbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+
+        self.start_time_value_layout = QHBoxLayout()
+        self.start_time_value_layout.addWidget(start_time_label, 1)
+        self.start_time_value_layout.addWidget(self.start_time_spinbox, 2)
+
+        start_time_subtract_button = QPushButton("-1s")
+        start_time_subtract_button.clicked.connect(
+            lambda: self.adjust_time(self.start_time_spinbox, -1)
+        )
+        start_time_add_button = QPushButton("+1s")
+        start_time_add_button.clicked.connect(
+            lambda: self.adjust_time(self.start_time_spinbox, 1)
+        )
+
+        self.start_time_edit_layout = QHBoxLayout()
+        self.start_time_edit_layout.addWidget(start_time_subtract_button)
+        self.start_time_edit_layout.addWidget(start_time_add_button)
+
+    def create_buttons_ui(self):
+        # create QPushButton to play audio
+        self.play_button = QPushButton("▶️")
+        self.play_button.clicked.connect(
+            lambda: self.play_requested.emit(self.get_audio_path())
+        )
+
+        # create QPushButton to stop audio
+        self.stop_button = QPushButton("■")
+        self.stop_button.clicked.connect(self.stop_requested.emit)
+
+    def create_end_time_ui(self):
+        end_time_label = QLabel("Added end time")
+
+        self.end_time_spinbox = QSpinBox()
+        self.end_time_spinbox.setRange(0, 4)
+        self.end_time_spinbox.setValue(0)
+        self.end_time_spinbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+
+        self.end_time_value_layout = QHBoxLayout()
+        self.end_time_value_layout.addWidget(end_time_label, 1)
+        self.end_time_value_layout.addWidget(self.end_time_spinbox, 2)
+
+        end_time_subtract_button = QPushButton("-1s")
+        end_time_subtract_button.clicked.connect(
+            lambda: self.adjust_time(self.end_time_spinbox, -1)
+        )
+        end_time_add_button = QPushButton("+1s")
+        end_time_add_button.clicked.connect(
+            lambda: self.adjust_time(self.end_time_spinbox, 1)
+        )
+
+        self.end_time_edit_layout = QHBoxLayout()
+        self.end_time_edit_layout.addWidget(end_time_subtract_button)
+        self.end_time_edit_layout.addWidget(end_time_add_button)
+
+    def adjust_time(self, spinbox, delta):
+        spinbox.setValue(spinbox.value() + delta)
 
     def show_viewer(self):
         self.setVisible(True)
@@ -405,38 +560,20 @@ class AudioViewer(QWidget):
         self.update_audio("")
 
     def update_audio(self, audio_path):
-        if audio_path == "":
-            self.media_player.setMedia(None)
-            self.hide_viewer()
+        self.audio_path = audio_path
 
-        media_content = QMediaContent(QUrl.fromLocalFile(audio_path))
-        self.media_player.setMedia(media_content)
+        if audio_path == "":
+            self.hide_viewer()
+            return
 
         if self.isHidden():
             self.show_viewer()
 
-    def play_audio(self):
-        self.media_player.play()
-
-    def stop_audio(self):
-        self.media_player.stop()
-
     def get_audio_path(self):
-        if self.media_player.media():
-            return QUrl(self.media_player.media().canonicalUrl()).toLocalFile()
-        else:
-            return ""
+        return self.audio_path
 
-    def save_audio(self, path):
-        current_audio_path = self.get_audio_path()
-
-        if current_audio_path == "":
-            return  # No audio loaded, or an error occurred
-
-        try:
-            shutil.copy(current_audio_path, path)
-        except IOError as e:
-            print(f"Unable to copy file. {e}")
+    def has_audio(self):
+        return bool(self.get_audio_path())
 
 
 if __name__ == "__main__":

@@ -6,19 +6,25 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QPixmap, QImage
 
 
+DEFAULT_NUMBER_OF_SCREENSHOTS = 5
+# DEFAULT_IMAGE_HEIGHT = 360
+DEFAULT_IMAGE_HEIGHT = 150
+DEFAULT_IMAGE_UI_HEIGHT = 80
+
+
 class ScreenshotExtractor:
-    def __init__(
-        self, video_path, default_number_of_screenshots=5, default_image_height=360
-    ):
+    def __init__(self, video_path):
         self.video_path = video_path
-        self.default_number_of_screenshots = default_number_of_screenshots
-        self.default_image_height = default_image_height
 
     def extract_screenshots(
-        self, start_time, end_time, number_of_screenshots=None, method="Equidistant"
+        self,
+        start_time,
+        end_time,
+        number_of_screenshots=DEFAULT_NUMBER_OF_SCREENSHOTS,
+        method="Equidistant",
+        image_height=DEFAULT_IMAGE_HEIGHT,
+        image_ui_height=DEFAULT_IMAGE_UI_HEIGHT,
     ):
-        if number_of_screenshots == None:
-            number_of_screenshots = self.default_number_of_screenshots
 
         if method not in ["Equidistant", "Random"]:
             print(f"Incorrect screenshot extraction method chosen: {method}")
@@ -46,7 +52,7 @@ class ScreenshotExtractor:
             ret, frame = cap.read()
 
             # Resize the frame to 360p height while maintaining aspect ratio
-            height = self.default_image_height
+            height = image_height
             width = int(frame.shape[1] / frame.shape[0] * height)
             frame = cv2.resize(frame, (width, height))
 

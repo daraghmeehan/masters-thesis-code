@@ -13,11 +13,14 @@
       "Answer Language": {
         "type": "Dropdown"
       },
-      "Hint": {
-        "type": "LineEdit"
-      },
       "Extra Info": {
         "type": "TextEdit"
+      },
+      "Other Forms": {
+        "type": "TextEdit"
+      },
+      "Hint": {
+        "type": "LineEdit"
       },
       "Picture": {
         "type": "Media",
@@ -27,6 +30,12 @@
         "type": "Media",
         "widget": "AudioViewer"
       },
+      "Example\nSentence(s)": {
+        "type": "TextEdit"
+      },
+      "Pronunciation": {
+        "type": "LineEdit"
+      },
       "Show Picture Before?": {
         "type": "Checkbox"
       },
@@ -35,6 +44,12 @@
       },
       "Hide Text Before?": {
         "type": "Checkbox"
+      },
+      "Source": {
+        "type": "LineEdit"
+      },
+      "Tags": {
+        "type": "Hidden"
       }
     },
     "required_fields": [

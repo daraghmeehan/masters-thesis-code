@@ -8,10 +8,11 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QShortcut,
     QCheckBox,
-    QFrame,
+    QLabel,
+    QSizePolicy,
 )
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QKeySequence
+from PyQt5.QtGui import QKeySequence, QFont, QFontMetrics, QTextOption
 
 
 class StudyMaterials(QWidget):
@@ -33,6 +34,7 @@ class StudyMaterials(QWidget):
             saved_sentences_layout.addWidget(self.saved_sentences)
             self.saved_sentences_tab.setLayout(saved_sentences_layout)
             self.tab_widget.addTab(self.saved_sentences_tab, "Saved Sentences")
+
         elif mode == "AVI":
             self.subtitle_workspace_tab = QWidget()
             subtitle_workspace_layout = QVBoxLayout()
@@ -67,31 +69,36 @@ class SubtitleView(QWidget):
     listen_requested_signal = pyqtSignal()
     flashcard_requested_signal = pyqtSignal()
 
-    def __init__(self, text):
+    def __init__(self, text, has_audio_track):
         super().__init__()
-        self.initUI(text)
+        self.initUI(text, has_audio_track)
 
-    def initUI(self, text):
+    def initUI(self, text, has_audio_track):
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
         # Add a checkbox to the left of the subtitle
         checkbox = QCheckBox()
-        layout.addWidget(checkbox)
+        layout.addWidget(checkbox, alignment=Qt.AlignTop)
 
-        subtitle_view = QPlainTextEdit(text)
-        subtitle_view.setReadOnly(True)
-        layout.addWidget(subtitle_view)
+        self.subtitle_view = QPlainTextEdit(text)
+        self.subtitle_view.setVerticalScrollBarPolicy(
+            Qt.ScrollBarAlwaysOff
+        )  # Turn off vertical scroll bar
+        self.subtitle_view.setReadOnly(True)
+
+        layout.addWidget(self.subtitle_view)
 
         # Vertical layout for buttons
-        buttons_layout = QHBoxLayout()
+        buttons_layout = QVBoxLayout()
 
-        listen_button = QPushButton("🔊")
-        listen_button.setMinimumSize(20, 20)
-        listen_button.setMaximumSize(20, 20)
-        listen_button.clicked.connect(self.listen_requested_signal.emit)
-        buttons_layout.addWidget(listen_button)
+        if has_audio_track:
+            listen_button = QPushButton("🔊")
+            listen_button.setMinimumSize(20, 20)
+            listen_button.setMaximumSize(20, 20)
+            listen_button.clicked.connect(self.listen_requested_signal.emit)
+            buttons_layout.addWidget(listen_button)
 
         flashcard_button = QPushButton("F")
         flashcard_button.setMinimumSize(20, 20)
@@ -111,6 +118,7 @@ class SubtitleWorkspace(QWidget):
         super().__init__()
 
         self.languages = languages
+        self.languages_with_audio_tracks = []
 
         self.entry_layouts = []  # List to store layouts for each entry
         self.main_layout = QHBoxLayout(self)  # Main layout to hold language layouts
@@ -119,11 +127,6 @@ class SubtitleWorkspace(QWidget):
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
-
-        # # Create a QVBoxLayout for subtitles
-        # entries_layout = QVBoxLayout()
-        # entries_layout.setContentsMargins(0, 0, 0, 0)
-        # entries_layout.setSpacing(0)
 
         # Create a container widget for the layout and set it to the scroll area
         self.container_widget = QWidget()
@@ -135,17 +138,24 @@ class SubtitleWorkspace(QWidget):
         # Add the scroll area to the main layout
         self.main_layout.addWidget(self.scroll_area)
 
+    def clear_workspace(self):
+        pass
+
     def add_entry(self, entry):
         entry_layout = QHBoxLayout()  # Create a QHBoxLayout for the entry
         entry_layout.setContentsMargins(0, 0, 0, 0)
-        entry_layout.setSpacing(10)
+        entry_layout.setSpacing(5)
 
         self.container_layout.addLayout(
             entry_layout
         )  # Add entry layout to container layout
         self.entry_layouts.append(entry_layout)
 
+        subtitle_views = []  # List to store subtitle views
+
         for language in self.languages:
+            has_audio_track = language in self.languages_with_audio_tracks
+
             # # Add thick vertical line between entries
             # line = QFrame()
             # line.setFrameShape(QFrame.VLine)
@@ -166,24 +176,61 @@ class SubtitleWorkspace(QWidget):
             )
 
             if subtitle_indices == []:
-                subtitle_layout.addWidget(SubtitleView(""))
+                subtitle_view = SubtitleView("", has_audio_track=False)
+                subtitle_layout.addWidget(subtitle_view)
+                subtitle_views.append(subtitle_view)
+            else:
+                for subtitle_index, subtitle_text in zip(
+                    subtitle_indices, subtitle_texts
+                ):
+                    subtitle_view = SubtitleView(subtitle_text, has_audio_track)
 
-            for subtitle_index, subtitle_text in zip(subtitle_indices, subtitle_texts):
-                subtitle_view = SubtitleView(subtitle_text)
-                subtitle_view.listen_requested_signal.connect(
-                    lambda language=language, index=subtitle_index: self.listen_requested_signal.emit(
-                        language, index
+                    subtitle_view.listen_requested_signal.connect(
+                        lambda language=language, index=subtitle_index: self.listen_requested_signal.emit(
+                            language, index
+                        )
                     )
-                )
-                subtitle_view.flashcard_requested_signal.connect(
-                    lambda language=language, index=subtitle_index: self.flashcard_requested_signal.emit(
-                        language, index
+                    subtitle_view.flashcard_requested_signal.connect(
+                        lambda language=language, index=subtitle_index: self.flashcard_requested_signal.emit(
+                            language, index
+                        )
                     )
-                )
-                subtitle_layout.addWidget(
-                    subtitle_view
-                )  # Add subtitle view to the entry layout
+                    subtitle_layout.addWidget(
+                        subtitle_view
+                    )  # Add subtitle view to the entry layout
+                    subtitle_views.append(subtitle_view)
 
+        ## In future, need to resize the subtitle views at the end of setting up the UI when they have been shrunk (then can calculate widget width accurately)
+        # Calculate the minimum height required based on the maximum content
+        max_height = 0
+        for subtitle_view in subtitle_views:
+            text = subtitle_view.subtitle_view.toPlainText()
+            font_metrics = QFontMetrics(subtitle_view.subtitle_view.font())
+            text_width = font_metrics.horizontalAdvance(text)
+
+            # Ensure the widget width is accurate at the time of calculation
+            subtitle_view.subtitle_view.adjustSize()
+            # Estimate the number of lines by dividing the text width by the widget's width
+            # widget_width = subtitle_view.subtitle_view.width()
+            # print(widget_width)
+            widget_width = 80 if len(self.languages) > 3 else 150
+            estimated_lines = (text_width // widget_width) + (
+                1 if text_width % widget_width else 0
+            )
+
+            line_height = font_metrics.height()
+            estimated_text_height = line_height * estimated_lines
+
+            # # max_height = max(max_height, document_height + content_margins)
+            max_height = int(max(max_height, estimated_text_height))
+
+        max_height += 30
+
+        # Set the minimum height for all subtitle views
+        for subtitle_view in subtitle_views:
+            subtitle_view.subtitle_view.setMinimumHeight(max_height)
+
+        ## ??
         # Create and add subtitle views
 
     #     for index, subtitle in enumerate(subtitles):
@@ -204,9 +251,9 @@ class SubtitleWorkspace(QWidget):
 
     #     return subtitle_view
 
-    def on_flashcard_button_clicked(self, subtitle):
-        # Handle flashcard creation for the subtitle
-        pass  # Implement here
+    # def on_flashcard_button_clicked(self, subtitle):
+    #     # Handle flashcard creation for the subtitle
+    #     pass  # Implement here
 
 
 class SavedSentences(QWidget):
@@ -253,11 +300,11 @@ class SavedSentences(QWidget):
         #     self.add_entry("Sentence " + str(i + 1))
 
         # Add the "Add New Cards" and "Add New from Clipboard" buttons
-        self.add_new_cards_button = QPushButton("Add from Sentence Bin\n(Alt+B)")
+        self.add_new_cards_button = QPushButton("Add from Sentence Bin")  # \n(Alt+B)")
         # self.add_new_cards_button.clicked.connect(self.add_new_cards)
         self.add_new_from_clipboard_button = QPushButton(
-            "Add New from Clipboard\n(Alt+C)"
-        )
+            "Add from Clipboard"
+        )  # \n(Alt+C)")
         # self.add_new_from_clipboard_button.clicked.connect(self.add_new_from_clipboard)
         self.bottom_button_layout = QHBoxLayout()
         self.bottom_button_layout.addWidget(self.add_new_cards_button)
@@ -338,9 +385,12 @@ class SavedSentenceEntry(QWidget):
         self.setLayout(self.entry_layout)
 
         # Add the "Remove Entry" button to the left of the entry
-        self.remove_button = QPushButton("x\n(Alt+X)")
+        self.remove_button = QPushButton("X")  # \n(Alt+X)")
         # self.remove_button.setFixedSize(25, 25)
-        self.remove_button.setFixedWidth(50)
+        self.remove_button.setFixedSize(65, 20)
+        self.remove_button.setStyleSheet(
+            "background-color: rgb(255, 0, 0); color: white; border-radius: 1px; font-weight: bold;"
+        )
         self.remove_button.clicked.connect(self.deleteLater)
         self.entry_layout.addWidget(self.remove_button)
 
@@ -355,13 +405,15 @@ class SavedSentenceEntry(QWidget):
         self.entry_layout.addWidget(self.source_language_textedit)
 
         # Add the "Translate" and "Flashcard" buttons to the right of the entry
-        self.translate_button = QPushButton("Translate\n(Alt+G)")
+        self.translate_button = QPushButton("Translate")  # \n(Alt+G)")
         # self.translate_button.clicked.connect(lambda: self.translate_entry(self))
+        self.translate_button.setFixedWidth(65)
         self.translate_button.clicked.connect(
             lambda: self.translate_requested_signal.emit(self)
         )
-        self.flashcard_button = QPushButton("Flashcard\n(Alt+Z)")
+        self.flashcard_button = QPushButton("Flashcard")  # \n(Alt+Z)")
         # self.flashcard_button.clicked.connect(lambda: self.show_flashcard(self))
+        self.flashcard_button.setFixedWidth(65)
         self.flashcard_button.clicked.connect(
             lambda: self.flashcard_requested_signal.emit(self)
         )

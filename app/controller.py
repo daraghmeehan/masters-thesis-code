@@ -4,7 +4,8 @@ from typing import Dict
 
 
 ## Third-party imports
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QDialog, QShortcut
 from PyQt5.QtGui import QKeySequence
 
@@ -30,81 +31,119 @@ from flashcards.flashcard_templates import read_flashcard_templates
 from flashcards.flashcard_creator import FlashcardCreator
 
 from avi_utils.screenshot_extractor import ScreenshotExtractor
+from avi_utils.audio_player import AudioPlayer
 from audio.audio_extractor import AudioExtractor
 
 # Two below to make scaling bigger on small high-res screens
-if hasattr(QtCore.Qt, "AA_EnableHighDpiScaling"):
-    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-if hasattr(QtCore.Qt, "AA_UseHighDpiPixmaps"):
-    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+if hasattr(Qt, "AA_EnableHighDpiScaling"):
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+if hasattr(Qt, "AA_UseHighDpiPixmaps"):
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
 
-sample_startup_options = {
+gg_startup_options = {
     "Mode": "AVI",
-    "Video File": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.mp4",
+    "Video File": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.mp4",
     "Source Language": "English",
     "Target Languages": [
         "Spanish",
-        "Dutch",
-        "French",
-        "Japanese",
+        # "Dutch",
         # "Czech",
+        # "Italian",
+        "Japanese",
+        "French",
+        # "Chinese",
         # "Polish",
         # "Indonesian",
         # "Portuguese",
         # "Swedish",
-        # "Italian",
         # "Turkish",
-        # "Chinese",
         # "Chinese (Traditional)",
     ],
     "Audio Tracks": {
         "English": "None",
-        "Spanish": "None",
-        "Dutch": "None",
-        # "French": "None",
-        # "Japanese": "None",
+        # "Dutch": "None",
         # "Czech": "None",
+        "Spanish": "None",
+        # "Italian": "None",
+        "Japanese": "None",
+        # "Spanish": "spa",
+        # "Italian": "ita",
+        # "Japanese": "jpn",
+        # "Chinese": "None",
+        "French": "None",
         # "Polish": "None",
         # "Indonesian": "None",
         # "Portuguese": "None",
         # "Swedish": "None",
-        # "Italian": "None",
         # "Turkish": "None",
-        # "Chinese": "None",
         # "Chinese (Traditional)": "None",
     },
     "Subtitle Files": {
-        "Reference": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.en.srt",
-        "English": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.en.srt",
-        "Spanish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.es.srt",
-        "Dutch": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.nl.srt",
-        "French": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.fr.srt",
-        "Japanese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.ja.srt",
-        # "Czech": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.cs.srt",
-        # "Polish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.pl.srt",
-        # "Indonesian": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.id.srt",
-        # "Portuguese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.pt.srt",
-        # "Swedish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.sv.srt",
-        # "Italian": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.it.srt",
-        # "Turkish": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.tr.srt",
-        # "Chinese": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.zh-Hans.srt",
-        # "Chinese (Traditional)": "C:/Stuff/UniversaLearn/LanguageRepo/Language Learning Material/Netflix Downloads/Las chicas Gilmore/S01/Las chicas Gilmore_S01E01_Piloto.zh-Hant.srt",
+        "Reference": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
+        # "Dutch": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.nl.srt",
+        # "Czech": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.cs.srt",
+        # "Italian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.it.srt",
+        "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
+        "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
+        # "Chinese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hans.srt",
+        # "Polish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pl.srt",
+        # "Indonesian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.id.srt",
+        # "Portuguese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pt.srt",
+        # "Swedish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.sv.srt",
+        # "Turkish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.tr.srt",
+        # "Chinese (Traditional)": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hant.srt",
     },
     "Dictionaries": {
         "Spanish": ["SpanishDict", "Collins"],
-        "Dutch": ["Van Dale"],
-        "French": ["Larousse"],
-        # "Japanese": [],
-        # "Czech": [],
+        # "Dutch": ["Van Dale", "MijnWoordenboek"],
+        # "Czech": ["Fake"],
+        # "Italian": ["Collins"],
+        "Japanese": ["Fake"],
+        # "Chinese": ["Fake"],
+        "French": ["Larousse", "WordReference"],
         # "Polish": [],
         # "Indonesian": [],
         # "Portuguese": [],
         # "Swedish": [],
-        # "Italian": [],
         # "Turkish": [],
-        # "Chinese": [],
         # "Chinese (Traditional)": [],
+    },
+}
+
+peppa_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Peppa Pig/Daddy loses his glasses.mp4",
+    "Source Language": "English",
+    "Target Languages": ["Dutch", "Italian"],
+    "Audio Tracks": {
+        "English": "eng",
+        "Dutch": "dut",
+        "Italian": "ita",
+        # "English": "None",
+        # "Dutch": "None",
+        # "Italian": "None",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/Peppa Pig/[English] Daddy loses his glasses.srt",
+        "English": "C:/Stuff/Peppa Pig/[English] Daddy loses his glasses.srt",
+        "Dutch": "C:/Stuff/Peppa Pig/[Dutch] Daddy loses his glasses.srt",
+        "Italian": "C:/Stuff/Peppa Pig/[Italian] Daddy loses his glasses.srt",
+    },
+    "Dictionaries": {
+        "Dutch": ["Van Dale", "MijnWoordenboek"],
+        "Italian": ["Reverso", "Collins", "WordReference"],
+    },
+}
+
+text_mode_options = {
+    "Mode": "Text",
+    "Source Language": "English",
+    "Target Languages": ["Spanish"],
+    "Dictionaries": {
+        "Spanish": ["WordReference", "Collins"],
     },
 }
 
@@ -132,11 +171,13 @@ class Controller:
         """
         self.target_to_english_dictionaries = load_all_target_to_english_dictionaries()
 
-        # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
+        # # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
         # startup_options = self.run_startup_dialog()
 
-        # # For quicker testing
-        startup_options = sample_startup_options
+        # For quicker testing
+        # startup_options = gg_startup_options
+        # startup_options = peppa_startup_options
+        startup_options = text_mode_options
 
         self.parse_startup_options(startup_options)
         if self.mode == "Export Media":
@@ -163,6 +204,9 @@ class Controller:
             self.set_up_screenshot_extractor()
             self.set_up_audio_extractor()
 
+            # To play and export subtitle audio
+            self.audio_player = AudioPlayer()
+
         # Set up the model and the view
         self.set_up_model()
         self.set_up_ui()
@@ -174,7 +218,8 @@ class Controller:
         finally:
             # Clean up our work
             self.delete_empty_decks()
-            self.clean_temporary_files()
+            if self.mode == "AVI":
+                self.clean_temporary_files()
             pass
 
     def run_startup_dialog(self):
@@ -220,6 +265,8 @@ class Controller:
         flashcard_creators = {}
 
         flashcard_field_names = list(self.flashcard_fields.keys())
+        if "Tags" in flashcard_field_names:
+            flashcard_field_names.remove("Tags")
         for deck in self.decks:
             flashcard_creator = FlashcardCreator(
                 deck_name=f"({self.mode}) Languages {deck}",
@@ -270,16 +317,70 @@ class Controller:
         self.set_up_all_enter_key_signals()
 
     def set_up_flashcard_workspace(self):
-        self.ui.flashcard_workspace.deck_dropdown.addItems(
-            ["Easy", "Normal", "Hard"]
-        )  ##!! this was for different deck names
+        self.ui.flashcard_workspace.deck_dropdown.addItems(self.decks)
+        self.ui.flashcard_workspace.deck_dropdown.setCurrentIndex(1)
 
         for field_name, field_info in self.flashcard_fields.items():
             self.ui.flashcard_workspace.add_field(field_name, field_info)
+
+        self.ui.flashcard_workspace.fields["Question Language"].addItems(self.languages)
+        self.ui.flashcard_workspace.fields["Answer Language"].addItems(self.languages)
+
+        self.ui.flashcard_workspace.translate_question_text_button.clicked.connect(
+            self.translate_question_text
+        )
+
+        if self.mode == "AVI":
+            self.ui.flashcard_workspace.fields["Audio"].play_requested.connect(
+                self.play_flashcard_audio
+            )
+            self.ui.flashcard_workspace.fields["Audio"].stop_requested.connect(
+                self.stop_flashcard_audio
+            )
+            self.ui.flashcard_workspace.fields["Audio"].change_audio_time.connect(
+                self.change_flashcard_audio_time
+            )
+
         self.ui.flashcard_workspace.add_button.clicked.connect(self.add_flashcard)
         self.ui.flashcard_workspace.edit_previous_button.clicked.connect(
             self.edit_previous_flashcards
         )
+
+    def translate_question_text(self):
+        question_language = self.ui.flashcard_workspace.fields[
+            "Question Language"
+        ].currentText()
+        answer_language = self.ui.flashcard_workspace.fields[
+            "Answer Language"
+        ].currentText()
+        question_text = (
+            self.ui.flashcard_workspace.fields["Question Text"].toPlainText().strip()
+        )
+
+        if question_language == answer_language or question_text == "":
+            return
+
+        answer_text = self.translator.translate_text(
+            question_text, question_language, answer_language
+        ).text
+
+        self.ui.flashcard_workspace.fields["Answer Text"].setText(answer_text)
+
+    def play_flashcard_audio(self, audio_path):
+        self.audio_player.stop()
+
+        if audio_path != self.audio_player.get_audio_path():
+            self.audio_player.reset_player()
+            self.audio_player.update_audio(audio_path)
+
+        self.audio_player.play()
+
+    def stop_flashcard_audio(self):
+        self.audio_player.stop()
+
+    def change_flashcard_audio_time(self, start_or_end_time, adjustment):
+        # Reextract flashcard audio file with different start/end time
+        pass
 
     def add_flashcard(self):
         timestamp = time.strftime("%Y%m%d_%H%M%S")  # For uniquely naming files
@@ -287,8 +388,16 @@ class Controller:
         flashcard = {}
         for field_name, field_info in self.flashcard_fields.items():
             if field_info["type"] == "Media":
-                media_path = self.save_card_media(field_name, timestamp)
-                field_data = media_path
+                if self.mode == "AVI":
+                    media_path = self.save_card_media(field_name, timestamp)
+                    field_data = media_path
+                    if field_name == "Audio":
+                        field_data = "[sound:" + field_data + "]"
+                else:
+                    field_data = ""
+            elif field_name == "Tags":
+                # Tags need to be set separately
+                continue
             else:
                 field_data = self.ui.flashcard_workspace.extract_field_data(field_name)
             flashcard[field_name] = field_data
@@ -296,6 +405,7 @@ class Controller:
         # Ensuring all our required fields have some data
         for required_field in self.required_fields:
             if flashcard[required_field] == "":
+                ##!! If required fields blank, still might have saved card media!
                 print(
                     f"{required_field} is a required field but is blank! Rejecting card..."
                 )
@@ -303,6 +413,8 @@ class Controller:
 
         # Retrieving the chosen deck
         deck = self.ui.flashcard_workspace.deck_dropdown.currentText()
+
+        # print(flashcard)
 
         # Adding our card to the appropriate deck
         self.flashcard_creators[deck].add_flashcard(flashcard)
@@ -313,17 +425,27 @@ class Controller:
         filename = ""  # Media flashcard fields must point to the filename
         media_widget = self.ui.flashcard_workspace.fields[field_name]
 
-        if isinstance(media_widget, ScreenshotViewer):
+        if (
+            isinstance(media_widget, ScreenshotViewer)
+            and media_widget.has_screenshots()
+        ):
             file_extension = ".jpg"
-            filename = timestamp + file_extension
+            # "_languages_" is code to be able to find language card pictures easily in Anki media folder
+            filename = "_languages_" + timestamp + file_extension
             path = os.path.join(self.flashcard_image_folder, filename)
             media_widget.save_screenshot(path)
 
-        elif isinstance(media_widget, AudioViewer):
+        elif isinstance(media_widget, AudioViewer) and media_widget.has_audio():
+            audio_path = self.ui.flashcard_workspace.fields["Audio"].get_audio_path()
+
+            if self.audio_player.get_audio_path != audio_path:
+                self.audio_player.update_audio(audio_path)
+
             file_extension = ".mp3"
-            filename = timestamp + file_extension
+            # "_languages_" is code to be able to find language card pictures easily in Anki media folder
+            filename = "_languages_" + timestamp + file_extension
             path = os.path.join(self.flashcard_audio_folder, filename)
-            media_widget.save_audio(path)
+            self.audio_player.save_audio(path)
 
         return filename
 
@@ -333,8 +455,8 @@ class Controller:
     def set_up_translation_workspace(self):
         self.ui.translation_workspace.set_languages(
             languages=self.languages,
-            target_language=self.target_languages[0],
-            source_language=self.source_language,
+            source_language=self.target_languages[0],
+            target_language=self.source_language,
         )
 
         self.ui.translation_workspace.translate_button.clicked.connect(
@@ -346,62 +468,83 @@ class Controller:
         )
 
     def translate_from_workspace(self):
-        target_language_text = self.ui.translation_workspace.get_target_language_text()
-        if target_language_text == "":
+        source_language_text = self.ui.translation_workspace.get_source_language_text()
+        if source_language_text == "":
             return
 
-        target_language = self.ui.translation_workspace.get_target_language()
         source_language = self.ui.translation_workspace.get_source_language()
+        target_language = self.ui.translation_workspace.get_target_language()
 
-        if target_language == source_language:
-            return  # don't do anything if translating between same language
+        if source_language == target_language:
+            return  # Don't do anything if translating between same language
 
         try:
-            # In translation the source language (the user's L2) is the one to be translated to the target language (the user's L1)
+            # In translation the source language is translated to the target language
             translation = self.translator.translate_text(
-                text=target_language_text,
-                source_lang=target_language,
-                target_lang=source_language,
+                text=source_language_text,
+                source_lang=source_language,
+                target_lang=target_language,
             ).text
         except:
             translation = ""
 
-        self.ui.translation_workspace.set_source_language_text(translation)
+        self.ui.translation_workspace.set_target_language_text(translation)
 
     def make_flashcard_from_workspace(self):
-        target_language = self.ui.translation_workspace.get_target_language_text()
-        source_language = self.ui.translation_workspace.get_source_language_text()
+        ## should rename these??
+        source_language_text = self.ui.translation_workspace.get_source_language_text()
+        target_language_text = self.ui.translation_workspace.get_target_language_text()
+
+        if source_language_text == "" or target_language_text == "":
+            return
+
+        source_language = self.ui.translation_workspace.get_source_language()
+        target_language = self.ui.translation_workspace.get_target_language()
 
         self.ui.flashcard_workspace.reset_flashcard_fields()
 
-        self.ui.flashcard_workspace.target_textedit.setText(target_language)
-        self.ui.flashcard_workspace.source_textedit.setText(source_language)
+        self.ui.flashcard_workspace.fields["Question Text"].setText(
+            source_language_text
+        )
+        self.ui.flashcard_workspace.fields["Answer Text"].setText(target_language_text)
+
+        self.ui.flashcard_workspace.fields["Question Language"].setCurrentText(
+            target_language
+        )
+        self.ui.flashcard_workspace.fields["Answer Language"].setCurrentText(
+            source_language
+        )
 
         self.ui.translation_workspace.clear_workspace()
 
     def set_up_dictionary_lookup(self):
         self.ui.dictionary_lookup.set_up_dictionaries(self.dictionaries)
         self.ui.dictionary_lookup.search_button.clicked.connect(self.look_up_word)
+        self.ui.dictionary_lookup.search_requested.connect(
+            self.look_up_word_in_one_dictionary
+        )
 
     def look_up_word(self):
-        word = self.ui.dictionary_lookup.dictionary_lookup_lineedit.text()
-        word = word.replace("­", "")  # Removing soft hyphens
+        word = self.ui.dictionary_lookup.get_text()
 
         if word == "":
             return
 
-        dictionaries_to_search = []
+        # dictionaries_to_search = []
 
-        ##!! put this in dictionary_lookup!
-        checkbox_layout = self.ui.dictionary_lookup.dictionary_checkbox_layout
-        for i in range(checkbox_layout.count()):
-            checkbox = checkbox_layout.itemAt(i).widget()
-            if checkbox.isChecked():
-                dictionaries_to_search.append(checkbox.text())
+        # ##!! put this in dictionary_lookup!
+        # checkbox_layout = self.ui.dictionary_lookup.dictionary_checkbox_layout
+        # for i in range(checkbox_layout.count()):
+        #     checkbox = checkbox_layout.itemAt(i).widget()
+        #     if checkbox.isChecked():
+        #         dictionaries_to_search.append(checkbox.text())
+
+        language = self.ui.dictionary_lookup.get_language()
+        dictionaries_to_search = self.ui.dictionary_lookup.get_dictionaries()
 
         for dictionary in dictionaries_to_search:
-            formatting = self.target_to_english_dictionaries[self.target_language][
-                dictionary
+            formatting = self.target_to_english_dictionaries[language][dictionary][
+                "url"
             ]
             search_address = formatting[0] + word + formatting[1]
             webbrowser.open(
@@ -409,18 +552,91 @@ class Controller:
             )
             ##?? any way of setting focus on this window??
 
+    def look_up_word_in_one_dictionary(self, language, dictionary):
+        word = self.ui.dictionary_lookup.get_text()
+
+        if word == "":
+            return
+
+        formatting = self.target_to_english_dictionaries[language][dictionary]["url"]
+        search_address = formatting[0] + word + formatting[1]
+        webbrowser.open(
+            search_address,  # autoraise=False
+        )
+
     def set_up_study_materials(self):
         if self.mode == "AVI":
-            initial_alignment = self.model.get_alignment()
-
             # import sys
             # sys.argv.append(self.model) ## For testing
 
-            self.set_up_subtitle_workspace(initial_alignment)
+            self.set_up_subtitle_workspace()
+
+            initial_alignment = self.model.get_alignment()
+            self.set_subtitle_alignment(initial_alignment)
         elif self.mode == "Text":
             self.set_up_saved_sentences()
 
-    def set_up_subtitle_workspace(self, alignment):
+    def set_up_subtitle_workspace(self):
+        self.ui.study_materials.subtitle_workspace.languages_with_audio_tracks = [
+            language
+            for language, audio_track in self.audio_tracks.items()
+            if audio_track != "None"
+        ]
+        self.ui.study_materials.subtitle_workspace.flashcard_requested_signal.connect(
+            self.make_flashcard_from_subtitle
+        )
+        self.ui.study_materials.subtitle_workspace.listen_requested_signal.connect(
+            self.play_subtitle_audio
+        )
+
+    def make_flashcard_from_subtitle(self, language, index):
+        ##!! rename index/indices to number/numbers
+        subtitle = self.model.get_subtitle(language, index)
+
+        start_time, end_time, text = (
+            subtitle.start_time,
+            subtitle.end_time,
+            subtitle.text,
+        )
+
+        screenshots = self.screenshot_extractor.extract_screenshots(
+            start_time, end_time
+        )
+
+        self.ui.flashcard_workspace.reset_flashcard_fields()
+
+        self.ui.flashcard_workspace.fields["Question Text"].setText(text)
+        self.ui.flashcard_workspace.fields["Question Language"].setCurrentText(language)
+        self.ui.flashcard_workspace.fields["Picture"].update_screenshots(screenshots)
+
+        if self.audio_tracks[language] != "None":
+            self.audio_player.stop()
+            self.audio_player.reset_player()  # Otherwise we can't extract the segment if the last one played was also a flashcard one
+            audio_segment_path = self.audio_extractor.extract_segment(
+                language, start_time, end_time, is_for_flashcard=True
+            )
+            self.ui.flashcard_workspace.fields["Audio"].update_audio(audio_segment_path)
+            self.audio_player.update_audio(audio_segment_path)
+
+    def play_subtitle_audio(self, language, index):
+        if self.audio_tracks[language] == "None":
+            return
+
+        self.audio_player.stop()
+        self.audio_player.reset_player()
+
+        subtitle = self.model.get_subtitle(language, index)
+
+        audio_segment_path = self.audio_extractor.extract_segment(
+            language, subtitle.start_time, subtitle.end_time, is_for_flashcard=False
+        )
+
+        self.audio_player.update_audio(audio_segment_path)
+        self.audio_player.play()
+
+    def set_subtitle_alignment(self, alignment):
+        self.ui.study_materials.subtitle_workspace.clear_workspace()
+
         for entry in alignment:
             subtitles = {
                 language: {"indices": [], "texts": []} for language in self.languages
@@ -463,7 +679,8 @@ class Controller:
     def translate_entry(self, entry_widget):
         """Entry from saved_sentences_1"""
         sentence = entry_widget.get_target_language_text()
-        print(f"Got sentence: {sentence}")
+        if sentence == "":
+            return
         ##!! set language dynamically
         translation = self.translator.translate_text(
             text=sentence,
@@ -496,7 +713,7 @@ class Controller:
         translations = self.translator.translate_text(
             text=sentences,
             source_lang=self.target_languages[0],
-            target_lang=self.sourcetarget_language,  ##!! how to know which?
+            target_lang=self.source_language,
         )
         translations = [translation.text for translation in translations]
 
