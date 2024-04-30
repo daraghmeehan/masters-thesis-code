@@ -1,7 +1,6 @@
 import os
 import json
 
-from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QApplication,
     QDialog,
@@ -17,6 +16,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QLabel,
     QFrame,
+    QSizePolicy,
 )
 
 import ffmpeg
@@ -32,12 +32,35 @@ DICTIONARY_PAGE_INDEX = 3
 
 
 all_target_languages = [
+    "Arabic",
+    "Bulgarian",
+    "Chinese",
+    "Czech",
+    "Danish",
     "Dutch",
-    "German",
+    "Estonian",
+    "Finnish",
     "French",
+    "German",
+    "Greek",
+    "Hungarian",
+    "Indonesian",
     "Italian",
+    "Japanese",
+    "Korean",
+    "Latvian",
+    "Lithuanian",
+    "Norwegian",
+    "Polish",
     "Portuguese",
+    "Romanian",
+    "Russian",
+    "Slovak",
+    "Slovenian",
     "Spanish",
+    "Swedish",
+    "Turkish",
+    "Ukrainian",
 ]
 
 
@@ -57,6 +80,17 @@ class StartupDialog(QDialog):
 
     def initUI(self):
         self.setWindowTitle("Startup Dialog")
+
+        # # Set initial size of the dialog
+        # self.resize(300, 200)  # Set the initial width and height as desired
+        # self.move(390, 50)
+
+        # # Set minimum and maximum sizes for the dialog
+        # self.setMinimumSize(300, 200)  # Set the minimum width and height
+        # # self.setMaximumSize(800, 600)  # Set the maximum width and height
+
+        # Allow resizing of the dialog
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create a stacked widget to hold the different pages of the dialog
         self.stacked_widget = QStackedWidget()
@@ -126,15 +160,20 @@ class StartupDialog(QDialog):
 
     def show_mode_page(self):
         self.stacked_widget.setCurrentIndex(MODE_PAGE_INDEX)
+        # self.resize(300, 200)
 
     def show_text_page(self):
         self.stacked_widget.setCurrentIndex(TEXT_PAGE_INDEX)
+        # self.resize(300, 200)
 
     def show_avi_page(self):
         self.stacked_widget.setCurrentIndex(AVI_PAGE_INDEX)
+        # self.resize(400, 800)
+        self.adjustSize()
 
     def show_dictionary_page(self):
         self.stacked_widget.setCurrentIndex(DICTIONARY_PAGE_INDEX)
+        # self.resize(400, 520)
 
     def text_mode_selected(self):
         self.startup_options["Mode"] = "Text"
@@ -146,11 +185,12 @@ class StartupDialog(QDialog):
 
     def export_media_mode_selected(self):
         self.startup_options["Mode"] = "Export Media"
+        # Want to go to export media page here!
         self.accept()  # Accept dialog
 
     def text_options_confirmed(self):
         source_language, target_language = self.text_options_page.get_languages()
-        self.startup_options["L1"] = source_language
+        self.startup_options["Source Language"] = source_language
         self.startup_options["Target Languages"] = [target_language]
         self.dictionary_options_page.set_languages([target_language])
         self.show_dictionary_page()

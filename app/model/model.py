@@ -33,25 +33,27 @@ class SubtitleModel:
         non_speaking_symbols=NON_SPEAKING_SYMBOLS,
     ):
         self.language = language
-        self.filename = filename
-        self.encoding = encoding
         self.non_speaking_symbols = non_speaking_symbols
 
-        self.subtitles = self.parse_subtitle_file(
-            self.filename, encoding, non_speaking_symbols
-        )
+        subtitle_lines = self.read_subtitle_file(filename, encoding)
+        self.subtitles = self.parse_subtitle_file(subtitle_lines, non_speaking_symbols)
 
-    def parse_subtitle_file(self, filename, encoding, non_speaking_symbols):
+    def read_subtitle_file(self, filename, encoding):
+        with open(filename, "r", encoding=encoding) as f:
+            lines = f.readlines()
+        return lines
+
+    def parse_subtitle_file(self, subtitle_lines, non_speaking_symbols):
         """
-        Parses a subtitle file and creates a list of Subtitle objects.
+        Parses lines of a subtitle file and creates a list of Subtitle objects.
 
         This function reads a subtitle file line by line and processes it, extracting
         the timing information and text for each subtitle. It handles overlapping
-        subtitles by merging them, and ignores non-speaking parts based on the
+        subtitles by merging them, and ignores non-speaking subtitles based on the
         provided symbols.
 
         Args:
-            filename (str): The path to the subtitle file.
+            subtitle_lines (list of str): The lines of the subtitle file.
             encoding (str): The encoding used for reading the file.
             non_speaking_symbols (list of str): Symbols that indicate non-speaking text
                                                 in the subtitles.
@@ -64,23 +66,22 @@ class SubtitleModel:
             The function assumes the subtitle file is in SRT format.
         """
 
-        with open(filename, "r", encoding=encoding) as f:
-            lines = f.readlines()
-
         subtitles = []
 
         start_time = datetime.min
         end_time = datetime.min
         text = ""
 
-        for i in range(len(lines)):
-            line = lines[i].strip()
+        for i in range(len(subtitle_lines)):
+            line = subtitle_lines[i].strip()
 
             # Subtitle number not needed
-            if re.fullmatch("[0-9]+", line):
+            if re.fullmatch(r"\ufeff?[0-9]+", line):  # Sometimes has a BOM
                 # Making sure this is a subtitle index, not a number printed by itself as the text of a subtitle!
-                if i == 0 or lines[i - 1].strip() == "":
+                if i == 0 or subtitle_lines[i - 1].strip() == "":
                     continue
+                else:
+                    text += " " + line
 
             # Timestamp for subtitle
             elif "-->" in line:
@@ -149,60 +150,15 @@ class SubtitleModel:
 
         return all_sub_times
 
-    ##!! refactor in future
-    def segment_episode(self, minimum_silence_between_segments):
-        """!!Minimum silence in seconds"""
-
-        ##!! should make this a class!!
-        segments = []
-
-        current_segment = {
-            ##!! missing subtitle numbers too?? or is necessary
-            "start_time": self.subtitles[0]["start_time"],
-            "end_time": self.subtitles[0]["end_time"],
-            "text": self.subtitles[0]["text"],
-        }
-
-        for subtitle_number in range(1, self.number_of_subtitles()):
-            subtitle = self.subtitles[subtitle_number]
-
-            if subtitle_number == self.number_of_subtitles() - 1:
-                ##!! perhaps this could be segment.addsubtitle... so it can be reused
-                current_segment["end_time"] = subtitle["end_time"]
-                current_segment["text"] += subtitle["text"]
-                segments.append(current_segment)
-                return segments
-
-            current_segment_end_time = int(
-                (current_segment["end_time"] - datetime(1900, 1, 1)).total_seconds()
-            )
-            subtitle_start_time = int(
-                (subtitle["start_time"] - datetime(1900, 1, 1)).total_seconds()
-            )
-
-            time_until_next_subtitle = subtitle_start_time - current_segment_end_time
-
-            if time_until_next_subtitle >= minimum_silence_between_segments:
-                # flush segment
-                segments.append(current_segment)
-                current_segment = {
-                    "start_time": subtitle["start_time"],
-                    # "end_time": subtitle["end_time"], # redundant
-                    "text": "",
-                }
-
-            current_segment["end_time"] = subtitle["end_time"]
-            current_segment["text"] += f"{subtitle['text'].strip()}\n"
-            ##!! this strip is key -> but better to parse the file better?
-
     def all_text_to_txt_file(self, filename):
         text = self.get_all_text()
 
         with open(filename, "w") as f:
             f.write(text)
 
-    def segments_to_txt(self, minimum_silence_between_segments, filename):
-        segments = self.segment_episode(minimum_silence_between_segments)
+    ## this was testing!!
+    def segments_to_txt(self, maximum_seconds_between_segments, filename):
+        segments = self.segment_episode(maximum_seconds_between_segments)
         number_of_segments = len(segments)
 
         with open(filename, "w") as f:
@@ -229,14 +185,18 @@ class SubtitleModel:
 def parse_subtitle_timing(line):
     start_time, end_time = line.split(" --> ")
 
-    # Handling having milliseconds or not, e.g. 01:30:12 vs 01:30:12,00s7
+    # Handling having milliseconds or not, e.g. 01:30:12 vs 01:30:12,007
     if "," in start_time:
         start_time = datetime.strptime(start_time, "%H:%M:%S,%f")
+    elif "." in start_time:
+        start_time = datetime.strptime(start_time, "%H:%M:%S.%f")
     else:
         start_time = datetime.strptime(start_time, "%H:%M:%S")
 
     if "," in end_time:
         end_time = datetime.strptime(end_time, "%H:%M:%S,%f")
+    elif "." in end_time:
+        end_time = datetime.strptime(end_time, "%H:%M:%S.%f")
     else:
         end_time = datetime.strptime(end_time, "%H:%M:%S")
 
@@ -259,7 +219,7 @@ def parse_subtitle_timing(line):
 #         return self.segments.get(segment_number, [])
 
 #     def create_segments(
-#         self, minimum_silence_between_segments
+#         self, maximum_seconds_between_segments
 #     ):  ##?? also maximum_segment_time
 #         ...
 
@@ -358,8 +318,26 @@ class AVIModel:
 
     #         return texts
 
-    # def create_segments(self, ...):
-    #     pass
+    def create_segments(self, maximum_seconds_between_segments):
+        """Minimum silence in seconds"""
+
+        # Don't need to track current start time as only compare current subtitle to end time of previous
+        current_end_time = self.alignment.alignment[0]["timings"][1]
+        current_segment = 1
+
+        for entry in self.alignment.alignment[1:]:
+            start_time, end_time = entry["timings"]
+
+            if (
+                start_time - current_end_time
+            ).total_seconds() > maximum_seconds_between_segments:
+                current_segment += 1
+
+            # Assign the segment to the entry
+            entry["segment"] = current_segment
+
+            # Update current values for the next loop
+            current_end_time = end_time
 
     def get_subtitle(self, language, subtitle_number):
         return self.subtitle_models[language].get_subtitle(subtitle_number)
@@ -395,15 +373,19 @@ class AVIModel:
                 subtitle_indices = {
                     "Reference": [i]
                 }  # Add the index for the reference language first
+
+                # Adding placeholders for all languages
                 subtitle_indices.update({language: [] for language in self.languages})
 
                 self.alignment.append(
                     {
                         "timings": (start_time, end_time),
                         "subtitle_indices": subtitle_indices,
+                        "segment": 1,  # No segmenting applied at initialisation (update this later...)
                     }
                 )
 
+        # In case reference file is also one of the chosen languages
         def copy_reference_values(self, language):
             for entry in self.alignment:
                 # Using [:] slice to create a copy
@@ -430,6 +412,7 @@ class AVIModel:
                     )
                     continue
 
+                ##!! Add entry with closest start time instead !!
                 # Otherwise we find the tuple with the largest overlap value...
                 max_overlap_entry = max(overlapping_entries, key=lambda x: x[1])
 
@@ -465,6 +448,7 @@ class AVIModel:
             new_entry = {
                 "timings": (start_time, end_time),
                 "subtitle_indices": subtitle_indices,
+                "segment": 1,
             }
 
             # Then find where our entry should go and insert it

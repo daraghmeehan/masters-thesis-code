@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -10,6 +12,7 @@ from PyQt5.QtWidgets import (
     QCheckBox,
     QLabel,
     QSizePolicy,
+    QFrame,
 )
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence, QFont, QFontMetrics, QTextOption
@@ -65,6 +68,81 @@ class StudyMaterials(QWidget):
 #         self.textedit_1.setPlainText(subtitle_text)
 
 
+class SegmentHeader(QWidget):
+    listen_requested_signal = pyqtSignal(datetime, datetime, str)  # Define the signal
+
+    def __init__(
+        self,
+        segment_number,
+        total_segments,
+        languages_with_subtitles,
+        languages_with_audio_track,
+    ):
+        super().__init__()
+        self.segment_number = segment_number
+
+        self.layout = QVBoxLayout()
+
+        # First horizontal box for segment_number/total_segments and timings
+        self.header_info_layout = QHBoxLayout()
+        self.layout.addLayout(self.header_info_layout)
+
+        # Left label for segment info
+        segment_label = QLabel(f"Segment {segment_number}/{total_segments}:")
+        self.header_info_layout.addWidget(segment_label, 1, alignment=Qt.AlignRight)
+
+        # Right label for time range
+        self.time_label = QLabel(" -> ")
+        self.header_info_layout.addWidget(self.time_label, 1, alignment=Qt.AlignLeft)
+
+        self.languages_layout = QHBoxLayout()
+        self.layout.addLayout(self.languages_layout)
+
+        # Second horizontal box for languages
+        for language in languages_with_subtitles:
+            has_audio_track = language in languages_with_audio_track
+            language_layout = self.create_language_layout(language, has_audio_track)
+            self.languages_layout.addLayout(language_layout)
+
+        self.setLayout(self.layout)  # Set the main layout of the widget
+
+    def add_timings(self, start_time, end_time):
+        self.start_time = start_time
+        self.end_time = end_time
+
+        start_time_str = start_time.strftime("%H:%M:%S")
+        end_time_str = end_time.strftime("%H:%M:%S")
+        self.time_label.setText(f"{start_time_str} -> {end_time_str}")
+
+    def create_language_layout(self, language, has_audio_track):
+        language_layout = QHBoxLayout()  # Create a QHBoxLayout for each language column
+
+        # Add empty space
+        language_layout.addStretch(1)
+
+        # Add language name label
+        language_name_label = QLabel(language)
+        label_alignment = Qt.AlignRight if has_audio_track else Qt.AlignCenter
+        language_layout.addWidget(language_name_label, 1, alignment=label_alignment)
+
+        if has_audio_track:
+            # Add listen button
+            listen_button = QPushButton("🔊")
+            listen_button.setFixedSize(20, 20)
+            listen_button.clicked.connect(
+                lambda _, lang=language: self.emit_listen_request(lang)
+            )
+            language_layout.addWidget(listen_button, 1, alignment=Qt.AlignLeft)
+
+        # Add empty space
+        language_layout.addStretch(1)
+
+        return language_layout
+
+    def emit_listen_request(self, language):
+        self.listen_requested_signal.emit(self.start_time, self.end_time, language)
+
+
 class SubtitleView(QWidget):
     listen_requested_signal = pyqtSignal()
     flashcard_requested_signal = pyqtSignal()
@@ -95,14 +173,12 @@ class SubtitleView(QWidget):
 
         if has_audio_track:
             listen_button = QPushButton("🔊")
-            listen_button.setMinimumSize(20, 20)
-            listen_button.setMaximumSize(20, 20)
+            listen_button.setFixedSize(20, 20)
             listen_button.clicked.connect(self.listen_requested_signal.emit)
             buttons_layout.addWidget(listen_button)
 
         flashcard_button = QPushButton("F")
-        flashcard_button.setMinimumSize(20, 20)
-        flashcard_button.setMaximumSize(20, 20)
+        flashcard_button.setFixedSize(20, 20)
         flashcard_button.clicked.connect(self.flashcard_requested_signal.emit)
         buttons_layout.addWidget(flashcard_button)
 
@@ -118,6 +194,7 @@ class SubtitleWorkspace(QWidget):
         super().__init__()
 
         self.languages = languages
+        self.languages_with_subtitles = []
         self.languages_with_audio_tracks = []
 
         self.entry_layouts = []  # List to store layouts for each entry
@@ -141,6 +218,20 @@ class SubtitleWorkspace(QWidget):
     def clear_workspace(self):
         pass
 
+    def add_segment_header(self, current_segment, num_segments):
+        # if current_segment != 1:
+        #     # If not at first segment, add a separator line when adding a new segment
+        #     separating_line = create_separator_line()
+        #     self.container_layout.addWidget(separating_line)
+        segment_header = SegmentHeader(
+            segment_number=current_segment,
+            total_segments=num_segments,
+            languages_with_subtitles=self.languages_with_subtitles,
+            languages_with_audio_track=self.languages_with_audio_tracks,
+        )
+        self.container_layout.addWidget(segment_header)
+        return segment_header
+
     def add_entry(self, entry):
         entry_layout = QHBoxLayout()  # Create a QHBoxLayout for the entry
         entry_layout.setContentsMargins(0, 0, 0, 0)
@@ -153,15 +244,8 @@ class SubtitleWorkspace(QWidget):
 
         subtitle_views = []  # List to store subtitle views
 
-        for language in self.languages:
+        for language in self.languages_with_subtitles:
             has_audio_track = language in self.languages_with_audio_tracks
-
-            # # Add thick vertical line between entries
-            # line = QFrame()
-            # line.setFrameShape(QFrame.VLine)
-            # line.setFrameShadow(QFrame.Sunken)
-            # line.setLineWidth(2)  # Set the width of the line
-            # entry_layout.addWidget(line)
 
             subtitle_layout = QVBoxLayout()  # Create a QVBoxLayout for each language
             subtitle_layout.setContentsMargins(0, 0, 0, 0)
@@ -213,7 +297,12 @@ class SubtitleWorkspace(QWidget):
             # Estimate the number of lines by dividing the text width by the widget's width
             # widget_width = subtitle_view.subtitle_view.width()
             # print(widget_width)
-            widget_width = 80 if len(self.languages) > 3 else 150
+            if len(self.languages_with_subtitles) < 3:
+                widget_width = 150
+            elif 3 <= len(self.languages_with_subtitles) <= 6:
+                widget_width = 80
+            elif 6 < len(self.languages_with_subtitles):
+                widget_width = 45
             estimated_lines = (text_width // widget_width) + (
                 1 if text_width % widget_width else 0
             )
@@ -224,7 +313,7 @@ class SubtitleWorkspace(QWidget):
             # # max_height = max(max_height, document_height + content_margins)
             max_height = int(max(max_height, estimated_text_height))
 
-        max_height += 30
+        max_height += 22
 
         # Set the minimum height for all subtitle views
         for subtitle_view in subtitle_views:
@@ -452,3 +541,20 @@ class SavedSentenceEntry(QWidget):
             lambda: self.flashcard_requested_signal.emit(self)
         )
         # self.flashcard_button.click
+
+
+def create_separator_line():
+    separator_line = QFrame()
+    separator_line.setFrameShape(QFrame.HLine)
+    separator_line.setFrameShadow(QFrame.Sunken)
+    separator_line.setStyleSheet("background-color: gray; height: 2px;")
+
+    separator_layout = QHBoxLayout()
+    separator_layout.addWidget(separator_line)
+    separator_layout.setContentsMargins(0, 6, 0, 0)
+    separator_layout.setSpacing(0)
+
+    separator_widget = QWidget()
+    separator_widget.setLayout(separator_layout)
+
+    return separator_widget

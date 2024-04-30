@@ -16,6 +16,7 @@ class Translator:
         # Translation goes source (learner's "target language") to target
         # https://www.deepl.com/docs-api/translate-text/translate-text/
         self.source_language_codes = {
+            "Arabic": "AR",
             "Bulgarian": "BG",
             "Chinese": "ZH",
             "Czech": "CS",
@@ -48,6 +49,7 @@ class Translator:
         }
 
         self.target_language_codes = {
+            "Arabic": "AR",
             "Bulgarian": "BG",
             "Chinese": "ZH",  # (simplified)
             "Czech": "CS",

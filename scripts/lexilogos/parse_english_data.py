@@ -12,6 +12,32 @@ first_languages_to_scrape = [
     "Spanish",
 ]
 
+second_languages_to_scrape = [
+    "Arabic",
+    "Bulgarian",
+    "Chinese",
+    "Czech",
+    "Danish",
+    "Estonian",
+    "Finnish",
+    "Greek",
+    "Hungarian",
+    "Indonesian",
+    "Japanese",
+    "Korean",
+    "Latvian",
+    "Lithuanian",
+    "Norwegian",
+    "Polish",
+    "Romanian",
+    "Russian",
+    "Slovak",
+    "Slovenian",
+    "Swedish",
+    "Turkish",
+    "Ukrainian",
+]
+
 
 def extract_dictionary_links(links_paragraph, language):
 
@@ -47,11 +73,15 @@ def extract_dictionary_links(links_paragraph, language):
     return dictionary_links
 
 
-for language in first_languages_to_scrape:
+language_names = {"Greek": "Greek (Modern)"}
+
+for language in second_languages_to_scrape:
+    language = language_names.get(language, language)
 
     with open(
         f"./data/lexilogos/language_pages_{TIME_STAMP}/english_pages/{language}.html",
         "r",
+        encoding="utf-8",
     ) as f:
         html_content = f.read()
 

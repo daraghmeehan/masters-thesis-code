@@ -115,6 +115,7 @@ class MediaExporter(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        self.setWindowTitle(f"Media Exporter")
         main_layout = QVBoxLayout()
 
         # Folder selection
@@ -155,49 +156,110 @@ class MediaExporter(QWidget):
 
         export_options_layout = QVBoxLayout()
 
-        # Choosing subtitle buffer time
-        buffer_time_layout = QHBoxLayout()
-        buffer_time_label = QLabel("Subtitle padding (seconds): ")
-        self.buffer_time = QDoubleSpinBox()
-        self.buffer_time.setDecimals(1)
-        self.buffer_time.setLocale(
+        # Choosing subtitle padding
+        subtitle_padding_layout = QHBoxLayout()
+        subtitle_padding_label = QLabel("Subtitle padding (seconds): ")
+        self.subtitle_padding = QDoubleSpinBox()
+        self.subtitle_padding.setDecimals(1)
+        self.subtitle_padding.setLocale(
             QLocale(QLocale.English, QLocale.Ireland)
         )  # Set the locale to use a period as decimal separator
-        self.buffer_time.setRange(0, 10)
-        self.buffer_time.setSingleStep(0.5)
-        self.buffer_time.setValue(1)
-        buffer_time_layout.addWidget(buffer_time_label)
-        buffer_time_layout.addWidget(self.buffer_time)
-        export_options_layout.addLayout(buffer_time_layout)
+        self.subtitle_padding.setRange(0, 10)
+        self.subtitle_padding.setSingleStep(0.5)
+        self.subtitle_padding.setValue(1)
+        subtitle_padding_layout.addWidget(subtitle_padding_label)
+        subtitle_padding_layout.addWidget(self.subtitle_padding)
+        export_options_layout.addLayout(subtitle_padding_layout)
 
-        interleaving_layout = QHBoxLayout()
+        # Segmenting
+        segmenting_layout = QHBoxLayout()
+        segmenting_layout.setContentsMargins(0, 0, 0, 0)
+        segmenting_layout.setSpacing(0)
 
-        interleaving_left_layout = QHBoxLayout()
-        self.separate_radio = QRadioButton("Separate files")
-        self.interleaved_radio = QRadioButton("Interleaved")
-        self.button_group = QButtonGroup()
-        self.button_group.addButton(self.separate_radio, 0)
-        self.button_group.addButton(self.interleaved_radio, 1)
+        segments_label = QLabel("Segmenting: ")
 
-        interleaving_left_layout.addWidget(self.separate_radio)
-        interleaving_left_layout.addWidget(self.interleaved_radio)
-        interleaving_layout.addLayout(interleaving_left_layout)
+        self.segmenting_button_group = QButtonGroup()
 
-        interleaving_right_layout = QHBoxLayout()
-        interleaving_time_label = QLabel("Segment length (seconds): ")
-        self.interleaving_time = QSpinBox()
-        self.interleaving_time.setEnabled(False)
-        self.interleaving_time.setMinimum(0)
-        self.interleaving_time.setSingleStep(1)
-        self.interleaving_time.setValue(15)
-        interleaving_right_layout.addWidget(interleaving_time_label)
-        interleaving_right_layout.addWidget(self.interleaving_time)
-        interleaving_layout.addLayout(interleaving_right_layout)
+        self.no_segmenting_radio = QRadioButton("No")
+        self.yes_segmenting_radio = QRadioButton("Yes")
 
-        self.separate_radio.toggled.connect(self.update_interleaving_time_state)
-        self.interleaved_radio.toggled.connect(self.update_interleaving_time_state)
+        self.segmenting_button_group.addButton(self.no_segmenting_radio, 0)
+        self.segmenting_button_group.addButton(self.yes_segmenting_radio, 1)
+        self.no_segmenting_radio.setChecked(True)
 
-        export_options_layout.addLayout(interleaving_layout)
+        self.segments_time_label = QLabel("Segment length (seconds): ")
+        self.segments_time_label.setEnabled(False)
+
+        self.segments_time = QSpinBox()
+        self.segments_time.setEnabled(False)
+        self.segments_time.setMinimum(0)
+        self.segments_time.setMaximum(10800)  # Maximum of 3 hours
+        self.segments_time.setSingleStep(1)
+        self.segments_time.setValue(15)
+
+        segmenting_layout.addWidget(segments_label, 2)
+        segmenting_layout.addWidget(self.no_segmenting_radio, 1)
+        segmenting_layout.addWidget(self.yes_segmenting_radio, 1)
+        segmenting_layout.addWidget(self.segments_time_label, 2)
+        segmenting_layout.addWidget(self.segments_time, 2)
+
+        export_options_layout.addLayout(segmenting_layout)
+
+        self.no_segmenting_radio.toggled.connect(self.no_segmenting_radio_clicked)
+        self.yes_segmenting_radio.toggled.connect(self.yes_segmenting_radio_clicked)
+
+        # Interleaving
+        self.interleaving_layout = QHBoxLayout()
+        self.interleaving_layout.setContentsMargins(0, 0, 0, 0)
+        self.interleaving_layout.setSpacing(0)
+
+        interleaving_label = QLabel("Interleaving: ")
+
+        self.interleaving_button_group = QButtonGroup()
+
+        self.no_interleaving_radio = QRadioButton("No")
+        self.yes_interleaving_radio = QRadioButton("Yes")
+
+        self.interleaving_button_group.addButton(self.no_interleaving_radio, 0)
+        self.interleaving_button_group.addButton(self.yes_interleaving_radio, 1)
+        self.no_interleaving_radio.setChecked(True)
+
+        self.interleaved_segments_checkbox = QCheckBox("Combine interleaved segments?")
+        self.interleaved_segments_checkbox.setEnabled(False)
+
+        self.interleaving_layout.addWidget(interleaving_label, 2)
+        self.interleaving_layout.addWidget(self.no_interleaving_radio, 1)
+        self.interleaving_layout.addWidget(self.yes_interleaving_radio, 1)
+        self.interleaving_layout.addWidget(self.interleaved_segments_checkbox, 4)
+
+        self.no_interleaving_radio.setEnabled(False)
+        self.yes_interleaving_radio.setEnabled(False)
+
+        export_options_layout.addLayout(self.interleaving_layout)
+
+        self.no_interleaving_radio.toggled.connect(self.no_interleaving_radio_clicked)
+        self.yes_interleaving_radio.toggled.connect(self.yes_interleaving_radio_clicked)
+
+        # Combining files or not
+        file_options_layout = QHBoxLayout()
+        file_options_layout.setContentsMargins(0, 0, 0, 0)  # Set margins
+        file_options_layout.setSpacing(0)  # Set spacing between widgets
+
+        self.file_options_button_group = QButtonGroup()
+
+        self.separate_files_radio = QRadioButton("Separate files (shuffle-friendly)")
+        self.all_combined_radio = QRadioButton("Combine everything (create one file)")
+
+        self.file_options_button_group.addButton(self.separate_files_radio, 0)
+        self.file_options_button_group.addButton(self.all_combined_radio, 1)
+        self.all_combined_radio.setChecked(True)
+
+        file_options_layout.addWidget(self.separate_files_radio, 1)
+        file_options_layout.addWidget(self.all_combined_radio, 1)
+
+        self.separate_files_radio.setChecked(True)
+
+        export_options_layout.addLayout(file_options_layout)
 
         main_layout.addLayout(export_options_layout)
 
@@ -253,7 +315,7 @@ class MediaExporter(QWidget):
         main_layout.addLayout(bottom_buttons_layout)
 
         self.setLayout(main_layout)
-        self.resize(300, 400)
+        self.resize(300, 490)
 
     def choose_folder(self):
         # folder_name = QFileDialog.getExistingDirectory(self, "Choose AVI Folder")
@@ -304,7 +366,6 @@ class MediaExporter(QWidget):
             row.set_audio_tracks(self.audio_tracks)
 
     def update_reference_subs(self, folder_name):
-
         subtitle_files = []
         for file_name in os.listdir(folder_name):
             if file_name.endswith(".srt"):
@@ -312,8 +373,32 @@ class MediaExporter(QWidget):
 
         self.reference_subtitles_dropdown.addItems(subtitle_files)
 
+    def no_segmenting_radio_clicked(self):
+        self.segments_time_label.setEnabled(False)
+        self.segments_time.setEnabled(False)
+
+        if self.yes_interleaving_radio.isChecked():
+            self.no_interleaving_radio.setChecked(True)
+
+        self.no_interleaving_radio.setEnabled(False)
+        self.yes_interleaving_radio.setEnabled(False)
+
+    def yes_segmenting_radio_clicked(self):
+        self.segments_time_label.setEnabled(True)
+        self.segments_time.setEnabled(True)
+        self.no_interleaving_radio.setEnabled(True)
+        self.yes_interleaving_radio.setEnabled(True)
+
+    def no_interleaving_radio_clicked(self):
+        self.interleaved_segments_checkbox.setChecked(False)
+        self.interleaved_segments_checkbox.setEnabled(False)
+        self.separate_files_radio.setChecked(True)
+
+    def yes_interleaving_radio_clicked(self):
+        self.interleaved_segments_checkbox.setEnabled(True)
+
     def update_interleaving_time_state(self):
-        if self.interleaved_radio.isChecked():
+        if self.interleaved_radio.isChecked() or self.segmented_radio.isChecked():
             self.interleaving_time.setEnabled(True)
         else:
             self.interleaving_time.setEnabled(False)
@@ -349,6 +434,9 @@ class MediaExporter(QWidget):
 
             # Speed SpinBox
             self.speed_spinbox = QDoubleSpinBox()
+            self.speed_spinbox.setLocale(
+                QLocale(QLocale.English, QLocale.Ireland)
+            )  # Set the locale to use a period as decimal separator
             self.speed_spinbox.setRange(0.1, 10.0)
             self.speed_spinbox.setSingleStep(0.1)
             self.speed_spinbox.setValue(1.0)  # Default speed

@@ -41,75 +41,31 @@ if hasattr(Qt, "AA_UseHighDpiPixmaps"):
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
 
-gg_startup_options = {
-    "Mode": "AVI",
-    "Video File": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.mp4",
+text_mode_options = {
+    "Mode": "Text",
     "Source Language": "English",
-    "Target Languages": [
-        "Spanish",
-        # "Dutch",
-        # "Czech",
-        # "Italian",
-        "Japanese",
-        "French",
-        # "Chinese",
-        # "Polish",
-        # "Indonesian",
-        # "Portuguese",
-        # "Swedish",
-        # "Turkish",
-        # "Chinese (Traditional)",
-    ],
+    "Target Languages": ["Spanish"],
+    "Dictionaries": {
+        "Spanish": ["WordReference", "Collins"],
+    },
+}
+
+cuentame_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.mp4",
+    "Source Language": "English",
+    "Target Languages": ["Spanish"],
     "Audio Tracks": {
         "English": "None",
-        # "Dutch": "None",
-        # "Czech": "None",
-        "Spanish": "None",
-        # "Italian": "None",
-        "Japanese": "None",
-        # "Spanish": "spa",
-        # "Italian": "ita",
-        # "Japanese": "jpn",
-        # "Chinese": "None",
-        "French": "None",
-        # "Polish": "None",
-        # "Indonesian": "None",
-        # "Portuguese": "None",
-        # "Swedish": "None",
-        # "Turkish": "None",
-        # "Chinese (Traditional)": "None",
+        "Spanish": "und",
     },
     "Subtitle Files": {
-        "Reference": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
-        "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
-        "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
-        # "Dutch": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.nl.srt",
-        # "Czech": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.cs.srt",
-        # "Italian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.it.srt",
-        "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
-        "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
-        # "Chinese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hans.srt",
-        # "Polish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pl.srt",
-        # "Indonesian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.id.srt",
-        # "Portuguese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pt.srt",
-        # "Swedish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.sv.srt",
-        # "Turkish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.tr.srt",
-        # "Chinese (Traditional)": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hant.srt",
+        "Reference": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.srt",
+        "English": "None",
+        "Spanish": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.srt",
     },
     "Dictionaries": {
-        "Spanish": ["SpanishDict", "Collins"],
-        # "Dutch": ["Van Dale", "MijnWoordenboek"],
-        # "Czech": ["Fake"],
-        # "Italian": ["Collins"],
-        "Japanese": ["Fake"],
-        # "Chinese": ["Fake"],
-        "French": ["Larousse", "WordReference"],
-        # "Polish": [],
-        # "Indonesian": [],
-        # "Portuguese": [],
-        # "Swedish": [],
-        # "Turkish": [],
-        # "Chinese (Traditional)": [],
+        "Spanish": ["WordReference", "Collins"],
     },
 }
 
@@ -138,12 +94,75 @@ peppa_startup_options = {
     },
 }
 
-text_mode_options = {
-    "Mode": "Text",
+gg_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.mp4",
     "Source Language": "English",
-    "Target Languages": ["Spanish"],
+    "Target Languages": [
+        "Spanish",
+        "Dutch",
+        "Czech",
+        "Italian",
+        "Japanese",
+        "French",
+        "Chinese",
+        # "Polish",
+        # "Indonesian",
+        # "Portuguese",
+        # "Swedish",
+        # "Turkish",
+        # "Chinese (Traditional)",
+    ],
+    "Audio Tracks": {
+        "English": "None",
+        "Dutch": "None",
+        "Czech": "None",
+        "Italian": "None",
+        "Spanish": "None",
+        "Japanese": "None",
+        # "Spanish": "spa",
+        # "Italian": "ita",
+        # "Japanese": "jpn",
+        "French": "None",
+        "Chinese": "None",
+        # "Polish": "None",
+        # "Indonesian": "None",
+        # "Portuguese": "None",
+        # "Swedish": "None",
+        # "Turkish": "None",
+        # "Chinese (Traditional)": "None",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
+        "Dutch": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.nl.srt",
+        "Czech": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.cs.srt",
+        "Italian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.it.srt",
+        "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
+        "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
+        "Chinese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hans.srt",
+        # "Polish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pl.srt",
+        # "Indonesian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.id.srt",
+        # "Portuguese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pt.srt",
+        # "Swedish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.sv.srt",
+        # "Turkish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.tr.srt",
+        # "Chinese (Traditional)": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hant.srt",
+    },
     "Dictionaries": {
-        "Spanish": ["WordReference", "Collins"],
+        "Spanish": ["SpanishDict", "Collins"],
+        "Dutch": ["Van Dale", "MijnWoordenboek"],
+        "Czech": ["Fake"],
+        "Italian": ["Collins"],
+        "Japanese": ["Fake"],
+        "French": ["Larousse", "WordReference"],
+        "Chinese": ["Fake"],
+        # "Polish": [],
+        # "Indonesian": [],
+        # "Portuguese": [],
+        # "Swedish": [],
+        # "Turkish": [],
+        # "Chinese (Traditional)": [],
     },
 }
 
@@ -175,9 +194,10 @@ class Controller:
         # startup_options = self.run_startup_dialog()
 
         # For quicker testing
+        # startup_options = cuentame_startup_options
+        startup_options = peppa_startup_options
         # startup_options = gg_startup_options
-        # startup_options = peppa_startup_options
-        startup_options = text_mode_options
+        # startup_options = text_mode_options
 
         self.parse_startup_options(startup_options)
         if self.mode == "Export Media":
@@ -571,12 +591,18 @@ class Controller:
 
             self.set_up_subtitle_workspace()
 
+            # self.model.create_segments(maximum_seconds_between_segments=3)
             initial_alignment = self.model.get_alignment()
             self.set_subtitle_alignment(initial_alignment)
         elif self.mode == "Text":
             self.set_up_saved_sentences()
 
     def set_up_subtitle_workspace(self):
+        self.ui.study_materials.subtitle_workspace.languages_with_subtitles = [
+            language
+            for language, subtitle_file in self.subtitle_files.items()
+            if language != "Reference" and subtitle_file != "None"
+        ]
         self.ui.study_materials.subtitle_workspace.languages_with_audio_tracks = [
             language
             for language, audio_track in self.audio_tracks.items()
@@ -634,14 +660,69 @@ class Controller:
         self.audio_player.update_audio(audio_segment_path)
         self.audio_player.play()
 
+    ### Refactor this and above
+    def play_segment_audio(self, start_time, end_time, language):
+        if self.audio_tracks[language] == "None":
+            return
+
+        self.audio_player.stop()
+        self.audio_player.reset_player()
+
+        audio_segment_path = self.audio_extractor.extract_segment(
+            language, start_time, end_time, is_for_flashcard=False
+        )
+
+        self.audio_player.update_audio(audio_segment_path)
+        self.audio_player.play()
+
     def set_subtitle_alignment(self, alignment):
+        ##!! Some of this should be in View.py
         self.ui.study_materials.subtitle_workspace.clear_workspace()
 
-        for entry in alignment:
+        num_segments = alignment[-1]["segment"]
+
+        current_segment = 1
+        segment_start_time, segment_end_time = alignment[0]["timings"]
+
+        segment_header = self.ui.study_materials.subtitle_workspace.add_segment_header(
+            current_segment, num_segments
+        )
+
+        for idx, entry in enumerate(alignment):
+            if entry["segment"] != current_segment:
+                ## Start new segment
+
+                # Add timings to previous segment header; connect signal
+                segment_header.add_timings(segment_start_time, segment_end_time)
+                segment_header.listen_requested_signal.connect(self.play_segment_audio)
+
+                # Save new segment start time
+                current_segment = entry["segment"]
+                segment_start_time, segment_end_time = entry["timings"]
+
+                # Add segment header for the new segment
+                segment_header = (
+                    self.ui.study_materials.subtitle_workspace.add_segment_header(
+                        current_segment, num_segments
+                    )
+                )
+            else:
+                segment_end_time = entry["timings"][
+                    1
+                ]  # Keep extending current segment end time
+
+            if idx == len(alignment) - 1:
+                # If handling last entry
+                segment_header.add_timings(segment_start_time, segment_end_time)
+                segment_header.listen_requested_signal.connect(self.play_segment_audio)
+
+            # Refactor this??
             subtitles = {
-                language: {"indices": [], "texts": []} for language in self.languages
+                language: {"indices": [], "texts": []}
+                for language in self.model.languages
             }
-            for language in self.languages:
+
+            for language in self.model.languages:
                 all_subtitle_indices = entry["subtitle_indices"][language]
                 if all_subtitle_indices == []:
                     continue
@@ -793,13 +874,16 @@ class Controller:
         )
 
         # flashcard_workspace widget
+        self.ui.flashcard_workspace.setFocusPolicy(Qt.StrongFocus)
+
         self.swap_deck_shortcut = QShortcut(
             QKeySequence("Ctrl+D"), self.ui.flashcard_workspace
         )
         self.swap_deck_shortcut.activated.connect(self.ui.flashcard_workspace.swap_deck)
 
         self.add_flashcard_shortcut = QShortcut(
-            QKeySequence("Ctrl+Return"), self.ui.flashcard_workspace
+            QKeySequence("Ctrl+Return"),
+            self.ui.flashcard_workspace,
         )
         self.add_flashcard_shortcut.activated.connect(
             self.ui.flashcard_workspace.add_button.click
