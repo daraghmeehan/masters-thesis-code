@@ -2,6 +2,9 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 from model import SubtitleModel
 
+# Note: This is auxiliary code to generate graphs for visualising subtitle timings used in the thesis.
+## TODO: Actually integrate this in the application possibly.
+
 
 def datetime_objects_from_zero_to_time(max_time, every_x_seconds=1):
     # Start time

@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
+import subprocess  # To get the audio track names
 
 from pydub import AudioSegment
 from subtitle_handler import SubtitleHandler
-import subprocess  # to get the audio track names
 
 
 def extract_speaking_audio(video_filename, subtitle_handler, ep_number):

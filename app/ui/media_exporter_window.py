@@ -1,4 +1,5 @@
-import os
+from typing import List
+from pathlib import Path
 
 import ffmpeg
 from PyQt5.QtWidgets import (
@@ -24,7 +25,7 @@ from PyQt5.QtWidgets import (
     QRadioButton,
     QButtonGroup,
 )
-from PyQt5.QtCore import Qt, QLocale
+from PyQt5.QtCore import Qt, QLocale, pyqtSignal
 
 
 # Two below to make scaling bigger on small high-res screens
@@ -37,7 +38,7 @@ if hasattr(Qt, "AA_UseHighDpiPixmaps"):
 FIXED_X_BUTTON_WIDTH = 18
 
 LANGUAGE_LEARNING_MATERIAL_PATH = (
-    r"C:\Stuff\UniversaLearn\LanguageRepo\Language Learning Material"
+    r"C:\\Stuff\\UniversaLearn\\LanguageRepo\\Language Learning Material"
 )
 
 sample_startup_options = {
@@ -93,62 +94,84 @@ sample_startup_options = {
 
 
 def get_audio_tracks(filename):
-    """Get a list of audio stream names from a video file"""
+    """Get a list of audio stream names from a video file."""
     tracks = ffmpeg.probe(filename)["streams"]
     audio_tracks = [s["tags"]["language"] for s in tracks if s["codec_type"] == "audio"]
     return audio_tracks
 
 
 def create_separator_line():
+    """Create a simple separating line to place between elements in the UI."""
     line = QFrame()
     line.setFrameShape(QFrame.HLine)
     line.setFrameShadow(QFrame.Sunken)
     return line
 
 
-class MediaExporter(QWidget):
-    def __init__(self):
-        super().__init__()
+class MediaExporterWindow(QWidget):
+    """
+    A widget for exporting condensed practice audio from audiovisual input, with options for segmenting and interleaving multiple audio tracks at different speeds.
 
+    Signals:
+        export_signal (pyqtSignal): Emitted when media creation is requested, with the given export options.
+    """
+
+    export_signal = pyqtSignal(dict)
+
+    def __init__(self) -> None:
+        """
+        Initializes the Media Exporter widget and sets up the user interface.
+        """
+        super().__init__()
         self.audio_tracks = []
         self.language_rows = []  # Keep track of language row widgets
         self.init_ui()
 
-    def init_ui(self):
+        # Quicker testing
+        # folder = "C:\\Stuff\\UniversaLearn\\LanguageRepo\\Language Learning Material\\Netflix Downloads\\Las chicas Gilmore\\S01"
+        folder = "C:\\Stuff\\Peppa Pig"
+        self.folder_line_edit.setText(folder)
+        self.update_video_file_dropdown(folder)
+        self.update_subtitle_file_dropdown(folder)
+
+    def init_ui(self) -> None:
+        """
+        Sets up the user interface components and layout for the Media Exporter widget.
+        """
         self.setWindowTitle(f"Media Exporter")
         main_layout = QVBoxLayout()
 
         # Folder selection
-        self.folder_label = QLabel("Choose folder:")
+        folder_label = QLabel("Choose folder:")
         self.folder_line_edit = QLineEdit()
         self.folder_line_edit.setDisabled(True)
         self.folder_button = QPushButton("Browse")
         self.folder_button.clicked.connect(self.choose_folder)
 
         folder_layout = QHBoxLayout()
-        folder_layout.addWidget(self.folder_label)
+        folder_layout.addWidget(folder_label)
         folder_layout.addWidget(self.folder_line_edit)
         folder_layout.addWidget(self.folder_button)
         main_layout.addLayout(folder_layout)
 
         # Video file selection
-        self.video_file_label = QLabel("Choose video file:")
+        video_file_label = QLabel("Choose video file:")
         self.video_file_dropdown = QComboBox()
         self.video_file_dropdown.setMinimumWidth(400)
         self.video_file_dropdown.currentIndexChanged.connect(self.update_audio_tracks)
 
         video_file_layout = QHBoxLayout()
-        video_file_layout.addWidget(self.video_file_label)
+        video_file_layout.addWidget(video_file_label)
         video_file_layout.addWidget(self.video_file_dropdown)
         main_layout.addLayout(video_file_layout)
 
         # Reference subtitle file selection
-        self.subtitle_file_label = QLabel("Choose reference subtitle file:")
+        subtitle_file_label = QLabel("Choose reference subtitle file:")
         self.subtitle_file_dropdown = QComboBox()
         self.subtitle_file_dropdown.setMinimumWidth(400)
 
         subtitle_file_layout = QHBoxLayout()
-        subtitle_file_layout.addWidget(self.subtitle_file_label)
+        subtitle_file_layout.addWidget(subtitle_file_label)
         subtitle_file_layout.addWidget(self.subtitle_file_dropdown)
         main_layout.addLayout(subtitle_file_layout)
 
@@ -177,19 +200,15 @@ class MediaExporter(QWidget):
         segmenting_layout.setSpacing(0)
 
         segments_label = QLabel("Segmenting: ")
-
         self.segmenting_button_group = QButtonGroup()
-
         self.no_segmenting_radio = QRadioButton("No")
         self.yes_segmenting_radio = QRadioButton("Yes")
-
         self.segmenting_button_group.addButton(self.no_segmenting_radio, 0)
         self.segmenting_button_group.addButton(self.yes_segmenting_radio, 1)
         self.no_segmenting_radio.setChecked(True)
 
         self.segments_time_label = QLabel("Segment length (seconds): ")
         self.segments_time_label.setEnabled(False)
-
         self.segments_time = QSpinBox()
         self.segments_time.setEnabled(False)
         self.segments_time.setMinimum(0)
@@ -202,7 +221,6 @@ class MediaExporter(QWidget):
         segmenting_layout.addWidget(self.yes_segmenting_radio, 1)
         segmenting_layout.addWidget(self.segments_time_label, 2)
         segmenting_layout.addWidget(self.segments_time, 2)
-
         export_options_layout.addLayout(segmenting_layout)
 
         self.no_segmenting_radio.toggled.connect(self.no_segmenting_radio_clicked)
@@ -214,16 +232,12 @@ class MediaExporter(QWidget):
         self.interleaving_layout.setSpacing(0)
 
         interleaving_label = QLabel("Interleaving: ")
-
         self.interleaving_button_group = QButtonGroup()
-
         self.no_interleaving_radio = QRadioButton("No")
         self.yes_interleaving_radio = QRadioButton("Yes")
-
         self.interleaving_button_group.addButton(self.no_interleaving_radio, 0)
         self.interleaving_button_group.addButton(self.yes_interleaving_radio, 1)
         self.no_interleaving_radio.setChecked(True)
-
         self.interleaved_segments_checkbox = QCheckBox("Combine interleaved segments?")
         self.interleaved_segments_checkbox.setEnabled(False)
 
@@ -291,7 +305,7 @@ class MediaExporter(QWidget):
         header_layout.addWidget(right_padding)
         self.language_rows_layout.addLayout(header_layout)
 
-        ## make other padding like this!!
+        # TODO: Make padding elsewhere like this.
         spacer = QSpacerItem(
             20,
             40,
@@ -307,7 +321,7 @@ class MediaExporter(QWidget):
 
         bottom_buttons_layout = QHBoxLayout()
         exit_button = QPushButton("Exit")
-        exit_button.clicked.connect(lambda x: None)
+        exit_button.clicked.connect(self.close)
         confirm_button = QPushButton("Confirm")
         confirm_button.clicked.connect(self.confirm_options)
         bottom_buttons_layout.addWidget(exit_button)
@@ -317,63 +331,95 @@ class MediaExporter(QWidget):
         self.setLayout(main_layout)
         self.resize(300, 490)
 
-    def choose_folder(self):
-        # folder_name = QFileDialog.getExistingDirectory(self, "Choose AVI Folder")
-        folder_name = QFileDialog.getExistingDirectory(
+    def choose_folder(self) -> None:
+        """
+        Opens a file dialog to choose a folder and updates the folder line edit with the selected folder's path.
+        The possible videos and reference subtitle files are populated from this folder.
+        """
+
+        folder = QFileDialog.getExistingDirectory(
             self, "Choose AVI Folder", LANGUAGE_LEARNING_MATERIAL_PATH
         )
-        if folder_name == "":
+        if folder == "":
             return
-        folder_name = folder_name.replace("/", "\\")
-        self.folder_line_edit.setText(folder_name)
-        self.update_video_file_dropdown(folder_name)
-        self.update_subtitle_file_dropdown(folder_name)
+        folder = folder.replace("/", "\\\\")
+        self.folder_line_edit.setText(folder)
+        self.update_video_file_dropdown(folder)
+        self.update_subtitle_file_dropdown(folder)
 
-    def update_video_file_dropdown(self, folder_name):
+    def update_video_file_dropdown(self, folder: str) -> None:
+        """
+        Clears and repopulates the video file dropdown with MP4 files from the specified folder.
+
+        Args:
+            folder (str): The path to the folder containing video files.
+        """
         self.video_file_dropdown.clear()
-        mp4_files = []
-        for file_name in os.listdir(folder_name):
-            if file_name.endswith(".mp4"):
-                mp4_files.append(file_name)
-        self.video_file_dropdown.addItems(mp4_files)
+        folder_path = Path(folder)
+        if folder_path.is_dir():
+            mp4_files = [file.name for file in folder_path.glob("*.mp4")]
+            self.video_file_dropdown.addItems(mp4_files)
 
-    def update_subtitle_file_dropdown(self, folder_name):
+    def update_subtitle_file_dropdown(self, folder: str) -> None:
+        """
+        Clears and repopulates the subtitle file dropdown with SRT files from the specified folder.
+
+        Args:
+            folder (str): The path to the folder containing subtitle files.
+        """
         self.subtitle_file_dropdown.clear()
+        folder_path = Path(folder)
+        if folder_path.is_dir():
+            subtitle_files = [file.name for file in folder_path.glob("*.srt")]
+            self.subtitle_file_dropdown.addItems(subtitle_files)
 
-        subtitle_files = []
-        for file_name in os.listdir(folder_name):
-            if file_name.endswith(".srt"):
-                subtitle_files.append(file_name)
-
-        self.subtitle_file_dropdown.addItems(subtitle_files)
-
-    def get_video_file_path(self):
-        video_file_name = self.video_file_dropdown.currentText()
-        folder_name = self.folder_line_edit.text()
-        video_file_path = os.path.join(folder_name, video_file_name)
-        return video_file_path
-
-    def update_audio_tracks(self):
+    def update_audio_tracks(self) -> None:
+        """
+        Updates the audio tracks for each language row based on the selected video file.
+        If an error occurs while retrieving audio tracks, the list of audio tracks is set to empty.
+        """
         video_file_path = self.get_video_file_path()
 
         try:
             self.audio_tracks = get_audio_tracks(video_file_path)
         except Exception as e:
+            print(f"Error retrieving audio tracks: {e}")
             self.audio_tracks = []
 
         # Set audio tracks for all language rows
         for row in self.language_rows:
             row.set_audio_tracks(self.audio_tracks)
 
-    def update_reference_subs(self, folder_name):
-        subtitle_files = []
-        for file_name in os.listdir(folder_name):
-            if file_name.endswith(".srt"):
-                subtitle_files.append(file_name)
+    def get_video_file_path(self) -> Path:
+        """
+        Retrieves the full path of the currently selected video file.
 
-        self.reference_subtitles_dropdown.addItems(subtitle_files)
+        Returns:
+            Path: The full path to the selected video file.
+        """
+        video_file_name = self.video_file_dropdown.currentText()
+        folder = Path(self.folder_line_edit.text())
+        if video_file_name:
+            return folder / video_file_name
+        return None
 
-    def no_segmenting_radio_clicked(self):
+    def get_reference_subtitle_file_path(self) -> Path:
+        """
+        Retrieves the full path of the reference subtitle file.
+
+        Returns:
+            Path: The full path to the reference subtitle file.
+        """
+        reference_subtitle_file_name = self.subtitle_file_dropdown.currentText()
+        folder = Path(self.folder_line_edit.text())
+        if reference_subtitle_file_name:
+            return folder / reference_subtitle_file_name
+        return None
+
+    def no_segmenting_radio_clicked(self) -> None:
+        """
+        Disables UI elements related to segmenting and interleaving when segmenting is deselected.
+        """
         self.segments_time_label.setEnabled(False)
         self.segments_time.setEnabled(False)
 
@@ -383,27 +429,42 @@ class MediaExporter(QWidget):
         self.no_interleaving_radio.setEnabled(False)
         self.yes_interleaving_radio.setEnabled(False)
 
-    def yes_segmenting_radio_clicked(self):
+    def yes_segmenting_radio_clicked(self) -> None:
+        """
+        Enables UI elements related to segmenting and interleaving when segmenting is selected.
+        """
         self.segments_time_label.setEnabled(True)
         self.segments_time.setEnabled(True)
         self.no_interleaving_radio.setEnabled(True)
         self.yes_interleaving_radio.setEnabled(True)
 
-    def no_interleaving_radio_clicked(self):
+    def no_interleaving_radio_clicked(self) -> None:
+        """
+        Disables interleaving and selects the separate files option when interleaving is deselected.
+        """
         self.interleaved_segments_checkbox.setChecked(False)
         self.interleaved_segments_checkbox.setEnabled(False)
         self.separate_files_radio.setChecked(True)
 
-    def yes_interleaving_radio_clicked(self):
+    def yes_interleaving_radio_clicked(self) -> None:
+        """
+        Enables the checkbox for interleaving segments when interleaving is selected.
+        """
         self.interleaved_segments_checkbox.setEnabled(True)
 
-    def update_interleaving_time_state(self):
+    def update_interleaving_time_state(self) -> None:
+        """
+        Enables/disables interleaving time input based on the current interleaving/segmenting options.
+        """
         if self.interleaved_radio.isChecked() or self.segmented_radio.isChecked():
             self.interleaving_time.setEnabled(True)
         else:
             self.interleaving_time.setEnabled(False)
 
-    def add_language_row(self):
+    def add_language_row(self) -> None:
+        """
+        Adds a new language row widget to the layout and connects its delete button to the appropriate handler.
+        """
         new_row = self.LanguageRowWidget(self.audio_tracks)
         self.language_rows_layout.insertWidget(
             self.language_rows_layout.count() - 2, new_row
@@ -411,21 +472,93 @@ class MediaExporter(QWidget):
         self.language_rows.append(new_row)
         new_row.delete_button.clicked.connect(lambda: self.remove_language_row(new_row))
 
-    def remove_language_row(self, row_widget):
-        # Remove the row widget from the layout and the list
+    def remove_language_row(self, row_widget: QWidget) -> None:
+        """
+        Removes the specified language row widget from the layout and list.
+
+        Args:
+            row_widget (QWidget): The language row widget to be removed.
+        """
         self.language_rows.remove(row_widget)
         row_widget.deleteLater()
 
-    def confirm_options(self):
-        options = [row.get_options() for row in self.language_rows]
-        print(options)
+    def confirm_options(self) -> dict:
+        """
+        Collects and returns the current options selected by the user, including the video file,
+        reference subtitle file, audio tracks and desired playback speed, subtitle padding, segmenting options,
+        interleaving options, and whether to generate separate files or combine everything.
+
+        Returns:
+            dict: A dictionary containing the selected options.
+        """
+
+        video_file = self.get_video_file_path()
+        reference_subtitle_file = self.get_reference_subtitle_file_path()
+
+        # Collect options for each language row
+        language_options = [
+            {"audio_track": audio_track, "speed": speed}
+            for audio_track, speed in [row.get_options() for row in self.language_rows]
+        ]
+
+        options = {
+            "video_file": video_file,
+            "reference_subtitle_file": reference_subtitle_file,
+            "subtitle_padding": self.subtitle_padding.value(),
+            "segmenting": {
+                "enabled": self.yes_segmenting_radio.isChecked(),
+                "segment_length": (
+                    self.segments_time.value()
+                    if self.yes_segmenting_radio.isChecked()
+                    else None
+                ),
+            },
+            "interleaving": {
+                "enabled": self.yes_interleaving_radio.isChecked(),
+                "combine_interleaved_segments": (
+                    self.interleaved_segments_checkbox.isChecked()
+                    if self.yes_interleaving_radio.isChecked()
+                    else False
+                ),
+            },
+            "file_combination": (
+                "combine_everything"
+                if self.all_combined_radio.isChecked()
+                else "separate_files"
+            ),
+            "language_options": language_options,
+        }
+
+        self.export_signal.emit(options)
 
     class LanguageRowWidget(QWidget):
-        def __init__(self, audio_tracks):
+        """
+        A widget representing a row in the media exporter, containing options
+        for selecting an audio track and adjusting the speed of extracted dialogue.
+
+        Attributes:
+            audio_track_dropdown (QComboBox): Dropdown menu for selecting an audio track.
+            speed_spinbox (QDoubleSpinBox): Spinbox for adjusting the speed of the extracted dialogue for this audio track.
+            delete_button (QPushButton): Button for deleting the current row.
+        """
+
+        def __init__(self, audio_tracks: List[str]) -> None:
+            """
+            Initializes the LanguageRowWidget with audio tracks.
+
+            Args:
+                audio_tracks (List[str]): A list of available audio tracks to populate the dropdown.
+            """
             super().__init__()
             self.initUI(audio_tracks)
 
-        def initUI(self, audio_tracks):
+        def initUI(self, audio_tracks: List[str]) -> None:
+            """
+            Sets up the user interface elements for the LanguageRowWidget.
+
+            Args:
+                audio_tracks (List[str]): A list of available audio tracks to populate the dropdown.
+            """
             # Audio Track Dropdown
             self.audio_track_dropdown = QComboBox()
             self.audio_track_dropdown.addItems(
@@ -470,7 +603,7 @@ class MediaExporter(QWidget):
 
 def main():
     app = QApplication([])
-    avi_widget = MediaExporter()
+    avi_widget = MediaExporterWindow()
     avi_widget.show()
     app.exec_()
 

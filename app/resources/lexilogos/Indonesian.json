@@ -1,1 +1,40 @@
-{"language_specific_characters": [], "dictionaries": {"custom_target_to_english": {}, "custom_english_to_target": {}, "custom_target_monolingual": {}, "target_to_english": {"Lingea": {"url": ["https://www.dict.com/indonesian-english/", ""], "is_favourite": false}, "Sederet": {"url": ["https://sederet.com/translate.php?lang=id_en&q=", ""], "is_favourite": false}, "Kamus.net": {"url": ["https://www.kamus.net/result.php?w=id-indonesia&q=", "&submit=Search&e=0"], "is_favourite": false}, "Bab.la": {"url": ["https://en.bab.la/dictionary/indonesian-english/", ""], "is_favourite": false}}, "english_to_target": {}, "target_monolingual": {}}}
+{
+    "language_specific_characters": [],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/indonesian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Sederet": {
+                "url": [
+                    "https://sederet.com/translate.php?lang=id_en&q=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Kamus.net": {
+                "url": [
+                    "https://www.kamus.net/result.php?w=id-indonesia&q=",
+                    "&submit=Search&e=0"
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/indonesian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

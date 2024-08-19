@@ -1,1 +1,58 @@
-{"language_specific_characters": ["\u00e5", "\u00e6", "\u00f8"], "dictionaries": {"custom_target_to_english": {}, "custom_english_to_target": {}, "custom_target_monolingual": {}, "target_to_english": {"Lingea": {"url": ["https://www.dict.com/?t=dk&set=_endk&w=", ""], "is_favourite": false}, "Ord": {"url": ["https://www.ord.dk/oversaet/dansk-engelsk/", ""], "is_favourite": false}, "Dicts": {"url": ["https://www.dicts.info/dictionary.php?l1=Danish&l2=English&word=", ""], "is_favourite": false}, "Bab.la": {"url": ["https://en.bab.la/dictionary/danish-english/", ""], "is_favourite": false}, "Iate": {"url": ["http://iate.europa.eu/search/byUrl?term=", "&sl=en&tl=da"], "is_favourite": false}, "Sensagent": {"url": ["http://dictionary.sensagent.com/", "/da-en/"], "is_favourite": false}}, "english_to_target": {}, "target_monolingual": {}}}
+{
+    "language_specific_characters": [
+        "\u00e5",
+        "\u00e6",
+        "\u00f8"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=dk&set=_endk&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Ord": {
+                "url": [
+                    "https://www.ord.dk/oversaet/dansk-engelsk/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Dicts": {
+                "url": [
+                    "https://www.dicts.info/dictionary.php?l1=Danish&l2=English&word=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/danish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=en&tl=da"
+                ],
+                "is_favourite": false
+            },
+            "Sensagent": {
+                "url": [
+                    "http://dictionary.sensagent.com/",
+                    "/da-en/"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

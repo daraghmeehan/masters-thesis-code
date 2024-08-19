@@ -1,1 +1,54 @@
-{"language_specific_characters": [], "dictionaries": {"custom_target_to_english": {}, "custom_english_to_target": {}, "custom_target_monolingual": {}, "target_to_english": {"Learners": {"url": ["https://krdict.korean.go.kr/eng/dicSearch/search?nation=eng&nationCode=6&ParaWordNo=&mainSearchWord=", ""], "is_favourite": false}, "ZKorean": {"url": ["https://zkorean.com/dictionary/search_results?direction=ke&word=", ""], "is_favourite": false}, "Kordut": {"url": ["http://www.kordut.be/wordsearch2.php?woord=", ""], "is_favourite": false}, "Naver": {"url": ["https://endic.naver.com/search.nhn?sLn=en&query=", ""], "is_favourite": false}, "Bab.la": {"url": ["https://en.bab.la/dictionary/korean-english/", ""], "is_favourite": false}, "Glosbe": {"url": ["https://en.glosbe.com/ko/en/", ""], "is_favourite": false}}, "english_to_target": {}, "target_monolingual": {}}}
+{
+    "language_specific_characters": [],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Learners": {
+                "url": [
+                    "https://krdict.korean.go.kr/eng/dicSearch/search?nation=eng&nationCode=6&ParaWordNo=&mainSearchWord=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "ZKorean": {
+                "url": [
+                    "https://zkorean.com/dictionary/search_results?direction=ke&word=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Kordut": {
+                "url": [
+                    "http://www.kordut.be/wordsearch2.php?woord=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Naver": {
+                "url": [
+                    "https://endic.naver.com/search.nhn?sLn=en&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/korean-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/ko/en/",
+                    ""
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

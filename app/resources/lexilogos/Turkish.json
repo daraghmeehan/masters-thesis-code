@@ -1,1 +1,90 @@
-{"language_specific_characters": ["\u00e7", "\u011f", "\u0131", "i", "\u00f6", "\u015f", "\u00fc"], "dictionaries": {"custom_target_to_english": {}, "custom_english_to_target": {}, "custom_target_monolingual": {}, "target_to_english": {"Lingea": {"url": ["https://www.dict.com/?t=tr&set=_tren&w=", ""], "is_favourite": false}, "Reverso": {"url": ["https://dictionary.reverso.net/turkish-english/", "/forced"], "is_favourite": false}, "+ context": {"url": ["https://context.reverso.net/translation/turkish-english/", ""], "is_favourite": false}, "SesliSozluk": {"url": ["https://www.seslisozluk.net/", "-nedir-ne-demek/"], "is_favourite": false}, "TurkceSozluk": {"url": ["https://www.turkcesozluk.net/index.php?word=", "#teen"], "is_favourite": false}, "Zargan": {"url": ["https://www.zargan.com/tr/q/", "-ceviri-nedir"], "is_favourite": false}, "WordReference": {"url": ["https://www.wordreference.com/tren/", ""], "is_favourite": false}, "Tureng": {"url": ["https://tureng.com/en/turkish-english/", ""], "is_favourite": false}, "Bab.la": {"url": ["https://en.bab.la/dictionary/turkish-english/", ""], "is_favourite": false}, "Glosbe": {"url": ["https://en.glosbe.com/tr/en/", ""], "is_favourite": false}}, "english_to_target": {}, "target_monolingual": {}}}
+{
+    "language_specific_characters": [
+        "\u00e7",
+        "\u011f",
+        "\u0131",
+        "i",
+        "\u00f6",
+        "\u015f",
+        "\u00fc"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=tr&set=_tren&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Reverso": {
+                "url": [
+                    "https://dictionary.reverso.net/turkish-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/turkish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "SesliSozluk": {
+                "url": [
+                    "https://www.seslisozluk.net/",
+                    "-nedir-ne-demek/"
+                ],
+                "is_favourite": false
+            },
+            "TurkceSozluk": {
+                "url": [
+                    "https://www.turkcesozluk.net/index.php?word=",
+                    "#teen"
+                ],
+                "is_favourite": false
+            },
+            "Zargan": {
+                "url": [
+                    "https://www.zargan.com/tr/q/",
+                    "-ceviri-nedir"
+                ],
+                "is_favourite": false
+            },
+            "WordReference": {
+                "url": [
+                    "https://www.wordreference.com/tren/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Tureng": {
+                "url": [
+                    "https://tureng.com/en/turkish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/turkish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/tr/en/",
+                    ""
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

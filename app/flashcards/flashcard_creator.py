@@ -1,57 +1,95 @@
 import os
 import time  # To timestamp created csvs
+from typing import Dict, List
 
-import pandas as pd  # to manage flashcard data - easy manipulation and exporting
-from pathlib import Path  # for writing flashcards to "Flashcards" folder
+import pandas as pd  # For easy manipulation and exporting of flashcard data
+from pathlib import Path  # For writing flashcards to the "Flashcards" folder
 
 
 class FlashcardCreator:
-    def __init__(self, deck_name, fields) -> None:
+    """
+    A class to manage the creation and manipulation of flashcard decks.
+
+    Attributes:
+        deck_name (str): The name of the flashcard deck.
+        flashcard_fields (List[str]): The names of the fields of the flashcards.
+        file_path (Path): The path to the CSV file where flashcards are stored.
+    """
+
+    def __init__(self, deck_name: str, fields: List[str], output_folder: str) -> None:
+        """
+        Initialize the FlashcardCreator with a deck name and flashcard fields.
+
+        Parameters:
+        deck_name (str): The name of the flashcard deck.
+        fields (List[str]): The list of field names for the flashcards.
+        output_folder (str): The folder where flashcards should be saved.
+        """
         self.deck_name = deck_name
         self.flashcard_fields = fields
-        self.file_path = self.create_flashcard_deck(fields)
+        self.file_path = self.create_flashcard_deck(fields, output_folder)
 
-    def create_flashcard_deck(self, fields):
+    def create_flashcard_deck(self, fields: List[str], output_folder: str) -> Path:
+        """
+        Create a new flashcard deck as a CSV file with the specified fields.
+
+        Parameters:
+        fields (List[str]): The list of field names.
+        output_folder (str): The folder where flashcards should be saved.
+
+        Returns:
+        Path: The path to the created CSV file where flashcards are saved.
+        """
         timestamp = time.strftime("%Y-%m-%d_%H%M%S", time.localtime())
-        file_name = f"{self.deck_name} - {timestamp}"
-        file_path = Path(f"../media/flashcards/new_cards/{file_name}.csv")
+        file_name = f"{self.deck_name} - {timestamp}.csv"
+        file_path = Path(output_folder) / file_name
         file_path.parent.mkdir(
             exist_ok=True
-        )  # Making the "Flashcard" directory if we don't already have it
+        )  # Create the flashcard directory if it doesn't exist
 
-        # Create the file with headers if it doesn't exist
-        if not file_path.is_file():
+        # Create the file if it doesn't exist
+        if not file_path.exists():
             pd.DataFrame(columns=fields).to_csv(file_path, index=False, header=False)
 
         return file_path
 
-    def number_of_flashcards_created(self):
+    def number_of_flashcards_created(self) -> int:
+        """
+        Count the number of flashcards in the CSV file.
+
+        Returns:
+        int: The number of flashcards in the file. Returns 0 if the file does not exist.
+        """
         try:
             with open(self.file_path, "r", encoding="utf-8") as file:
                 return sum(1 for row in file)
         except FileNotFoundError:
             return 0  # Return 0 if the file doesn't exist
 
-    def add_flashcard(self, card_as_dict):
-        # Below is handling even if not all keys are present (it's more general)
-        # # Ensure that all keys are valid
-        # assert all(field in self.flashcard_fields for field in card_as_dict.keys())
-        # # Ensure that at least one value is not empty
-        # assert any(card_as_dict.values())
+    def add_flashcard(self, card_as_dict: Dict[str, str]) -> None:
+        """
+        Add a new flashcard to the CSV file.
 
-        # # Create a new dictionary with missing fields filled in as empty strings
-        # new_card_dict = {field: card_as_dict.get(field, "") for field in self.flashcard_fields}
-        # # Convert the dictionary to a DataFrame
-        # new_card = pd.DataFrame([new_card_dict])
-
-        # print(f"keys: {list(card_as_dict.keys())}\nfields: {self.flashcard_fields}")
-        assert list(card_as_dict.keys()) == self.flashcard_fields
-        assert not all([field == "" for field in card_as_dict.values()])
+        Parameters:
+        card_as_dict (Dict[str, str]): A dictionary representing the flashcard - keys are field names, entries are the field data.
+        """
+        assert (
+            list(card_as_dict.keys()) == self.flashcard_fields
+        ), "Flashcard keys do not match the required fields."
+        assert not all(
+            [field == "" for field in card_as_dict.values()]
+        ), "All field values are empty."
 
         new_card = pd.DataFrame([card_as_dict])
         new_card.to_csv(self.file_path, mode="a", header=False, index=False)
 
     def retrieve_all_flashcards_created(self):
+        """
+        Retrieve all flashcards from the CSV file.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing all flashcards. Returns an empty DataFrame if no flashcards are found or if an error occurs.
+        """
         try:
             # Read the CSV file into a DataFrame
             flashcards_df = pd.read_csv(self.file_path, encoding="utf-8")
@@ -66,10 +104,17 @@ class FlashcardCreator:
             return pd.DataFrame()
 
     def delete_deck(self):
+        """
+        Delete the flashcard deck file.
+
+        Returns:
+        bool: True if the file was successfully deleted, False otherwise.
+        """
         try:
+            file_path = Path(self.file_path)
             # Check if the file exists
-            if os.path.exists(self.file_path):
-                os.remove(self.file_path)  # Delete the file
+            if file_path.exists():
+                file_path.unlink()  # Delete the file
                 print(f"Deleted flashcard deck: {self.file_path}")
                 return True
             else:
