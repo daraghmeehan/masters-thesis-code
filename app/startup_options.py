@@ -34,12 +34,12 @@ peppa_startup_options = {
     "Source Language": "English",
     "Target Languages": ["Dutch", "Italian"],
     "Audio Tracks": {
-        "English": "eng",
+        # "English": "eng",
         "Dutch": "dut",
-        "Italian": "ita",
-        # "English": "None",
+        # "Italian": "ita",
+        "English": "None",
         # "Dutch": "None",
-        # "Italian": "None",
+        "Italian": "None",
     },
     "Subtitle Files": {
         "Reference": "C:/Stuff/Peppa Pig/[English] Daddy loses his glasses.srt",

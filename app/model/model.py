@@ -1,6 +1,7 @@
 import re
-from typing import List, Tuple, Dict, Union
 from datetime import datetime, timedelta
+from pathlib import Path
+from typing import List, Tuple, Dict, Union
 
 NON_SPEAKING_SYMBOLS = ["♪", "<i>", "[", "]"]
 SPECIAL_ENCODINGS = {
@@ -58,7 +59,7 @@ class SubtitleModel:
     def __init__(
         self,
         language: str,
-        filename: str,
+        filename: Path,
         encoding: str = "utf-8",
         non_speaking_symbols: List[str] = NON_SPEAKING_SYMBOLS,
     ) -> None:
@@ -67,14 +68,14 @@ class SubtitleModel:
 
         Args:
             language (str): The language of the subtitle file.
-            filename (str): The path to the subtitle file.
+            filename (Path): The path to the subtitle file.
             encoding (str, optional): The encoding used to read the file. Defaults to "utf-8".
             non_speaking_symbols (List[str], optional): Symbols used for non-speaking captions. Defaults to an empty list.
         """
         self.language = language
         self.non_speaking_symbols = non_speaking_symbols
 
-        subtitle_lines = self.read_subtitle_file(filename, encoding)
+        subtitle_lines = self.read_subtitle_file(str(filename), encoding)
         self.subtitles = self.parse_subtitle_file(subtitle_lines, non_speaking_symbols)
 
     def read_subtitle_file(self, filename: str, encoding: str) -> List[str]:
@@ -316,13 +317,13 @@ class AVIModel:
     The central Model class of the application which handles multilingual subtitle alignment based on a reference subtitle file.
 
     Attributes:
-        subtitle_files (Dict[str, str]): A dictionary where keys are languages and values are paths
+        subtitle_files (Dict[str, Path]): A dictionary where keys are languages and values are paths
                                          to the corresponding subtitle files. The key 'Reference'
                                          points to the reference subtitle file used for alignment.
         subtitle_matching_method (str): The method to use to decide which overlapping subtitle best matches the current subtitle being added.
         subtitle_timing_tolerance (float): The timing tolerance in seconds for aligning subtitles that don't overlap but have similar timings.
                                            Defaults to DEFAULT_SUBTITLE_TIMING_TOLERANCE.
-        reference_file (str): The file path of the reference subtitle file used for alignment.
+        reference_file (Path): The file path of the reference subtitle file used for alignment.
         subtitle_models (Dict[str, SubtitleModel]): A dictionary containing SubtitleModel instances for the
                                                     reference and other languages' subtitles.
         languages (List[str]): A list of languages (excluding 'Reference') for which subtitles are provided.
@@ -333,7 +334,7 @@ class AVIModel:
 
     def __init__(
         self,
-        subtitle_files: Dict[str, str],
+        subtitle_files: Dict[str, Path],
         subtitle_matching_method: str = DEFAULT_SUBTITLE_MATCHING_METHOD,
         subtitle_timing_tolerance: float = DEFAULT_SUBTITLE_TIMING_TOLERANCE,
     ) -> None:
@@ -361,7 +362,7 @@ class AVIModel:
         self.languages = [
             language
             for language in self.subtitle_files.keys()
-            if language != "Reference" and self.subtitle_files[language] != "None"
+            if language != "Reference" and self.subtitle_files[language]
         ]
 
         for language in self.languages:
@@ -370,24 +371,24 @@ class AVIModel:
 
         self.build_multilingual_alignment()
 
-    def determine_reference_file(self) -> str:
+    def determine_reference_file(self) -> Path:
         """
         Determines the reference subtitle file.
 
         Returns:
-            str: The path to the reference subtitle file.
+            Path: The path to the reference subtitle file.
 
         Raises:
             RuntimeError: If no viable reference file is found.
         """
-        reference_file = self.subtitle_files.get("Reference", "None")
+        reference_file = self.subtitle_files.get("Reference", None)
 
-        if reference_file != "None":
+        if reference_file:
             return reference_file
 
         # Assign reference file to first non-"None" file if no reference was given
         for subtitle_file in self.subtitle_files.values():
-            if subtitle_file != "None":
+            if subtitle_file:
                 return subtitle_file
 
         raise RuntimeError("Must have a viable reference file!")

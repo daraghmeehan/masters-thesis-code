@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from pathlib import Path
 import subprocess
 import ffmpeg
@@ -41,7 +41,6 @@ class AudioExtractor:
             )
             self.audio_tracks[language] = audio_track
 
-    # TODO: Need to normalise volume of audio tracks
     def extract_audio_track(
         self, video_file: Path, language: str, audio_track_name: str
     ) -> Path:
@@ -72,13 +71,14 @@ class AudioExtractor:
         if audio_stream_index is None:
             raise ValueError(f"No audio stream found for {language}")
 
-        # Was WAV before (which works quicker with MP4)
         audio_track = self.output_folder / f"{video_file.stem}-{language}.mp3"
 
         # Define the ffmpeg command as a list of strings
         command = [
             "ffmpeg",
             "-y",  # Overwrite output file if it exists
+            "-loglevel",
+            "error",  # Only show errors
             "-i",
             str(video_file),
             "-map",
@@ -87,8 +87,10 @@ class AudioExtractor:
             "0",
             "-movflags",
             "use_metadata_tags",
+            "-filter:a",  # Apply the audio filter
+            "loudnorm=I=-18:LRA=6:TP=-1",  # The loudnorm filter for volume normalization
             "-ab",
-            "48k",
+            "48k",  # Audio bitrate
             str(audio_track),  # Output file path
         ]
 
@@ -100,8 +102,8 @@ class AudioExtractor:
     def extract_segment(
         self,
         language: str,
-        start_time: datetime.datetime,
-        end_time: datetime.datetime,
+        start_time: datetime,
+        end_time: datetime,
         segment_name: str,
     ) -> Path:
         """
@@ -109,8 +111,8 @@ class AudioExtractor:
 
         Args:
             language (str): The language name of the audio file to extract the segment from.
-            start_time (datetime.datetime): The start time of the segment.
-            end_time (datetime.datetime): The end time of the segment.
+            start_time (datetime): The start time of the segment.
+            end_time (datetime): The end time of the segment.
             segment_name: (str): What name to save the segment with.
 
         Returns:
@@ -126,13 +128,15 @@ class AudioExtractor:
         command = [
             "ffmpeg",
             "-y",  # Overwrite output file if it exists
-            "-i",
-            str(audio_track),
+            "-loglevel",
+            "error",  # Only show errors
             "-ss",
             start_time_str,
             "-to",
             end_time_str,
-            "-c",  # Before was "-acodec"
+            "-i",
+            str(audio_track),
+            "-c",
             "copy",
             str(audio_segment_path),
         ]
@@ -142,12 +146,12 @@ class AudioExtractor:
         return audio_segment_path
 
 
-def convert_datetime_to_ffmpeg_time(time: datetime.datetime) -> str:
+def convert_datetime_to_ffmpeg_time(time: datetime) -> str:
     """
     Converts a datetime object to a string format suitable for use with ffmpeg.
 
     Args:
-        time (datetime.datetime): The datetime object to convert.
+        time (datetime): The datetime object to convert.
 
     Returns:
         str: The converted time string in "H:MM:SS.sss" format.

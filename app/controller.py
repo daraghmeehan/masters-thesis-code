@@ -37,7 +37,7 @@ from flashcards.flashcard_creator import FlashcardCreator
 
 from avi_utils.screenshot_extractor import ScreenshotExtractor
 from avi_utils.audio_player import AudioPlayer
-from media_exporter.audio_extractor import AudioExtractor
+from avi_utils.audio_extractor import AudioExtractor
 
 # Shortcuts for trying different startup options
 from startup_options import (
@@ -125,13 +125,15 @@ class Controller:
             # Connect the UI signal to the backend export function
             media_exporter_window.export_signal.connect(media_exporter.export_media)
 
-            media_exporter_window.show()
             try:
                 # Run the application window
+                media_exporter_window.show()
                 self.app.exec_()
+
             finally:
                 # Clean temporary files after the operation
                 self.clean_temporary_files()
+
             return
 
         # Otherwise, set up for study in Text/AVI Mode :)
@@ -163,13 +165,13 @@ class Controller:
             # To play and export subtitle audio
             self.audio_player = AudioPlayer()
 
-        # Set up the model and the view
-        self.set_up_model()
-        self.set_up_ui()
-
-        # Show the UI and run the event loop
-        self.ui.show()
         try:
+            # Set up the model and the view
+            self.set_up_model()
+            self.set_up_ui()
+
+            # Show the UI and run the event loop
+            self.ui.show()
             self.app.exec_()
         finally:
             # Clean up our work
@@ -599,10 +601,10 @@ class Controller:
         self.ui.flashcard_workspace.fields["Answer Text"].setText(target_language_text)
 
         self.ui.flashcard_workspace.fields["Question Language"].setCurrentText(
-            target_language
+            source_language
         )
         self.ui.flashcard_workspace.fields["Answer Language"].setCurrentText(
-            source_language
+            target_language
         )
 
         self.ui.translation_workspace.clear_workspace()
@@ -703,7 +705,7 @@ class Controller:
         self.ui.study_materials.subtitle_workspace.languages_with_subtitles = [
             language
             for language, subtitle_file in self.subtitle_files.items()
-            if language != "Reference" and subtitle_file != "None"
+            if language != "Reference" and subtitle_file
         ]
         self.ui.study_materials.subtitle_workspace.languages_with_audio_tracks = [
             language
@@ -974,6 +976,12 @@ class Controller:
         # TODO: Make Flashcard Workspace interface cleaner, e.g. new_text_card(question_text, answer_text, question_language, answer_language)
         self.ui.flashcard_workspace.fields["Question Text"].setText(target_language)
         self.ui.flashcard_workspace.fields["Answer Text"].setText(source_language)
+        self.ui.flashcard_workspace.fields["Question Language"].setCurrentText(
+            self.target_languages[0]
+        )
+        self.ui.flashcard_workspace.fields["Answer Language"].setCurrentText(
+            self.source_language
+        )
 
         entry_widget.remove_button.click()
 
@@ -1144,8 +1152,11 @@ class Controller:
         """
         for deck in self.decks:
             flashcard_creator = self.flashcard_creators[deck]
-            if flashcard_creator.number_of_flashcards_created() == 0:
+            num_flashcards_created = flashcard_creator.number_of_flashcards_created()
+            if num_flashcards_created == 0:
                 flashcard_creator.delete_deck()
+            else:
+                print(f"Created {num_flashcards_created} for '{deck}' deck.")
 
     def clean_temporary_files(self) -> None:
         """

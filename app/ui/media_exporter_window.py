@@ -108,6 +108,7 @@ def create_separator_line():
     return line
 
 
+# TODO: Use threads/worker to make UI not freeze when processing files :)
 class MediaExporterWindow(QWidget):
     """
     A widget for exporting condensed practice audio from audiovisual input, with options for segmenting and interleaving multiple audio tracks at different speeds.
@@ -129,10 +130,10 @@ class MediaExporterWindow(QWidget):
 
         # Quicker testing
         # folder = "C:\\Stuff\\UniversaLearn\\LanguageRepo\\Language Learning Material\\Netflix Downloads\\Las chicas Gilmore\\S01"
-        folder = "C:\\Stuff\\Peppa Pig"
-        self.folder_line_edit.setText(folder)
-        self.update_video_file_dropdown(folder)
-        self.update_subtitle_file_dropdown(folder)
+        # folder = "C:\\Stuff\\Peppa Pig"
+        # self.folder_line_edit.setText(folder)
+        # self.update_video_file_dropdown(folder)
+        # self.update_subtitle_file_dropdown(folder)
 
     def init_ui(self) -> None:
         """
@@ -570,7 +571,9 @@ class MediaExporterWindow(QWidget):
             self.speed_spinbox.setLocale(
                 QLocale(QLocale.English, QLocale.Ireland)
             )  # Set the locale to use a period as decimal separator
-            self.speed_spinbox.setRange(0.1, 10.0)
+            self.speed_spinbox.setRange(
+                0.5, 10.0
+            )  # TODO: Allow for slower than 50% speed with multiple ffmpeg atempo filters stringed together
             self.speed_spinbox.setSingleStep(0.1)
             self.speed_spinbox.setValue(1.0)  # Default speed
 
@@ -595,7 +598,10 @@ class MediaExporterWindow(QWidget):
             self.audio_track_dropdown.addItems(audio_tracks)
 
         def get_options(self):
-            return self.audio_track_dropdown.currentText(), self.speed_spinbox.value()
+            # Round the speed to 1 decimal place
+            return self.audio_track_dropdown.currentText(), round(
+                self.speed_spinbox.value(), 1
+            )
 
         def deleteRow(self):
             self.deleteLater()

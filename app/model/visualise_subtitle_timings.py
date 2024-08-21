@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from pathlib import Path
 import matplotlib.pyplot as plt
 from model import SubtitleModel
 
@@ -68,7 +69,7 @@ subtitle_files = {
 }
 
 subtitle_models = {
-    language: SubtitleModel(language, subtitle_file)
+    language: SubtitleModel(language, Path(subtitle_file))
     for language, subtitle_file in subtitle_files.items()
 }
 

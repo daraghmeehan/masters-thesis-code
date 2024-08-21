@@ -4,6 +4,7 @@ from controller import Controller
 def main():
     app_controller = Controller()
     app_controller.run()
+    # TODO: Perhaps should do try block here to always clean temporary files.
 
 
 if __name__ == "__main__":

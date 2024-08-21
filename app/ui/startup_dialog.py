@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import (
     QFrame,
     QSizePolicy,
 )
+from PyQt5.QtCore import Qt
 
 import ffmpeg
 
@@ -137,7 +138,7 @@ class StartupDialog(QDialog):
         self.avi_button = QPushButton("Audiovisual Input")
         self.export_media_button = QPushButton("Export Media")
         self.mode_layout = QVBoxLayout()
-        self.mode_layout.addWidget(self.mode_label)
+        self.mode_layout.addWidget(self.mode_label, alignment=Qt.AlignCenter)
         self.mode_layout.addWidget(self.text_button)
         self.mode_layout.addWidget(self.avi_button)
         self.mode_layout.addWidget(self.export_media_button)
