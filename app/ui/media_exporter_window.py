@@ -130,10 +130,10 @@ class MediaExporterWindow(QWidget):
 
         # Quicker testing
         # folder = "C:\\Stuff\\UniversaLearn\\LanguageRepo\\Language Learning Material\\Netflix Downloads\\Las chicas Gilmore\\S01"
-        # folder = "C:\\Stuff\\Peppa Pig"
-        # self.folder_line_edit.setText(folder)
-        # self.update_video_file_dropdown(folder)
-        # self.update_subtitle_file_dropdown(folder)
+        folder = "C:\\Stuff\\Peppa Pig"
+        self.folder_line_edit.setText(folder)
+        self.update_video_file_dropdown(folder)
+        self.update_subtitle_file_dropdown(folder)
 
     def init_ui(self) -> None:
         """

@@ -249,6 +249,7 @@ class MediaExporter:
         num_segments_digits = len(str(num_segments))
 
         print("Combining lines of dialogue together.")
+        # TODO: File with í in its name couldn't be copied with ffmpeg.
 
         for audio_track_number, language_option in enumerate(language_options):
             audio_track = language_option["audio_track"]
