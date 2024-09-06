@@ -1,0 +1,45 @@
+{
+    "language_specific_characters": [],
+    "language_to_eng": {
+        "Van Dale": [
+            "https://www.vandale.nl/opzoeken?pattern=",
+            "&lang=ne"
+        ],
+        "Reverso": [
+            "https://dictionnaire.reverso.net/dutch-english/",
+            "/forced"
+        ],
+        "+ context": [
+            "https://context.reverso.net/translation/dutch-english/",
+            ""
+        ],
+        "Pons": [
+            "https://en.pons.com/translate/dutch-english/",
+            ""
+        ],
+        "Glosbe": [
+            "https://en.glosbe.com/nl/en/",
+            ""
+        ],
+        "Sensagent": [
+            "http://dictionary.sensagent.com/",
+            "/nl-en/"
+        ],
+        "Interglot": [
+            "https://www.interglot.com/dictionary/nl/en/search?q=",
+            ""
+        ],
+        "Bab.la": [
+            "https://en.bab.la/dictionary/dutch-english/",
+            ""
+        ],
+        "MijnWoordenboek": [
+            "http://www.mijnwoordenboek.nl/vertalen.php?woord=",
+            "&src=NL&des=FR"
+        ],
+        "Iate": [
+            "http://iate.europa.eu/search/byUrl?term=",
+            "&sl=nl&tl=en"
+        ]
+    }
+}

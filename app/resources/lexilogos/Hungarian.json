@@ -1,0 +1,62 @@
+{
+    "language_specific_characters": [
+        "\u00e1",
+        "\u00e9",
+        "\u00ed",
+        "\u00f3",
+        "\u0151",
+        "\u00fa",
+        "\u0171"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/Hungarian-English/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Origo": {
+                "url": [
+                    "https://szotar.sztaki.hu/dict_search.php?L=HUN%3AENG%3AEngHunDict&O=ENG&flash=&E=1&vk=&in_form=1&W=",
+                    "&M=1&P=0&C=1&T=1"
+                ],
+                "is_favourite": false
+            },
+            "WebForditas": {
+                "url": [
+                    "http://www.webforditas.hu/index.php?show=dictTab&lang=english&S=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/hungarian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/hu/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=hu&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

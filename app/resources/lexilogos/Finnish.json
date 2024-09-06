@@ -1,0 +1,64 @@
+{
+    "language_specific_characters": [
+        "\u00e4",
+        "\u00f6"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "SuomiEnglantiSanakirja": {
+                "url": [
+                    "http://www.suomienglantisanakirja.fi/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/finnish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=fi&set=_enfi&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/fi/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Linguee": {
+                "url": [
+                    "https://www.linguee.com/english-finnish/search?source=finnish&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pro": {
+                "url": [
+                    "https://dictionarypro.net/finnish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=fi&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

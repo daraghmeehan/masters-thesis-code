@@ -1,0 +1,89 @@
+{
+    "language_specific_characters": [
+        "\u00c3\u00b1",
+        "\u00c3\u00a1",
+        "\u00c3\u00a9",
+        "\u00c3\u00ad",
+        "\u00c3\u00b3",
+        "\u00c3\u00ba",
+        "\u00c3\u00bc"
+    ],
+    "language_to_eng": {
+        "SpanishDict": [
+            "https://www.spanishdict.com/translate/",
+            ""
+        ],
+        "WordReference": [
+            "https://www.wordreference.com/es/en/translation.asp?spen=",
+            ""
+        ],
+        "RAE": [
+            "https://dle.rae.es/",
+            ""
+        ],
+        "Larousse": [
+            "https://www.larousse.fr/dictionnaires/espagnol-anglais/",
+            ""
+        ],
+        "Diccionarios": [
+            "https://www.diccionarios.com/detalle.php?palabra=",
+            "&dicc_55=on"
+        ],
+        "Reverso": [
+            "https://dictionary.reverso.net/spanish-english/",
+            "/forced"
+        ],
+        "+ context": [
+            "https://context.reverso.net/translation/spanish-english/",
+            ""
+        ],
+        "Collins": [
+            "https://www.collinsdictionary.com/dictionary/spanish-english/",
+            ""
+        ],
+        "Pons": [
+            "https://en.pons.com/translate/spanish-english/",
+            ""
+        ],
+        "Lingea": [
+            "https://www.dict.com/ingles-espanol/",
+            ""
+        ],
+        "OpenSpanish": [
+            "https://en.openspanish.org/es/",
+            ""
+        ],
+        "Wordmagic": [
+            "https://www.wordmagicsoft.com/dictionary/es-en/",
+            ".php"
+        ],
+        "Bab.la": [
+            "https://en.bab.la/dictionary/spanish-english/",
+            ""
+        ],
+        "Trex": [
+            "https://tr-ex.me/translation/spanish-english/",
+            ""
+        ],
+        "Glosbe": [
+            "https://en.glosbe.com/sp/en/",
+            ""
+        ],
+        "Sensagent": [
+            "http://traduction.sensagent.com/",
+            "/es-en/"
+        ],
+        "Linguee": [
+            "https://www.linguee.com/english-spanish/search?source=spanish&query=",
+            ""
+        ],
+        "Iate": [
+            "http://iate.europa.eu/search/byUrl?term=",
+            "&sl=es&tl=en"
+        ],
+        "Eurocosm": [
+            "https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=",
+            "&sl=E&styp=AND"
+        ]
+    }
+}

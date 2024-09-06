@@ -1,11 +1,11 @@
 import sys
+from typing import List
+
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
     QGridLayout,
     QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
 )
 
 from ui.study_materials import StudyMaterials
@@ -15,12 +15,41 @@ from ui.dictionary_lookup import DictionaryLookup
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, window_title, mode):
+    """
+    The main application window of the program.
+
+    Attributes:
+        mode (str): The current mode of the application.
+        languages (list): List of all languages in use in the application.
+        central_widget (QWidget): The central widget of the main window.
+        layout (QGridLayout): Layout manager for the central widget.
+        study_materials (StudyMaterials): Widget for study materials, either saved sentences or the multilingual parallel text of AVI dialogue.
+        flashcard_workspace (FlashcardWorkspace): Widget for flashcard workspace, where flashcards are edited and saved.
+        translation_workspace (TranslationWorkspace): Widget for translation workspace, for translating words and phrases.
+        dictionary_lookup (DictionaryLookup): Widget for dictionary lookup, for looking up words.
+    """
+
+    def __init__(self, window_title: str, mode: str, languages: List[str]) -> None:
+        """
+        Initialise the MainWindow.
+
+        Args:
+            window_title (str): The title of the main window.
+            mode (str): The current mode of the application.
+            languages (List[str]): List of languages used in the application.
+        """
         super().__init__()
         self.mode = mode
+        self.languages = languages
         self.initUI(window_title)
 
-    def initUI(self, window_title):
+    def initUI(self, window_title: str) -> None:
+        """
+        Set up the user interface for the main window.
+
+        Args:
+            window_title (str): The title of the main window.
+        """
         # Set the window title
         self.setWindowTitle(f"v2 - {window_title}")
         self.setGeometry(100, 100, 1000, 400)
@@ -31,28 +60,34 @@ class MainWindow(QMainWindow):
         self.layout = QGridLayout(self.central_widget)
 
         self.set_up_layout()
-
         self.set_up_tab_order()
 
     def set_up_layout(self):
-        self.study_materials = StudyMaterials(mode=self.mode)
-        self.flashcard_workspace = FlashcardWorkspace()
+        """Initialise and arrange the widgets of the program."""
+        self.study_materials = StudyMaterials(
+            mode=self.mode,
+            languages=self.languages,
+        )
+        self.flashcard_workspace = FlashcardWorkspace(mode=self.mode)
         self.translation_workspace = TranslationWorkspace()
         self.dictionary_lookup = DictionaryLookup()
 
-        # row, column, number of rows, number of columns
+        # Row, column, number of rows, number of columns
         self.layout.addWidget(self.study_materials, 0, 0, 3, 3)
         self.layout.addWidget(self.flashcard_workspace, 0, 3, 4, 1)
         self.layout.addWidget(self.translation_workspace, 3, 0, 1, 2)
         self.layout.addWidget(self.dictionary_lookup, 3, 2, 1, 1)
 
-        # the grid layout acts up if you don't do this
+        # (The grid layout acts up if you don't do this)
         for i in range(0, self.layout.columnCount()):
             self.layout.setColumnStretch(i, 1)
         for i in range(0, self.layout.rowCount()):
             self.layout.setRowStretch(i, 1)
 
+    # TODO: Fully implement and document (in the app) shortcuts to speed up the study workflow.
+    # (This might be placed elsewhere)
     # def setup_shortcuts(self):
+    # """Set up keyboard shortcuts for various actions."""
 
     #     self.translate_shortcut = QShortcut(QKeySequence("Ctrl+T"), self)
     #     self.translate_shortcut.activated.connect(self.translate_button.click)
@@ -74,12 +109,14 @@ class MainWindow(QMainWindow):
     #     self.add_flashcard_shortcut.activated.connect(self.add_flashcard)
 
     def set_up_tab_order(self):
-        ##!! different between modes!!
+        # TODO: Create a logical tab order to go between various sections of the UI.
+        # Note: will be different between modes
         # self.setTabOrder(widget1, widget2)
         # self.setTabOrder(widget2, widget3)
         pass
 
-    ##!!?? maybe should be in dictionary_lookup file itself if only one??
+    # TODO: Set up all points at which 'enter' can be pressed for different actions.
+    # Perhaps should be in dictionary_lookup file itself if only one??
     def setup_all_enter_key_signals(self):
         #     self.substring_search_lineedit.returnPressed.connect(
         #         self.search_substring_button.click

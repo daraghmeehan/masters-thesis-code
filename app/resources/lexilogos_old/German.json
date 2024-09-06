@@ -1,0 +1,78 @@
+{
+    "language_specific_characters": [
+        "\u00c3\u0178",
+        "\u00c3\u00a4",
+        "\u00c3\u00b6",
+        "\u00c3\u00bc"
+    ],
+    "language_to_eng": {
+        "Reverso": [
+            "https://dictionary.reverso.net/german-english/",
+            "/forced"
+        ],
+        "+ context": [
+            "https://context.reverso.net/translation/german-english/",
+            ""
+        ],
+        "Collins": [
+            "https://www.collinsdictionary.com/dictionary/german-english/",
+            ""
+        ],
+        "Larousse": [
+            "https://www.larousse.fr/dictionnaires/allemand-anglais/",
+            ""
+        ],
+        "Leo": [
+            "https://dict.leo.org/german-english/",
+            ""
+        ],
+        "Langenscheidt": [
+            "https://de.langenscheidt.com/deutsch-englisch/search?term=",
+            ""
+        ],
+        "Lingea": [
+            "https://www.dict.com/Englisch-Deutsch/",
+            ""
+        ],
+        "Pons": [
+            "https://en.pons.com/translate/german-english/",
+            ""
+        ],
+        "Dict.cc": [
+            "http://www.dict.cc/?s=",
+            ""
+        ],
+        "WordReference": [
+            "https://www.wordreference.com/deen/",
+            ""
+        ],
+        "Beolingus": [
+            "https://dict.tu-chemnitz.de/dings.cgi?lang=en&service=de-en&opterrors=0&optpro=0&query=",
+            ""
+        ],
+        "Odge": [
+            "http://odge.de/index.php?ebene=Suche&kw=",
+            ""
+        ],
+        "Bab.la": [
+            "https://en.bab.la/dictionary/german-english/",
+            ""
+        ],
+        "Glosbe": [
+            "https://en.glosbe.com/de/en/",
+            ""
+        ],
+        "Linguee": [
+            "https://www.linguee.com/english-german/search?source=german&query=",
+            ""
+        ],
+        "Eurocosm": [
+            "https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=",
+            "&sl=D&styp=AND"
+        ],
+        "Iate": [
+            "http://iate.europa.eu/search/byUrl?term=",
+            "&sl=de&tl=en"
+        ]
+    }
+}

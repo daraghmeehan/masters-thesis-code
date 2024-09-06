@@ -1,0 +1,65 @@
+{
+    "language_specific_characters": [
+        "\u00e5",
+        "\u00e4",
+        "\u00f6"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=se&set=_ense&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/sv/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/swedish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Trex": {
+                "url": [
+                    "https://tr-ex.me/translation/swedish-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Folkets": {
+                "url": [
+                    "http://folkets-lexikon.csc.kth.se/folkets/#lookup&",
+                    "&1"
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=sv&tl=en"
+                ],
+                "is_favourite": false
+            },
+            "Sensagent": {
+                "url": [
+                    "http://dictionary.sensagent.com/",
+                    "/sv-en/"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}
