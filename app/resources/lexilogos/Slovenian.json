@@ -1,0 +1,51 @@
+{
+    "language_specific_characters": [
+        "\u010d",
+        "\u0161",
+        "\u017e"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/slovenian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=si&set=_ensi&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/sl/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=en&tl=sl"
+                ],
+                "is_favourite": false
+            },
+            "Sensagent": {
+                "url": [
+                    "http://traduction.sensagent.com/",
+                    "/sl-en/"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

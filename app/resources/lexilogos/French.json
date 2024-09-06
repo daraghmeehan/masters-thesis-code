@@ -1,1 +1,124 @@
-{"language_specific_characters": ["\u00c3\u00a0", "\u00c3\u00a2", "\u00c3\u00a7", "\u00c3\u00a9", "\u00c3\u00aa", "\u00c3\u00a8", "\u00c3\u00ab", "\u00c3\u00ae", "\u00c3\u00af", "\u00c3\u00b4", "\u00c3\u00bb", "\u00c3\u00b9", "\u00c3\u00bc"], "language_to_eng": {"Reverso": ["https://dictionary.reverso.net/french-english/", "/forced"], "+ context": ["https://context.reverso.net/translation/french-english/", ""], "Larousse": ["https://www.larousse.fr/dictionnaires/francais-anglais/", ""], "WordReference": ["https://www.wordreference.com/fren/", ""], "Pons": ["https://en.pons.com/translate/french-english/", ""], "Collins": ["https://www.collinsdictionary.com/dictionary/french-english/", ""], "Lingea": ["https://www.dict.com/francais-anglais/", ""], "Bab.la": ["https://en.bab.la/dictionary/french-english/", ""], "Glosbe": ["https://en.glosbe.com/fr/en/", ""], "Trex": ["https://tr-ex.me/translation/french-english/", ""], "Linguee": ["https://www.linguee.com/english-french/search?source=french&query=", ""], "Eurocosm": ["https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=", "&sl=F&styp=AND"], "Terminology": ["https://vitrinelinguistique.oqlf.gouv.qc.ca/resultats-de-recherche?tx_solr%5Bq%5D=", "&tx_solr%5Bfilter%5D%5B1%5D=type_stringM%3Agdt"], "Iate": ["http://iate.europa.eu/search/byUrl?term=", "&sl=fr&tl=en"]}}
+{
+    "language_specific_characters": [
+        "\u00c3\u00a0",
+        "\u00c3\u00a2",
+        "\u00c3\u00a7",
+        "\u00c3\u00a9",
+        "\u00c3\u00aa",
+        "\u00c3\u00a8",
+        "\u00c3\u00ab",
+        "\u00c3\u00ae",
+        "\u00c3\u00af",
+        "\u00c3\u00b4",
+        "\u00c3\u00bb",
+        "\u00c3\u00b9",
+        "\u00c3\u00bc"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Reverso": {
+                "url": [
+                    "https://dictionary.reverso.net/french-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/french-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Larousse": {
+                "url": [
+                    "https://www.larousse.fr/dictionnaires/francais-anglais/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "WordReference": {
+                "url": [
+                    "https://www.wordreference.com/fren/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/french-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Collins": {
+                "url": [
+                    "https://www.collinsdictionary.com/dictionary/french-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/francais-anglais/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/french-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/fr/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Trex": {
+                "url": [
+                    "https://tr-ex.me/translation/french-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Linguee": {
+                "url": [
+                    "https://www.linguee.com/english-french/search?source=french&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Eurocosm": {
+                "url": [
+                    "https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=",
+                    "&sl=F&styp=AND"
+                ],
+                "is_favourite": false
+            },
+            "Terminology": {
+                "url": [
+                    "https://vitrinelinguistique.oqlf.gouv.qc.ca/resultats-de-recherche?tx_solr%5Bq%5D=",
+                    "&tx_solr%5Bfilter%5D%5B1%5D=type_stringM%3Agdt"
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=fr&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

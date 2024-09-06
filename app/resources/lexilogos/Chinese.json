@@ -1,0 +1,89 @@
+{
+    "language_specific_characters": [],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/chinese-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/English-Chinese/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Reverso": {
+                "url": [
+                    "https://dictionary.reverso.net/chinese-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/chinese-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "LinDict": {
+                "url": [
+                    "http://www.nciku.com/search/all/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Dict.cn": {
+                "url": [
+                    "http://dict.cn/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Mdbg": {
+                "url": [
+                    "https://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqb=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Websaru": {
+                "url": [
+                    "http://www.websaru.com/display.php?action=search&word=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Xiaoma": {
+                "url": [
+                    "http://www.xiaoma.info/spy.php?py=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Mandarin tools": {
+                "url": [
+                    "cam();http://www.mandarintools.com/cgi-bin/wordlook.pl?word=",
+                    "&searchtype=pinyin&where=whole&audio=on"
+                ],
+                "is_favourite": false
+            },
+            "Zhongwen.com": {
+                "url": [
+                    "http://www.zhongwen.com/cgi-bin/s.cgi?p=",
+                    ""
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

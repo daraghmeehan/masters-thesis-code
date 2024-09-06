@@ -1,53 +1,48 @@
 {
-  "text_template": {
+  "languages_template": {
     "fields": {
-      "Question Text": { "type": "TextEdit" },
-      "Answer Text": { "type": "TextEdit" },
-      "Hint": { "type": "LineEdit" },
-      "Example Sentence(s)": { "type": "TextEdit" },
-      "Other Forms": { "type": "TextEdit" },
-      "Extra Info": { "type": "TextEdit" },
-      "Pronunciation": { "type": "LineEdit" },
-      "Question Language": { "type": "Dropdown" },
-      "Answer Language": { "type": "Dropdown" },
-      "Source": { "type": "LineEdit" },
-      "Tags": { "type": "Hidden" }
-    },    
-    "required_fields": [
-      "Question Text",
-      "Answer Text"
-    ],
-    "decks": [
-      "Easy",
-      "Medium",
-      "Hard"
-    ]
-  },
-  "avi_template": {
-    "fields": {
-      "Picture": { "type": "Media", "widget": "ScreenshotViewer" },
-      "Audio": { "type": "Media", "widget": "AudioViewer" },
-      "Question Text": { "type": "TextEdit" },
-      "Answer Text": { "type": "TextEdit" },
-      "Hint": { "type": "LineEdit" },
-      "Example Sentence(s)": { "type": "TextEdit" },
-      "Other Forms": { "type": "TextEdit" },
-      "Extra Info": { "type": "TextEdit" },
-      "Pronunciation": { "type": "LineEdit" },
-      "Question Language": { "type": "Dropdown" },
-      "Answer Language": { "type": "Dropdown" },
-      "Show Picture Before?": { "type": "Checkbox" },
-      "Show Audio Before?": { "type": "Checkbox" },
-      "Show Text Before?": { "type": "Checkbox" },
-      "Source": { "type": "LineEdit" },
-      "Tags": { "type": "Hidden" }
+      "Question Text": {
+        "type": "TextEdit"
+      },
+      "Answer Text": {
+        "type": "TextEdit"
+      },
+      "Question Language": {
+        "type": "Dropdown"
+      },
+      "Answer Language": {
+        "type": "Dropdown"
+      },
+      "Hint": {
+        "type": "LineEdit"
+      },
+      "Extra Info": {
+        "type": "TextEdit"
+      },
+      "Picture": {
+        "type": "Media",
+        "widget": "ScreenshotViewer"
+      },
+      "Audio": {
+        "type": "Media",
+        "widget": "AudioViewer"
+      },
+      "Show Picture Before?": {
+        "type": "Checkbox"
+      },
+      "Show Audio Before?": {
+        "type": "Checkbox"
+      },
+      "Hide Text Before?": {
+        "type": "Checkbox"
+      }
     },
     "required_fields": [
       "Answer Text"
     ],
     "decks": [
       "Easy",
-      "Medium",
+      "Normal",
       "Hard"
     ]
   }

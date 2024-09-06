@@ -1,1 +1,136 @@
-{"language_specific_characters": ["\u00c3\u0178", "\u00c3\u00a4", "\u00c3\u00b6", "\u00c3\u00bc"], "language_to_eng": {"Reverso": ["https://dictionary.reverso.net/german-english/", "/forced"], "+ context": ["https://context.reverso.net/translation/german-english/", ""], "Collins": ["https://www.collinsdictionary.com/dictionary/german-english/", ""], "Larousse": ["https://www.larousse.fr/dictionnaires/allemand-anglais/", ""], "Leo": ["https://dict.leo.org/german-english/", ""], "Langenscheidt": ["https://de.langenscheidt.com/deutsch-englisch/search?term=", ""], "Lingea": ["https://www.dict.com/Englisch-Deutsch/", ""], "Pons": ["https://en.pons.com/translate/german-english/", ""], "Dict.cc": ["http://www.dict.cc/?s=", ""], "WordReference": ["https://www.wordreference.com/deen/", ""], "Beolingus": ["https://dict.tu-chemnitz.de/dings.cgi?lang=en&service=de-en&opterrors=0&optpro=0&query=", ""], "Odge": ["http://odge.de/index.php?ebene=Suche&kw=", ""], "Bab.la": ["https://en.bab.la/dictionary/german-english/", ""], "Glosbe": ["https://en.glosbe.com/de/en/", ""], "Linguee": ["https://www.linguee.com/english-german/search?source=german&query=", ""], "Eurocosm": ["https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=", "&sl=D&styp=AND"], "Iate": ["http://iate.europa.eu/search/byUrl?term=", "&sl=de&tl=en"]}}
+{
+    "language_specific_characters": [
+        "\u00c3\u0178",
+        "\u00c3\u00a4",
+        "\u00c3\u00b6",
+        "\u00c3\u00bc"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Reverso": {
+                "url": [
+                    "https://dictionary.reverso.net/german-english/",
+                    "/forced"
+                ],
+                "is_favourite": false
+            },
+            "+ context": {
+                "url": [
+                    "https://context.reverso.net/translation/german-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Collins": {
+                "url": [
+                    "https://www.collinsdictionary.com/dictionary/german-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Larousse": {
+                "url": [
+                    "https://www.larousse.fr/dictionnaires/allemand-anglais/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Leo": {
+                "url": [
+                    "https://dict.leo.org/german-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Langenscheidt": {
+                "url": [
+                    "https://de.langenscheidt.com/deutsch-englisch/search?term=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/Englisch-Deutsch/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Pons": {
+                "url": [
+                    "https://en.pons.com/translate/german-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Dict.cc": {
+                "url": [
+                    "http://www.dict.cc/?s=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "WordReference": {
+                "url": [
+                    "https://www.wordreference.com/deen/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Beolingus": {
+                "url": [
+                    "https://dict.tu-chemnitz.de/dings.cgi?lang=en&service=de-en&opterrors=0&optpro=0&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Odge": {
+                "url": [
+                    "http://odge.de/index.php?ebene=Suche&kw=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/german-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/de/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Linguee": {
+                "url": [
+                    "https://www.linguee.com/english-german/search?source=german&query=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Eurocosm": {
+                "url": [
+                    "https://www.eurocosm.com/Eurocosm/AppEC/Pdcd/Phrasesearch2.asp?kw=",
+                    "&sl=D&styp=AND"
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=de&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "language_specific_characters": [
+        "\u00e5",
+        "\u00e6",
+        "\u00f8"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/?t=no&set=_enno&w=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Glosbe": {
+                "url": [
+                    "https://en.glosbe.com/no/en/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Bab.la": {
+                "url": [
+                    "https://en.bab.la/dictionary/norwegian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Trex": {
+                "url": [
+                    "https://tr-ex.me/translation/norwegian-english/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Sensagent": {
+                "url": [
+                    "http://dictionary.sensagent.com/",
+                    "/no-en/"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

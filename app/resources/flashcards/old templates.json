@@ -1,0 +1,110 @@
+{
+  "text_template": {
+    "fields": {
+      "Question Text": {
+        "type": "TextEdit"
+      },
+      "Answer Text": {
+        "type": "TextEdit"
+      },
+      "Hint": {
+        "type": "LineEdit"
+      },
+      "Example Sentence(s)": {
+        "type": "TextEdit"
+      },
+      "Other Forms": {
+        "type": "TextEdit"
+      },
+      "Extra Info": {
+        "type": "TextEdit"
+      },
+      "Pronunciation": {
+        "type": "LineEdit"
+      },
+      "Question Language": {
+        "type": "Dropdown"
+      },
+      "Answer Language": {
+        "type": "Dropdown"
+      },
+      "Source": {
+        "type": "LineEdit"
+      },
+      "Tags": {
+        "type": "Hidden"
+      }
+    },
+    "required_fields": [
+      "Question Text",
+      "Answer Text"
+    ],
+    "decks": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "avi_template": {
+    "fields": {
+      "Question Text": {
+        "type": "TextEdit"
+      },
+      "Answer Text": {
+        "type": "TextEdit"
+      },
+      "Question Language": {
+        "type": "Dropdown"
+      },
+      "Answer Language": {
+        "type": "Dropdown"
+      },
+      "Extra Info": {
+        "type": "TextEdit"
+      },
+      "Other Forms": {
+        "type": "TextEdit"
+      },
+      "Hint": {
+        "type": "LineEdit"
+      },
+      "Picture": {
+        "type": "Media",
+        "widget": "ScreenshotViewer"
+      },
+      "Audio": {
+        "type": "Media",
+        "widget": "AudioViewer"
+      },
+      "Example Sentence(s)": {
+        "type": "TextEdit"
+      },
+      "Pronunciation": {
+        "type": "LineEdit"
+      },
+      "Show Picture Before?": {
+        "type": "Checkbox"
+      },
+      "Show Audio Before?": {
+        "type": "Checkbox"
+      },
+      "Hide Text Before?": {
+        "type": "Checkbox"
+      },
+      "Source": {
+        "type": "LineEdit"
+      },
+      "Tags": {
+        "type": "Hidden"
+      }
+    },
+    "required_fields": [
+      "Answer Text"
+    ],
+    "decks": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  }
+}

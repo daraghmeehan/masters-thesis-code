@@ -1,0 +1,126 @@
+# Shortcuts for different starting options
+
+text_mode_options = {
+    "Mode": "Text",
+    "Source Language": "English",
+    "Target Languages": ["Spanish"],
+    "Dictionaries": {
+        "Spanish": ["WordReference", "Collins"],
+    },
+}
+
+cuentame_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.mp4",
+    "Source Language": "English",
+    "Target Languages": ["Spanish"],
+    "Audio Tracks": {
+        "English": "None",
+        "Spanish": "und",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.srt",
+        "English": "None",
+        "Spanish": "C:/Stuff/Cuentame/1x01 - El retorno del fugitivo.srt",
+    },
+    "Dictionaries": {
+        "Spanish": ["WordReference", "Collins"],
+    },
+}
+
+peppa_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Peppa Pig/Daddy loses his glasses.mp4",
+    "Source Language": "English",
+    "Target Languages": ["Dutch", "Italian"],
+    "Audio Tracks": {
+        # "English": "eng",
+        "Dutch": "dut",
+        # "Italian": "ita",
+        "English": "None",
+        # "Dutch": "None",
+        "Italian": "None",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/Peppa Pig/[English] Daddy loses his glasses.srt",
+        "English": "C:/Stuff/Peppa Pig/[English] Daddy loses his glasses.srt",
+        "Dutch": "C:/Stuff/Peppa Pig/[Dutch] Daddy loses his glasses.srt",
+        "Italian": "C:/Stuff/Peppa Pig/[Italian] Daddy loses his glasses.srt",
+    },
+    "Dictionaries": {
+        "Dutch": ["Van Dale", "MijnWoordenboek"],
+        "Italian": ["Reverso", "Collins", "WordReference"],
+    },
+}
+
+gg_startup_options = {
+    "Mode": "AVI",
+    "Video File": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.mp4",
+    "Source Language": "English",
+    "Target Languages": [
+        "Spanish",
+        "Dutch",
+        "Czech",
+        "Italian",
+        # "Japanese",
+        # "French",
+        # "Chinese",
+        # "Polish",
+        # "Indonesian",
+        # "Portuguese",
+        # "Swedish",
+        # "Turkish",
+        # "Chinese (Traditional)",
+    ],
+    "Audio Tracks": {
+        "English": "None",
+        "Spanish": "None",
+        # "Spanish": "spa",
+        "Dutch": "None",
+        "Czech": "None",
+        # "Italian": "None",
+        # "Italian": "ita",
+        "Japanese": "None",
+        # "Japanese": "jpn",
+        # "French": "None",
+        # "Chinese": "None",
+        # "Polish": "None",
+        # "Indonesian": "None",
+        # "Portuguese": "None",
+        # "Swedish": "None",
+        # "Turkish": "None",
+        # "Chinese (Traditional)": "None",
+    },
+    "Subtitle Files": {
+        "Reference": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+        "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
+        "Dutch": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.nl.srt",
+        "Czech": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.cs.srt",
+        "Italian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.it.srt",
+        # "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
+        # "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
+        # "Chinese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hans.srt",
+        # "Polish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pl.srt",
+        # "Indonesian": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.id.srt",
+        # "Portuguese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.pt.srt",
+        # "Swedish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.sv.srt",
+        # "Turkish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.tr.srt",
+        # "Chinese (Traditional)": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.zh-Hant.srt",
+    },
+    "Dictionaries": {
+        "Spanish": ["SpanishDict", "Collins"],
+        "Dutch": ["Van Dale", "MijnWoordenboek"],
+        "Czech": ["Seznam", "WordReference"],
+        "Italian": ["Collins"],
+        # "Japanese": ["Jisho"],
+        # "French": ["Larousse", "WordReference"],
+        # "Chinese": ["Mdbg", "Xiaoma"],
+        # "Polish": [],
+        # "Indonesian": [],
+        # "Portuguese": [],
+        # "Swedish": [],
+        # "Turkish": [],
+        # "Chinese (Traditional)": [],
+    },
+}

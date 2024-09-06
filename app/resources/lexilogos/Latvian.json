@@ -1,0 +1,45 @@
+{
+    "language_specific_characters": [
+        "\u0101",
+        "\u010d",
+        "\u0113",
+        "\u0123",
+        "\u012b",
+        "\u0137",
+        "\u013c",
+        "\u0146",
+        "\u0161",
+        "\u016b",
+        "\u017e"
+    ],
+    "dictionaries": {
+        "custom_target_to_english": {},
+        "custom_english_to_target": {},
+        "custom_target_monolingual": {},
+        "target_to_english": {
+            "Lingea": {
+                "url": [
+                    "https://www.dict.com/Latvian-English/",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Letonika": {
+                "url": [
+                    "https://www.letonika.lv/groups/default.aspx?g=2&r=10621033&q=",
+                    ""
+                ],
+                "is_favourite": false
+            },
+            "Iate": {
+                "url": [
+                    "http://iate.europa.eu/search/byUrl?term=",
+                    "&sl=lv&tl=en"
+                ],
+                "is_favourite": false
+            }
+        },
+        "english_to_target": {},
+        "target_monolingual": {}
+    }
+}

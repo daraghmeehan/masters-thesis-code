@@ -4,22 +4,20 @@ from app.deep_l.translator import Translator
 
 
 class MockTextResult:
-    def __init__(self, text, detected_source_lang):
+    def __init__(self, text):
         self.text = text
-        self.detected_source_lang = detected_source_lang
 
 
 def mock_translate_text(text, source_lang, target_lang, *args, **kwargs):
     translations = {
-        ("¿Cómo estás?", "ES", "EN-GB"): ("How are you?", "ES"),
-        ("uno", "ES", "EN-GB"): ("one", "ES"),
+        ("¿Cómo estás?", "ES", "EN-GB"): ["How are you?"],
+        ("uno", "ES", "EN-GB"): ["one"],
     }
 
     def translate(item):
-        result = translations.get(
-            (item, source_lang, target_lang), ("Unknown", "Unknown")
+        return MockTextResult(
+            translations.get((item, source_lang, target_lang), ["Unknown"])[0]
         )
-        return MockTextResult(*result)
 
     if isinstance(text, list):
         return [translate(t) for t in text]
@@ -36,15 +34,11 @@ class TestTranslator(unittest.TestCase):
 
         # Test translating one sentence
         result = translator.translate_text("¿Cómo estás?", "ES", "EN-GB")
-        self.assertEqual(result.text, "How are you?")
-        self.assertEqual(result.detected_source_lang, "ES")
+        self.assertEqual([r.text for r in result], ["How are you?"])
 
         # Test translating multiple sentences
         result = translator.translate_text(["¿Cómo estás?", "uno"], "ES", "EN-GB")
-        self.assertEqual(result[0].text, "How are you?")
-        self.assertEqual(result[0].detected_source_lang, "ES")
-        self.assertEqual(result[1].text, "one")
-        self.assertEqual(result[1].detected_source_lang, "ES")
+        self.assertEqual([r.text for r in result], ["How are you?", "one"])
 
 
 if __name__ == "__main__":
