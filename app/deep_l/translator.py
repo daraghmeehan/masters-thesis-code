@@ -1,14 +1,13 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 import deepl
 
-import os
-
-from dotenv import load_dotenv
-from pathlib import Path
-
-dotenv_path = Path("./LangAnki/UI/DeepL/.env")
+dotenv_path = Path("deep_l/.env")
 load_dotenv(dotenv_path=dotenv_path)
 
 DEEPL_AUTH_KEY = os.getenv("DEEPL_AUTH_KEY")
+
 
 class Translator:
     def __init__(self, auth_key) -> None:
@@ -88,7 +87,7 @@ class Translator:
         if text == "":
             return ""
 
-        # removing soft hyphen 
+        # removing soft hyphen
         if isinstance(text, str):
             text = text.replace("­", "")
         elif isinstance(text, list):
@@ -118,11 +117,3 @@ class Translator:
 def load_translator():
     translator = Translator(DEEPL_AUTH_KEY)
     return translator
-
-
-if __name__ == "__main__":
-    translator = load_translator()
-    # result = translator.translate_text(
-    #     "¿Cómo estás?", source_lang="ES", target_lang="EN-GB"
-    # )
-    # print(result.text)

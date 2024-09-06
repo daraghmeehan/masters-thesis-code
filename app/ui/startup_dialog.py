@@ -41,9 +41,9 @@ def get_audio_streams(filename):
 
 
 class StartupDialog(QDialog):
-    def __init__(self, languages_and_their_dictionaries):
+    def __init__(self, tl_to_english_dictionaries):
         super().__init__()
-        self.languages_and_their_dictionaries = languages_and_their_dictionaries
+        self.tl_to_english_dictionaries = tl_to_english_dictionaries
         self.startup_options = {"Mode": None}
         self.initUI()
 
@@ -56,7 +56,7 @@ class StartupDialog(QDialog):
         self.text_options_page = TextWidget()
         self.avi_options_page = AVIWidget()
         self.dictionary_options_page = DictionaryChoicesWidget(
-            self.languages_and_their_dictionaries
+            self.tl_to_english_dictionaries
         )
         self.stacked_widget.addWidget(self.choose_mode_page)
         self.stacked_widget.addWidget(self.text_options_page)
@@ -520,10 +520,10 @@ class AVIWidget(QWidget):
 
 
 class DictionaryChoicesWidget(QWidget):
-    def __init__(self, languages_and_their_dictionaries):
+    def __init__(self, tl_to_english_dictionaries):
         super().__init__()
 
-        self.languages_and_their_dictionaries = languages_and_their_dictionaries
+        self.tl_to_english_dictionaries = tl_to_english_dictionaries
         self.init_ui()
 
     def init_ui(self):
@@ -555,7 +555,7 @@ class DictionaryChoicesWidget(QWidget):
             tab = QWidget()
 
             # Create checkboxes with the available dictionaries for this language
-            dictionaries = self.languages_and_their_dictionaries[language]
+            dictionaries = self.tl_to_english_dictionaries[language]
 
             checkbox_layout = QVBoxLayout()
             for dictionary in dictionaries:
@@ -602,12 +602,12 @@ if __name__ == "__main__":
         "r",
     ) as f:
         spanish_data = json.load(f)
-    languages_and_their_dictionaries = {
+    tl_to_english_dictionaries = {
         "French": french_data["language_to_eng"],
         "Spanish": spanish_data["language_to_eng"],
     }
 
     app = QApplication([])
-    dialog = StartupDialog(languages_and_their_dictionaries)
+    dialog = StartupDialog(tl_to_english_dictionaries)
     if dialog.exec_() == QDialog.Accepted:
         print(dialog.mode_dict)

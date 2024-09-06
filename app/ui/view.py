@@ -8,10 +8,10 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 
-from app.ui.study_materials import StudyMaterials
-from app.ui.translation_workspace import TranslationWorkspace
-from app.ui.flashcard_workspace import FlashcardWorkspace
-from app.ui.dictionary_lookup import DictionaryLookup
+from ui.study_materials import StudyMaterials
+from ui.translation_workspace import TranslationWorkspace
+from ui.flashcard_workspace import FlashcardWorkspace
+from ui.dictionary_lookup import DictionaryLookup
 
 
 class MainWindow(QMainWindow):
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
 
         self.set_up_layout()
 
-        self.set_up_tab_order()  ##!! different between modes!!
+        self.set_up_tab_order()
 
     def set_up_layout(self):
         self.study_materials = StudyMaterials(mode=self.mode)
@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
     #     self.add_flashcard_shortcut.activated.connect(self.add_flashcard)
 
     def set_up_tab_order(self):
+        ##!! different between modes!!
         # self.setTabOrder(widget1, widget2)
         # self.setTabOrder(widget2, widget3)
         pass
