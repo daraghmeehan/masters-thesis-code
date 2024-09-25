@@ -32,7 +32,7 @@ def visualise_subtitle_timings(subtitles):
     # Iterate over each language
     for i, lang in enumerate(subtitles.keys()):
         timings = subtitles[lang]
-        y = [i] * len(timings)  # Y-coordinate for the language line
+        y = [i] * len(timings)  # y-coordinate for the language line
         for j, (start, end) in enumerate(timings):
             # Plot filled rectangle for each subtitle segment
             ax.fill_betweenx(y, start, end, color=colors[j % 2], alpha=1, linewidth=5)
@@ -61,11 +61,17 @@ def visualise_subtitle_timings(subtitles):
     plt.show()
 
 
+# subtitle_files = {
+#     "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
+#     "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
+#     "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
+#     "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
+# }
+
 subtitle_files = {
-    "English": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.en.srt",
-    "Spanish": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.es.srt",
-    "French": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.fr.srt",
-    "Japanese": "C:/Stuff/Gilmore Girls/S01/Gilmore Girls_S01E01_Pilot.ja.srt",
+    "English": "C:/LCT/RUG/THESIS/Experiment/Materials/Glasses en.srt",
+    "Dutch": "C:/LCT/RUG/THESIS/Experiment/Materials/Glasses nl.srt",
+    "Italian": "C:/LCT/RUG/THESIS/Experiment/Materials/Glasses it.srt",
 }
 
 subtitle_models = {
