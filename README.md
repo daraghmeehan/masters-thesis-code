@@ -10,7 +10,7 @@ It's also possible to create condensed review audio files, which extract all dia
 
 <img width="1730" alt="Main Poster!" src="https://github.com/user-attachments/assets/6d527cc4-a7a7-4da1-ad39-6c4a0165fef9">
 
-## User Interface - Aligning subtitles across multiple languages
+## User Interface Examples
 
 <img width="1280" alt="3 GG 5 langs!" src="https://github.com/user-attachments/assets/08fc0a1f-1de7-4017-a657-93a5b36ab628">
 
