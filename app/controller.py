@@ -96,11 +96,11 @@ class Controller:
 
         # TODO: Perhaps make this a different object in future
         # Run and parse the startup dialog, where the user chooses the languages/media they wish to study
-        startup_options = self.run_startup_dialog()
+        # startup_options = self.run_startup_dialog()
 
         # For quicker testing
         # startup_options = cuentame_startup_options
-        # startup_options = peppa_startup_options
+        startup_options = peppa_startup_options
         # startup_options = gg_startup_options
         # startup_options = text_mode_options
 
@@ -447,7 +447,9 @@ class Controller:
                     field_data = media_path
                     if field_name == "Audio":
                         # Ensuring the audio file reference is correctly formatted to work in Anki
-                        field_data = "[sound:" + field_data + "]"
+                        field_data = (
+                            "[sound:" + field_data + "]" if media_path else ""
+                        )  #!! Make sure this returns [sound etc] if has audio, and blank if not :)
                 else:
                     field_data = ""
             elif field_name == "Tags":

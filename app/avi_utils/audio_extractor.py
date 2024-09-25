@@ -73,6 +73,8 @@ class AudioExtractor:
 
         audio_track = self.output_folder / f"{video_file.stem}-{language}.mp3"
 
+        print(f"Extracting {language} audio track")
+
         # Define the ffmpeg command as a list of strings
         command = [
             "ffmpeg",
